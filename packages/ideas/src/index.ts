@@ -111,10 +111,14 @@ export async function proposeIdeas(db: Db, options: GenerateOptions): Promise<Pr
     model,
     max_tokens: 4096,
     tools: [proposeIdeasTool],
-    tool_choice: { type: "tool", name: proposeIdeasTool.name },
+    // Newer models reject forced tool_choice, so the prompt asks for the tool call instead.
+    tool_choice: { type: "auto" },
     messages: [{ role: "user", content: prompt }],
   });
-  const toolUse = res.content.find((b) => b.type === "tool_use");
+  const toolUse = res.content.find(
+    (b): b is Anthropic.ToolUseBlock => b.type === "tool_use" && b.name === proposeIdeasTool.name,
+  );
+  if (!toolUse) throw new Error(`${model} did not call ${proposeIdeasTool.name} (stop_reason: ${res.stop_reason})`);
   return parseProposals(toolUse?.input, new Set(signals.map((s) => s.id)));
 }
 
