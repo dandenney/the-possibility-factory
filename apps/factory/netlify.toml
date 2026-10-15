@@ -1,4 +1,5 @@
 # Netlify site settings: Base directory = (repo root), Package directory = apps/factory
+# Paths here resolve from the base directory (repo root), not the package directory.
 [build]
   command = "pnpm turbo run build --filter=@factory/app"
-  publish = "dist"
+  publish = "apps/factory/dist"
