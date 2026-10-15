@@ -1,8 +1,9 @@
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, gte, inArray, sql } from "drizzle-orm";
 import type { Db } from "./db.ts";
 import {
   ideaSignals,
   ideas,
+  settings,
   signals,
   type Idea,
   type IdeaStatus,
@@ -22,6 +23,16 @@ export interface SignalFilter {
 export function listSignals(db: Db, { kind, status, limit = 200 }: SignalFilter = {}) {
   const where = and(kind ? eq(signals.kind, kind) : undefined, status ? eq(signals.status, status) : undefined);
   return db.select().from(signals).where(where).orderBy(desc(signals.createdAt), desc(signals.id)).limit(limit);
+}
+
+/** New signals created since `since`, newest first: the input for idea generation. */
+export function listFreshSignals(db: Db, since: Date, limit = 100): Promise<Signal[]> {
+  return db
+    .select()
+    .from(signals)
+    .where(and(eq(signals.status, "new"), gte(signals.createdAt, since)))
+    .orderBy(desc(signals.createdAt), desc(signals.id))
+    .limit(limit);
 }
 
 export async function getSignalsByIds(db: Db, ids: number[]): Promise<Signal[]> {
@@ -107,4 +118,13 @@ export async function linkSignals(db: Db, ideaId: number, signalIds: number[]) {
 
 export async function unlinkSignal(db: Db, ideaId: number, signalId: number) {
   await db.delete(ideaSignals).where(and(eq(ideaSignals.ideaId, ideaId), eq(ideaSignals.signalId, signalId)));
+}
+
+export async function getSetting(db: Db, key: string): Promise<string | undefined> {
+  const [row] = await db.select().from(settings).where(eq(settings.key, key));
+  return row?.value;
+}
+
+export async function setSetting(db: Db, key: string, value: string) {
+  await db.insert(settings).values({ key, value }).onConflictDoUpdate({ target: settings.key, set: { value, updatedAt: new Date() } });
 }

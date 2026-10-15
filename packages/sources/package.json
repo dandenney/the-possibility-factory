@@ -6,12 +6,17 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "collect": "node src/run.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@factory/core": "workspace:*"
+    "@factory/core": "workspace:*",
+    "fast-xml-parser": "^5.11.2"
   },
   "devDependencies": {
-    "typescript": "^5.9.0"
+    "@types/node": "^24.19.2",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.4"
   }
 }

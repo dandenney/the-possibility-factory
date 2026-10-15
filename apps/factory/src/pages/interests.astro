@@ -1,0 +1,41 @@
+---
+import { getSetting, setSetting } from "@factory/core";
+import Layout from "@/layouts/Layout.astro";
+import { getDb } from "@/lib/db";
+
+const INTERESTS_KEY = "interests";
+const db = await getDb();
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  await setSetting(db, INTERESTS_KEY, String(form.get("interests") ?? "").trim());
+  return Astro.redirect("/interests?saved=1");
+}
+
+const interests = (await getSetting(db, INTERESTS_KEY)) ?? "";
+const saved = Astro.url.searchParams.has("saved");
+---
+
+<Layout title="Interests">
+  <form method="post" class="mx-auto max-w-2xl space-y-5">
+    <div>
+      <p class="label">Interests profile</p>
+      <h1 class="text-2xl font-semibold tracking-tight">What should the factory care about?</h1>
+      <p class="mt-2 text-sm text-muted">
+        Idea generation reads this alongside fresh signals. Topics, hobbies, tools you want to try, things to avoid.
+        Plain text or a list.
+      </p>
+    </div>
+    <textarea
+      class="field font-mono text-sm"
+      name="interests"
+      rows="16"
+      aria-label="Interests"
+      placeholder={"- Golf (ball flight, stats)\n- Astro, Tailwind, small web toys\n- New Claude and open-weight models\n- Avoid: crypto, politics"}
+    >{interests}</textarea>
+    <div class="flex items-center gap-3">
+      <button class="btn" type="submit">Save</button>
+      {saved && <span class="text-sm text-muted" role="status">Saved.</span>}
+    </div>
+  </form>
+</Layout>

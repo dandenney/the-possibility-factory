@@ -8,8 +8,11 @@ import {
   createSignal,
   deleteIdea,
   getIdea,
+  getSetting,
   listIdeas,
+  listFreshSignals,
   listSignals,
+  setSetting,
   setSignalStatus,
   upsertSignals,
 } from "./repo.ts";
@@ -62,5 +65,25 @@ describe("ideas", () => {
     await deleteIdea(db, idea.id);
     expect(await getIdea(db, idea.id)).toBeUndefined();
     expect(await listSignals(db)).toHaveLength(1);
+  });
+});
+
+describe("fresh signals", () => {
+  it("returns only new signals created since the cutoff", async () => {
+    const fresh = await createSignal(db, { title: "fresh" });
+    const used = await createSignal(db, { title: "used" });
+    await setSignalStatus(db, used.id, "used");
+    await createSignal(db, { title: "old", createdAt: new Date("2020-01-01") });
+    const rows = await listFreshSignals(db, new Date("2024-01-01"));
+    expect(rows.map((r) => r.id)).toEqual([fresh.id]);
+  });
+});
+
+describe("settings", () => {
+  it("stores and overwrites values", async () => {
+    expect(await getSetting(db, "interests")).toBeUndefined();
+    await setSetting(db, "interests", "a");
+    await setSetting(db, "interests", "b");
+    expect(await getSetting(db, "interests")).toBe("b");
   });
 });

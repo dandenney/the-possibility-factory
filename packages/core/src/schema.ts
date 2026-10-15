@@ -69,6 +69,16 @@ export const ideaSignals = sqliteTable(
   (t) => [primaryKey({ columns: [t.ideaId, t.signalId] })],
 );
 
+/** Key-value settings edited in the app, e.g. the interests profile. */
+export const settings = sqliteTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .notNull()
+    .default(sql`(unixepoch())`)
+    .$onUpdate(() => new Date()),
+});
+
 export type Signal = typeof signals.$inferSelect;
 export type NewSignal = typeof signals.$inferInsert;
 export type Idea = typeof ideas.$inferSelect;
