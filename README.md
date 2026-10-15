@@ -7,7 +7,7 @@ and eventually builds the best ones as projects in this repo.
 ## Roadmap
 
 1. **Manual capture** (done): log signals by hand or with a bookmarklet, turn them into ideas, triage on a board.
-2. **Automation**: scheduled collectors in `packages/sources` plus LLM idea generation.
+2. **Automation** (done): daily collectors in `packages/sources` and Claude idea generation in `packages/ideas`.
 3. **Execution**: an approved idea gets a `projects/<slug>/SPEC.md` and a Devin session that builds it and opens a PR.
 
 ## Layout
@@ -15,7 +15,8 @@ and eventually builds the best ones as projects in this repo.
 ```
 apps/factory/      Astro (SSR) app on Netlify: board, signals, ideas
 packages/core/     Drizzle schema, migrations, data access (libSQL / Turso)
-packages/sources/  Collectors that turn feeds into signals (phase 2)
+packages/sources/  Collectors that turn feeds into signals (see docs/sources.md)
+packages/ideas/    Claude prompt that turns fresh signals + your interests into ideas
 projects/<slug>/   Built projects, each with its own stack (see projects/README.md)
 ```
 
@@ -39,6 +40,14 @@ pnpm dev               # http://localhost:4321
 | `pnpm db:generate` | Generate a migration after editing `packages/core/src/schema.ts` |
 | `pnpm db:migrate`  | Apply migrations to `DATABASE_URL`              |
 | `pnpm db:studio`   | Browse the database in Drizzle Studio           |
+| `pnpm --filter @factory/sources collect [id...]` | Run collectors (all, or by id) into `DATABASE_URL` |
+| `pnpm --filter @factory/ideas generate` | Generate ideas from the last 36h of new signals (needs `ANTHROPIC_API_KEY`; `IDEAS_MODEL` overrides the model) |
+
+## Automation
+
+`.github/workflows/daily.yml` runs the collectors and then idea generation every day at 11:00 UTC; trigger it by hand from the Actions tab.
+It needs repository secrets `DATABASE_URL`, `DATABASE_AUTH_TOKEN`, and `ANTHROPIC_API_KEY`.
+Edit the interests profile the generator reads at `/interests` in the app.
 
 ## Deploying
 
