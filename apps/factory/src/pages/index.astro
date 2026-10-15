@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import { getDb } from "@/lib/db";
 import { ideaStatusLabels, timeAgo } from "@/lib/labels";
 
-const db = getDb();
+const db = await getDb();
 const [ideas, signalCounts] = await Promise.all([listIdeas(db), countSignalsByStatus(db)]);
 const columns = IDEA_STATUSES.filter((s) => s !== "archived").map((status) => ({
   status,

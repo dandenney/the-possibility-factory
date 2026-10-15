@@ -5,7 +5,7 @@ import { getDb } from "@/lib/db";
 import { oneOf, str } from "@/lib/forms";
 import { hostname, kindLabels, timeAgo } from "@/lib/labels";
 
-const db = getDb();
+const db = await getDb();
 const params = Astro.url.searchParams;
 
 if (Astro.request.method === "POST") {

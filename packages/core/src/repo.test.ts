@@ -19,7 +19,7 @@ const migrationsFolder = fileURLToPath(new URL("../migrations", import.meta.url)
 let db: Db;
 
 beforeEach(async () => {
-  db = createDb({ url: ":memory:" });
+  db = await createDb({ url: ":memory:" });
   await migrate(db, { migrationsFolder });
 });
 

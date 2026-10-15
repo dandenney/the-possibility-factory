@@ -5,7 +5,7 @@ import { getDb } from "@/lib/db";
 import { ids, oneOf, str } from "@/lib/forms";
 import { hostname, ideaStatusLabels, kindLabels, timeAgo } from "@/lib/labels";
 
-const db = getDb();
+const db = await getDb();
 const id = Number(Astro.params.id);
 if (!Number.isInteger(id)) return Astro.redirect("/");
 

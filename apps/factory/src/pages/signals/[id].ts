@@ -8,7 +8,7 @@ export const POST: APIRoute = async ({ params, request, redirect }) => {
   const form = await request.formData();
   const status = oneOf(str(form, "status"), SIGNAL_STATUSES);
   if (!Number.isInteger(id) || !status) return new Response("Bad request", { status: 400 });
-  await setSignalStatus(getDb(), id, status);
+  await setSignalStatus(await getDb(), id, status);
   const referer = request.headers.get("referer");
   const back = referer ? new URL(referer) : undefined;
   return redirect(safeNext(back ? back.pathname + back.search : undefined, "/signals"));

@@ -5,7 +5,7 @@ import { getDb } from "@/lib/db";
 import { ids, oneOf, str } from "@/lib/forms";
 import { ideaStatusLabels, kindLabels } from "@/lib/labels";
 
-const db = getDb();
+const db = await getDb();
 
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData();
