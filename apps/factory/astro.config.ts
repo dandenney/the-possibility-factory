@@ -12,6 +12,7 @@ export default defineConfig({
       DATABASE_AUTH_TOKEN: envField.string({ context: "server", access: "secret", optional: true }),
       FACTORY_PASSWORD: envField.string({ context: "server", access: "secret", optional: true }),
       SESSION_SECRET: envField.string({ context: "server", access: "secret", optional: true }),
+      GITHUB_DISPATCH_TOKEN: envField.string({ context: "server", access: "secret", optional: true }),
     },
   },
 });
