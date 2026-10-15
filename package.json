@@ -1,0 +1,23 @@
+{
+  "name": "the-possibility-factory",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.21.0",
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "turbo run dev --filter=@factory/app",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "check": "turbo run typecheck test build",
+    "db:generate": "pnpm --filter @factory/core db:generate",
+    "db:migrate": "pnpm --filter @factory/core db:migrate",
+    "db:studio": "pnpm --filter @factory/core db:studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.11.8",
+    "typescript": "^5.9.0"
+  }
+}

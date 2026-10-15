@@ -1,0 +1,141 @@
+---
+import { deleteIdea, getIdea, IDEA_STATUSES, linkSignals, listSignals, unlinkSignal, updateIdea } from "@factory/core";
+import Layout from "@/layouts/Layout.astro";
+import { getDb } from "@/lib/db";
+import { ids, oneOf, str } from "@/lib/forms";
+import { hostname, ideaStatusLabels, kindLabels, timeAgo } from "@/lib/labels";
+
+const db = getDb();
+const id = Number(Astro.params.id);
+if (!Number.isInteger(id)) return Astro.redirect("/");
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  switch (str(form, "action")) {
+    case "update":
+      await updateIdea(db, id, {
+        title: str(form, "title") ?? "Untitled",
+        pitch: str(form, "pitch") ?? null,
+        notes: str(form, "notes") ?? null,
+        status: oneOf(str(form, "status"), IDEA_STATUSES) ?? "inbox",
+      });
+      break;
+    case "link":
+      await linkSignals(db, id, ids([str(form, "signal")]));
+      break;
+    case "unlink":
+      await unlinkSignal(db, id, Number(str(form, "signal")));
+      break;
+    case "delete":
+      await deleteIdea(db, id);
+      return Astro.redirect("/");
+  }
+  return Astro.redirect(`/ideas/${id}`);
+}
+
+const idea = await getIdea(db, id);
+if (!idea) {
+  Astro.response.status = 404;
+}
+const linkedIds = new Set(idea?.signals.map((s) => s.id));
+const available = idea ? (await listSignals(db, { status: "new", limit: 50 })).filter((s) => !linkedIds.has(s.id)) : [];
+---
+
+<Layout title={idea?.title ?? "Not found"}>
+  {
+    !idea ? (
+      <p class="text-muted">
+        That idea doesn't exist. <a href="/" class="underline">Back to the board</a>
+      </p>
+    ) : (
+      <div class="grid gap-8 lg:grid-cols-[1fr_20rem]">
+        <form method="post" class="space-y-5">
+          <input type="hidden" name="action" value="update" />
+          <div class="flex items-center gap-2 text-xs text-muted">
+            <a href="/" class="hover:text-ink">&larr; Board</a>
+            <span>·</span>
+            <span>Updated {timeAgo(idea.updatedAt)}</span>
+            {idea.origin === "automation" && <span class="chip">generated</span>}
+          </div>
+          <input
+            class="w-full border-0 bg-transparent p-0 text-2xl font-semibold tracking-tight focus:ring-0 focus:outline-none"
+            name="title"
+            value={idea.title}
+            required
+            aria-label="Title"
+          />
+          <label class="block space-y-1">
+            <span class="label">Pitch</span>
+            <input class="field" name="pitch" value={idea.pitch ?? ""} />
+          </label>
+          <label class="block space-y-1">
+            <span class="label">Notes</span>
+            <textarea class="field font-mono" name="notes" rows="14">{idea.notes ?? ""}</textarea>
+          </label>
+          <div class="flex flex-wrap items-end gap-3">
+            <label class="block space-y-1">
+              <span class="label">Status</span>
+              <select class="field" name="status">
+                {IDEA_STATUSES.map((s) => (
+                  <option value={s} selected={s === idea.status}>
+                    {ideaStatusLabels[s]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button class="btn" type="submit">Save</button>
+          </div>
+        </form>
+
+        <aside class="space-y-6">
+          <section class="rounded-lg border border-rule bg-panel p-4">
+            <h2 class="label mb-3">Sparked by</h2>
+            <ul class="space-y-3">
+              {idea.signals.map((s) => (
+                <li class="flex items-start gap-2 text-sm">
+                  <div class="min-w-0 flex-1">
+                    {s.url ? (
+                      <a href={s.url} target="_blank" rel="noopener noreferrer" class="hover:text-signal-ink">
+                        {s.title}
+                      </a>
+                    ) : (
+                      <span>{s.title}</span>
+                    )}
+                    <p class="text-xs text-muted">{[kindLabels[s.kind], hostname(s.url)].filter(Boolean).join(" · ")}</p>
+                  </div>
+                  <form method="post">
+                    <input type="hidden" name="action" value="unlink" />
+                    <input type="hidden" name="signal" value={s.id} />
+                    <button class="label hover:text-ink" type="submit" aria-label={`Unlink ${s.title}`}>
+                      ✕
+                    </button>
+                  </form>
+                </li>
+              ))}
+              {idea.signals.length === 0 && <li class="text-xs text-muted">No linked signals.</li>}
+            </ul>
+            {available.length > 0 && (
+              <form method="post" class="mt-4 flex gap-2 border-t border-rule pt-4">
+                <input type="hidden" name="action" value="link" />
+                <select class="field" name="signal" aria-label="Signal to link">
+                  {available.map((s) => (
+                    <option value={s.id}>{s.title}</option>
+                  ))}
+                </select>
+                <button class="btn btn-ghost shrink-0" type="submit">
+                  Link
+                </button>
+              </form>
+            )}
+          </section>
+          <form method="post" onsubmit="return confirm('Delete this idea?')">
+            <input type="hidden" name="action" value="delete" />
+            <button class="text-xs text-muted underline hover:text-signal-ink" type="submit">
+              Delete idea
+            </button>
+          </form>
+        </aside>
+      </div>
+    )
+  }
+</Layout>

@@ -1,0 +1,76 @@
+---
+import { createIdea, getSignalsByIds, IDEA_STATUSES } from "@factory/core";
+import Layout from "@/layouts/Layout.astro";
+import { getDb } from "@/lib/db";
+import { ids, oneOf, str } from "@/lib/forms";
+import { ideaStatusLabels, kindLabels } from "@/lib/labels";
+
+const db = getDb();
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const title = str(form, "title");
+  if (title) {
+    const idea = await createIdea(
+      db,
+      {
+        title,
+        pitch: str(form, "pitch"),
+        notes: str(form, "notes"),
+        status: oneOf(str(form, "status"), IDEA_STATUSES) ?? "inbox",
+      },
+      ids(form.getAll("signals").map(String)),
+    );
+    return Astro.redirect(str(form, "pitch") || str(form, "notes") || form.has("signals") ? `/ideas/${idea.id}` : "/");
+  }
+  return Astro.redirect("/ideas/new");
+}
+
+const signals = await getSignalsByIds(db, ids([Astro.url.searchParams.get("signals")]));
+const suggestedTitle = signals.length === 1 ? signals[0]!.title : "";
+---
+
+<Layout title="New idea">
+  <form method="post" class="mx-auto max-w-2xl space-y-5">
+    <div>
+      <p class="label">New idea</p>
+      <h1 class="text-2xl font-semibold tracking-tight">What could we make?</h1>
+    </div>
+    <label class="block space-y-1">
+      <span class="label">Title</span>
+      <input class="field" name="title" value={suggestedTitle} required autofocus />
+    </label>
+    <label class="block space-y-1">
+      <span class="label">Pitch</span>
+      <input class="field" name="pitch" placeholder="One sentence: who it's for and why it's fun or useful" />
+    </label>
+    <label class="block space-y-1">
+      <span class="label">Notes</span>
+      <textarea class="field font-mono" name="notes" rows="8" placeholder="Rough scope, stack thoughts, open questions"></textarea>
+    </label>
+    <label class="block max-w-xs space-y-1">
+      <span class="label">Status</span>
+      <select class="field" name="status">
+        {IDEA_STATUSES.filter((s) => s !== "archived").map((s) => <option value={s}>{ideaStatusLabels[s]}</option>)}
+      </select>
+    </label>
+    {
+      signals.length > 0 && (
+        <fieldset class="space-y-2 rounded-lg border border-rule bg-panel p-4">
+          <legend class="label px-1">Sparked by</legend>
+          {signals.map((s) => (
+            <label class="flex items-center gap-2 text-sm">
+              <input type="checkbox" name="signals" value={s.id} checked />
+              <span>{s.title}</span>
+              <span class="chip">{kindLabels[s.kind]}</span>
+            </label>
+          ))}
+        </fieldset>
+      )
+    }
+    <div class="flex gap-2">
+      <button class="btn" type="submit">Create idea</button>
+      <a href="/" class="btn btn-ghost">Cancel</a>
+    </div>
+  </form>
+</Layout>

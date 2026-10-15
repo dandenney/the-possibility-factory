@@ -1,0 +1,140 @@
+---
+import { createSignal, listSignals, SIGNAL_KINDS, SIGNAL_STATUSES } from "@factory/core";
+import Layout from "@/layouts/Layout.astro";
+import { getDb } from "@/lib/db";
+import { oneOf, str } from "@/lib/forms";
+import { hostname, kindLabels, timeAgo } from "@/lib/labels";
+
+const db = getDb();
+const params = Astro.url.searchParams;
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const url = str(form, "url");
+  const title = str(form, "title") ?? (url ? hostname(url) ?? url : undefined);
+  if (title) {
+    await createSignal(db, {
+      title,
+      url,
+      note: str(form, "note"),
+      kind: oneOf(str(form, "kind"), SIGNAL_KINDS) ?? "other",
+    });
+  }
+  return Astro.redirect("/signals?added=1");
+}
+
+const kind = oneOf(params.get("kind"), SIGNAL_KINDS);
+const status = params.get("status") === "all" ? undefined : (oneOf(params.get("status"), SIGNAL_STATUSES) ?? "new");
+const signals = await listSignals(db, { kind, status });
+
+const prefill = { url: params.get("url") ?? "", title: params.get("title") ?? "" };
+const filterHref = (patch: Record<string, string | undefined>) => {
+  const next = new URLSearchParams();
+  const merged = { kind, status: status ?? "all", ...patch };
+  for (const [k, v] of Object.entries(merged)) if (v) next.set(k, v);
+  return `/signals?${next}`;
+};
+const bookmarklet = `javascript:(()=>{location.href='${Astro.url.origin}/signals?url='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title)+'#capture'})()`;
+---
+
+<Layout title="Signals">
+  <div class="grid gap-8 lg:grid-cols-[22rem_1fr]">
+    <aside>
+      <form id="capture" method="post" class="space-y-3 rounded-lg border border-rule bg-panel p-4 lg:sticky lg:top-6">
+        <h2 class="font-semibold">Capture a signal</h2>
+        <label class="block space-y-1">
+          <span class="label">URL</span>
+          <input class="field" type="url" name="url" value={prefill.url} placeholder="https://" />
+        </label>
+        <label class="block space-y-1">
+          <span class="label">Title</span>
+          <input class="field" name="title" value={prefill.title} placeholder="What caught your eye?" />
+        </label>
+        <label class="block space-y-1">
+          <span class="label">Kind</span>
+          <select class="field" name="kind">
+            {SIGNAL_KINDS.map((k) => <option value={k}>{kindLabels[k]}</option>)}
+          </select>
+        </label>
+        <label class="block space-y-1">
+          <span class="label">Note</span>
+          <textarea class="field" name="note" rows="3" placeholder="Why it's interesting"></textarea>
+        </label>
+        <button class="btn w-full justify-center" type="submit">Save signal</button>
+        {params.get("added") && <p class="text-center text-xs text-muted">Saved.</p>}
+        <p class="border-t border-rule pt-3 text-xs text-muted">
+          Drag to your bookmarks bar to capture any page:
+          <a href={bookmarklet} class="chip ml-1 text-ink!">+ Factory</a>
+        </p>
+      </form>
+    </aside>
+
+    <section>
+      <div class="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <h1 class="mr-auto text-2xl font-semibold tracking-tight">Signals</h1>
+        <nav class="flex flex-wrap gap-1 text-xs" aria-label="Status">
+          {
+            [...SIGNAL_STATUSES, "all" as const].map((s) => (
+              <a
+                href={filterHref({ status: s })}
+                class:list={["chip", (status ?? "all") === s && "border-ink! text-ink!"]}
+              >
+                {s}
+              </a>
+            ))
+          }
+        </nav>
+        <nav class="flex flex-wrap gap-1 text-xs" aria-label="Kind">
+          <a href={filterHref({ kind: undefined })} class:list={["chip", !kind && "border-ink! text-ink!"]}>any kind</a>
+          {
+            SIGNAL_KINDS.map((k) => (
+              <a href={filterHref({ kind: k })} class:list={["chip", kind === k && "border-ink! text-ink!"]}>
+                {kindLabels[k].toLowerCase()}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+
+      <ul class="divide-y divide-rule rounded-lg border border-rule bg-panel">
+        {
+          signals.map((s) => (
+            <li class="flex gap-4 p-4">
+              <div class="min-w-0 flex-1">
+                <p class="flex flex-wrap items-center gap-2">
+                  {s.url ? (
+                    <a href={s.url} target="_blank" rel="noopener noreferrer" class="font-medium hover:text-signal-ink">
+                      {s.title}
+                    </a>
+                  ) : (
+                    <span class="font-medium">{s.title}</span>
+                  )}
+                  <span class="chip">{kindLabels[s.kind]}</span>
+                  {s.status !== "new" && <span class="chip">{s.status}</span>}
+                </p>
+                {s.note && <p class="mt-1 text-sm text-muted">{s.note}</p>}
+                <p class="mt-1 text-xs text-muted">
+                  {[hostname(s.url), s.source === "manual" ? "added by you" : s.source, timeAgo(s.createdAt)]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+              </div>
+              <div class="flex shrink-0 items-start gap-2">
+                <a href={`/ideas/new?signals=${s.id}`} class="btn btn-ghost">
+                  Make idea
+                </a>
+                <form method="post" action={`/signals/${s.id}`}>
+                  <input type="hidden" name="status" value={s.status === "dismissed" ? "new" : "dismissed"} />
+                  <button class="btn btn-ghost" type="submit">
+                    {s.status === "dismissed" ? "Restore" : "Dismiss"}
+                  </button>
+                </form>
+              </div>
+            </li>
+          ))
+        }
+        {signals.length === 0 && <li class="p-8 text-center text-sm text-muted">No signals here yet.</li>}
+      </ul>
+    </section>
+  </div>
+</Layout>

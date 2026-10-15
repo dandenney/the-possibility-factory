@@ -1,0 +1,37 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { authEnabled, checkPassword, SESSION_COOKIE, SESSION_MAX_AGE, sessionToken } from "@/lib/auth";
+import { safeNext, str } from "@/lib/forms";
+
+const next = safeNext(Astro.url.searchParams.get("next"));
+if (!authEnabled) return Astro.redirect(next);
+
+let error = false;
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  if (checkPassword(str(form, "password") ?? "")) {
+    Astro.cookies.set(SESSION_COOKIE, sessionToken(), {
+      httpOnly: true,
+      secure: import.meta.env.PROD,
+      sameSite: "lax",
+      path: "/",
+      maxAge: SESSION_MAX_AGE,
+    });
+    return Astro.redirect(next);
+  }
+  error = true;
+  Astro.response.status = 401;
+}
+---
+
+<Layout title="Log in">
+  <form method="post" class="mx-auto mt-16 max-w-sm space-y-4 rounded-lg border border-rule bg-panel p-6">
+    <h1 class="text-lg font-semibold">Log in</h1>
+    <label class="block space-y-1">
+      <span class="label">Password</span>
+      <input class="field" type="password" name="password" required autofocus autocomplete="current-password" />
+    </label>
+    {error && <p class="text-sm text-signal-ink">Wrong password.</p>}
+    <button class="btn w-full justify-center" type="submit">Enter the factory</button>
+  </form>
+</Layout>

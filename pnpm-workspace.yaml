@@ -1,0 +1,7 @@
+# projects/* are intentionally NOT workspace members: each built project owns its own stack and lockfile.
+packages:
+  - apps/*
+  - packages/*
+allowBuilds:
+  esbuild: true
+  sharp: false

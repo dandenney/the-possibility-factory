@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: oklch(0.975 0.006 85);
+  --color-panel: oklch(0.995 0.003 85);
+  --color-ink: oklch(0.22 0.01 60);
+  --color-muted: oklch(0.5 0.012 60);
+  --color-rule: oklch(0.88 0.01 80);
+  --color-signal: oklch(0.68 0.19 45);
+  --color-signal-ink: oklch(0.45 0.15 40);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .field {
+    width: 100%;
+    border: 1px solid var(--color-rule);
+    background: var(--color-panel);
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.625rem;
+    font-size: 0.875rem;
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--color-signal);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-signal) 20%, transparent);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 0.375rem;
+    padding: 0.4375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    border: 1px solid var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
+    cursor: pointer;
+    transition: transform 120ms ease-out, background-color 120ms ease-out;
+  }
+
+  .btn:hover {
+    background: var(--color-signal-ink);
+    border-color: var(--color-signal-ink);
+  }
+
+  .btn:active {
+    transform: scale(0.97);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-ink);
+    border-color: var(--color-rule);
+  }
+
+  .btn-ghost:hover {
+    background: var(--color-panel);
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+  }
+
+  .chip {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    padding: 0.0625rem 0.375rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--color-rule);
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+}
