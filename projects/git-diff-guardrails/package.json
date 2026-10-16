@@ -4,6 +4,13 @@
   "description": "Turn the conventions in AGENTS.md / CLAUDE.md into pre-commit checks on the git diff.",
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dandenney/the-possibility-factory.git",
+    "directory": "projects/git-diff-guardrails"
+  },
+  "homepage": "https://github.com/dandenney/the-possibility-factory/tree/main/projects/git-diff-guardrails#readme",
+  "bugs": "https://github.com/dandenney/the-possibility-factory/issues",
   "bin": {
     "diffrails": "dist/cli.js"
   },
