@@ -83,7 +83,7 @@ and `ANTHROPIC_BASE_URL` configure `init`.
 `replay` is the fastest way to check generated rules before turning on the hook: a rule that fires on most
 commits is probably too broad. On this repo, the first generated config flagged `packages/core/migrations/**`
 for edits, which also caught drizzle's `meta/_journal.json` (updated on every `db:generate`). Narrowing the
-glob to `*.sql` fixed it; see [`examples/the-possibility-factory.diffrails.json`](examples/the-possibility-factory.diffrails.json).
+glob to `*.sql` fixed it; see [`examples/the-possibility-factory/.diffrails.json`](examples/the-possibility-factory/.diffrails.json).
 
 ## Using it with other hook managers and CI
 

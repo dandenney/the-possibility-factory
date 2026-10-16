@@ -9,6 +9,13 @@ export function hookScript(fallbackCli: string): string {
   return `#!/bin/sh
 ${MARKER}. Remove with: diffrails uninstall
 # Checks the staged diff against .diffrails.json. Bypass once with: git commit --no-verify
+if ! command -v node >/dev/null 2>&1 && [ -s "\${NVM_DIR:-$HOME/.nvm}/nvm.sh" ]; then
+  . "\${NVM_DIR:-$HOME/.nvm}/nvm.sh" >/dev/null 2>&1
+fi
+if ! command -v node >/dev/null 2>&1; then
+  echo "diffrails: node not found on PATH, skipping checks" >&2
+  exit 0
+fi
 if [ -x ./node_modules/.bin/diffrails ]; then
   exec ./node_modules/.bin/diffrails check
 elif command -v diffrails >/dev/null 2>&1; then

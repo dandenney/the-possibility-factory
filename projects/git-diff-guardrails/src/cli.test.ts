@@ -87,6 +87,20 @@ describe("diffrails install", () => {
     expect(existsSync(hook)).toBe(false);
   });
 
+  it("skips instead of blocking when node isn't on PATH", () => {
+    const { dir, write, run } = setup();
+    expect(cli(dir, "install").status).toBe(0);
+    write("src/d.ts", 'import { a } from "./a";\n');
+    run("add", ".");
+    const res = spawnSync("sh", [".git/hooks/pre-commit"], {
+      cwd: dir,
+      encoding: "utf8",
+      env: { PATH: "/usr/bin:/bin", HOME: dir },
+    });
+    expect(res.status).toBe(0);
+    expect(res.stderr).toContain("node not found");
+  });
+
   it("respects core.hooksPath and won't clobber foreign hooks", () => {
     const { dir, write, run } = setup();
     run("config", "core.hooksPath", ".githooks");

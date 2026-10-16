@@ -14,7 +14,9 @@
     "check": "turbo run typecheck test build",
     "db:generate": "pnpm --filter @factory/core db:generate",
     "db:migrate": "pnpm --filter @factory/core db:migrate",
-    "db:studio": "pnpm --filter @factory/core db:studio"
+    "db:studio": "pnpm --filter @factory/core db:studio",
+    "guardrails": "node projects/git-diff-guardrails/src/cli.ts",
+    "prepare": "node projects/git-diff-guardrails/src/cli.ts install || true"
   },
   "devDependencies": {
     "turbo": "^2.11.8",
