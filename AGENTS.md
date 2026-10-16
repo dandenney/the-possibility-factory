@@ -15,6 +15,7 @@ pnpm 11 workspaces + Turborepo · Astro 7 SSR on Netlify · Tailwind CSS v4 · D
 - Install: `pnpm install` (Node 22.22+, see `.nvmrc`)
 - Dev: `pnpm dev` → http://localhost:4321 (needs `apps/factory/.env`, copy from `.env.example`, then `pnpm db:migrate`)
 - Gate: `pnpm check` runs typecheck (`astro check` / `tsc`), tests, and build. Run it before committing.
+- Guardrails: `.diffrails.json` turns the rules below into checks on every diff. `pnpm install` adds a pre-commit hook and CI runs it too, so fix violations rather than skipping with `--no-verify`. If you change a rule here, update `.diffrails.json` to match. `pnpm guardrails replay` shows how the rules would have done on recent commits.
 
 ## Rules
 

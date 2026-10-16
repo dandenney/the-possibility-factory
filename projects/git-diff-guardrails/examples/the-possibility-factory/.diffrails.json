@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "factory-no-relative-imports",
+      "type": "line",
+      "message": "In apps/factory, import via the `@/` alias instead of relative paths.",
+      "source": "AGENTS.md: In `apps/factory`, import via the `@/` alias, not relative paths.",
+      "paths": [
+        "apps/factory/src/**/*.{ts,astro,tsx,js,mjs}"
+      ],
+      "pattern": "(?:\\bfrom\\s+|\\bimport\\s*\\(\\s*|\\bimport\\s+)['\"]\\.{1,2}/",
+      "severity": "error"
+    },
+    {
+      "id": "no-edit-applied-migrations",
+      "type": "file",
+      "message": "Never edit or delete applied migrations; change schema.ts and run `pnpm db:generate` to add a new migration instead.",
+      "source": "AGENTS.md: Never edit applied migrations.",
+      "paths": [
+        "packages/core/migrations/*.sql"
+      ],
+      "on": [
+        "modified",
+        "deleted",
+        "renamed"
+      ],
+      "severity": "error"
+    },
+    {
+      "id": "schema-requires-migration",
+      "type": "cochange",
+      "message": "Schema changes must be accompanied by the generated SQL migration in packages/core/migrations/ (run `pnpm db:generate`).",
+      "source": "AGENTS.md: Schema changes: edit schema.ts, run `pnpm db:generate`, commit the generated SQL in `packages/core/migrations/`.",
+      "paths": [
+        "packages/core/src/schema.ts"
+      ],
+      "require": [
+        "packages/core/migrations/**"
+      ],
+      "severity": "error"
+    },
+    {
+      "id": "repo-requires-test",
+      "type": "cochange",
+      "message": "New/changed repo functions need a Vitest case in repo.test.ts.",
+      "source": "AGENTS.md: Add a Vitest case in `repo.test.ts` for new repo functions.",
+      "paths": [
+        "packages/core/src/repo.ts"
+      ],
+      "require": [
+        "packages/core/src/repo.test.ts"
+      ],
+      "severity": "warn"
+    },
+    {
+      "id": "no-inline-queries-in-pages",
+      "type": "line",
+      "message": "Pages must not build queries inline; add a function in packages/core/src/repo.ts instead.",
+      "source": "AGENTS.md: All data access goes through functions in `packages/core/src/repo.ts`; pages don't build queries inline.",
+      "paths": [
+        "apps/factory/src/pages/**",
+        "apps/factory/src/layouts/**"
+      ],
+      "pattern": "\\bdb\\s*\\.\\s*(select|insert|update|delete)\\s*\\(|from\\s+['\"]drizzle-orm",
+      "severity": "warn"
+    },
+    {
+      "id": "projects-no-imports-from-monorepo",
+      "type": "line",
+      "message": "Projects are self-contained and must not import from apps/ or packages/.",
+      "source": "AGENTS.md: `projects/*` ... must not import from `apps/` or `packages/`.",
+      "paths": [
+        "projects/**"
+      ],
+      "exclude": [
+        "projects/**/*.md"
+      ],
+      "pattern": "(from\\s+|import\\s*\\(?\\s*|require\\()\\s*['\"][^'\"]*(\\.\\./)*(apps|packages)/",
+      "severity": "error"
+    },
+    {
+      "id": "no-minimum-release-age-exclude",
+      "type": "line",
+      "message": "Do not add minimumReleaseAgeExclude entries to pull brand-new package versions.",
+      "source": "AGENTS.md: don't add `minimumReleaseAgeExclude` entries",
+      "pattern": "minimumReleaseAgeExclude",
+      "exclude": [
+        "AGENTS.md",
+        "*.md"
+      ],
+      "severity": "error"
+    },
+    {
+      "id": "no-env-files",
+      "type": "file",
+      "message": "Never commit .env files (use .env.example).",
+      "source": "AGENTS.md: Never commit `.env` files or `*.db` files.",
+      "paths": [
+        "**/.env",
+        "**/.env.*"
+      ],
+      "exclude": [
+        "**/.env.example"
+      ],
+      "on": [
+        "added",
+        "modified"
+      ],
+      "severity": "error"
+    },
+    {
+      "id": "no-db-files",
+      "type": "file",
+      "message": "Never commit *.db files.",
+      "source": "AGENTS.md: Never commit `.env` files or `*.db` files.",
+      "paths": [
+        "**/*.db"
+      ],
+      "on": [
+        "added",
+        "modified"
+      ],
+      "severity": "error"
+    }
+  ]
+}
