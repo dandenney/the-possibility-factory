@@ -66,7 +66,7 @@ const available = idea ? (await listSignals(db, { status: "new", limit: 50 })).f
           />
           <label class="block space-y-1">
             <span class="label">Pitch</span>
-            <input class="field" name="pitch" value={idea.pitch ?? ""} />
+            <textarea class="field min-h-20 field-sizing-content" name="pitch" rows="3">{idea.pitch ?? ""}</textarea>
           </label>
           <label class="block space-y-1">
             <span class="label">Notes</span>

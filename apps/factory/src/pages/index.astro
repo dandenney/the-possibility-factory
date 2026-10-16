@@ -46,7 +46,7 @@ const newSignals = signalCounts.new ?? 0;
                   class="block rounded-md border border-rule bg-panel p-3 transition-colors hover:border-ink"
                 >
                   <p class="text-sm leading-snug font-medium">{idea.title}</p>
-                  {idea.pitch && <p class="mt-1 line-clamp-2 text-xs text-muted">{idea.pitch}</p>}
+                  {idea.pitch && <p class="mt-1 text-xs whitespace-pre-line text-muted">{idea.pitch}</p>}
                   <p class="mt-2 flex gap-2 text-[0.6875rem] text-muted">
                     <span>{timeAgo(idea.updatedAt)}</span>
                     {idea.signalCount > 0 && <span>· {idea.signalCount} signal{idea.signalCount === 1 ? "" : "s"}</span>}
