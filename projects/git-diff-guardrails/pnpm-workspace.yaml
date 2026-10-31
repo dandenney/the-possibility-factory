@@ -1,0 +1,4 @@
+# Standalone project: this file makes projects/git-diff-guardrails its own pnpm root,
+# separate from the factory workspace.
+allowBuilds:
+  esbuild: true
