@@ -1,0 +1,1371 @@
+{
+ "header": {
+  "id": "401858502",
+  "competitions": [
+   {
+    "date": "2026-10-31T16:00Z",
+    "status": {
+     "displayClock": "0:25",
+     "period": 3,
+     "type": {
+      "id": "2",
+      "name": "STATUS_IN_PROGRESS",
+      "state": "in",
+      "completed": false,
+      "description": "In Progress",
+      "detail": "0:25 - 3rd Quarter",
+      "shortDetail": "0:25 - 3rd",
+      "statusPrimary": "0:25",
+      "statusSecondary": "3rd"
+     },
+     "displayPeriod": "3rd"
+    },
+    "competitors": [
+     {
+      "homeAway": "home",
+      "score": "30",
+      "team": {
+       "id": "2294",
+       "abbreviation": "IOWA",
+       "displayName": "Iowa Hawkeyes",
+       "color": "231f20",
+       "alternateColor": "fcd116",
+       "logos": [
+        {
+         "href": "https://a.espncdn.com/i/teamlogos/ncaa/500/2294.png",
+         "width": 500,
+         "height": 500,
+         "alt": "",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "lastUpdated": "2025-12-23T01:44Z"
+        }
+       ]
+      }
+     },
+     {
+      "homeAway": "away",
+      "score": "0",
+      "team": {
+       "id": "275",
+       "abbreviation": "WIS",
+       "displayName": "Wisconsin Badgers",
+       "color": "a00000",
+       "alternateColor": "ffffff",
+       "logos": [
+        {
+         "href": "https://a.espncdn.com/i/teamlogos/ncaa/500/275.png",
+         "width": 500,
+         "height": 500,
+         "alt": "",
+         "rel": [
+          "full",
+          "default"
+         ],
+         "lastUpdated": "2026-07-01T04:35Z"
+        }
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "drives": {
+  "previous": [
+   {
+    "id": "4018585022",
+    "team": {
+     "id": "2294",
+     "abbreviation": "IOWA"
+    },
+    "description": "10 plays, 67 yards, 5:48",
+    "displayResult": "Field Goal",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "4018585023",
+      "sequenceNumber": "1",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "(15:00) #97 G.Lahm kickoff 58 yards to the IOWA07 #22 B.Jackson return 20 yards to the IOWA27 (#13 M.Traynor)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:56"
+      },
+      "scoringPlay": false,
+      "statYardage": 20,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 65,
+       "yardsToEndzone": 65,
+       "team": {
+        "id": "275"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 27,
+       "yardsToEndzone": 73,
+       "downDistanceText": "1st & 10 at IOWA 27",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850214",
+      "sequenceNumber": "2",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(14:51) Shotgun #26 X.Williams rush middle for 0 yards to the IOWA27 (#7 T.Fearbry)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:47"
+      },
+      "scoringPlay": false,
+      "statYardage": 0,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 27,
+       "yardsToEndzone": 73,
+       "downDistanceText": "1st & 10 at IOWA 27",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 10,
+       "yardLine": 27,
+       "yardsToEndzone": 73,
+       "downDistanceText": "2nd & 10 at IOWA 27",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850218",
+      "sequenceNumber": "3",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(14:20) #26 X.Williams rush middle for 3 yards gain to the IOWA30 (#8 M.Posa)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "14:11"
+      },
+      "scoringPlay": false,
+      "statYardage": 3,
+      "start": {
+       "down": 2,
+       "distance": 10,
+       "yardLine": 27,
+       "yardsToEndzone": 73,
+       "downDistanceText": "2nd & 10 at IOWA 27",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 7,
+       "yardLine": 30,
+       "yardsToEndzone": 70,
+       "downDistanceText": "3rd & 7 at IOWA 30",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850222",
+      "sequenceNumber": "4",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(13:46) Shotgun #9 H.Brown pass complete deep left to #81 D.Vonnahme caught at WISC47, for 45 yards to the WISC25 (#4 M.Coleman), 1ST DOWN",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "13:33"
+      },
+      "scoringPlay": false,
+      "statYardage": 45,
+      "start": {
+       "down": 3,
+       "distance": 7,
+       "yardLine": 30,
+       "yardsToEndzone": 70,
+       "downDistanceText": "3rd & 7 at IOWA 30",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "yardsToEndzone": 25,
+       "downDistanceText": "1st & 10 at WIS 25",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850227",
+      "sequenceNumber": "5",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(12:57) Shotgun #26 X.Williams rush middle for 5 yards gain to the WISC20 (#0 J.Boone)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "12:54"
+      },
+      "scoringPlay": false,
+      "statYardage": 5,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "yardsToEndzone": 25,
+       "downDistanceText": "1st & 10 at WIS 25",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 5,
+       "yardLine": 80,
+       "yardsToEndzone": 20,
+       "downDistanceText": "2nd & 5 at WIS 20",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850231",
+      "sequenceNumber": "6",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(12:24) #26 X.Williams rush middle for 4 yards gain to the WISC16 (#44 C.Catalano; #51 M.Garner)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "12:17"
+      },
+      "scoringPlay": false,
+      "statYardage": 4,
+      "start": {
+       "down": 2,
+       "distance": 5,
+       "yardLine": 80,
+       "yardsToEndzone": 20,
+       "downDistanceText": "2nd & 5 at WIS 20",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 1,
+       "yardLine": 84,
+       "yardsToEndzone": 16,
+       "downDistanceText": "3rd & 1 at WIS 16",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850235",
+      "sequenceNumber": "7",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(11:46) Shotgun #26 X.Williams rush middle for 2 yards gain to the WISC14 (#29 M.Jung), 1ST DOWN",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:43"
+      },
+      "scoringPlay": false,
+      "statYardage": 2,
+      "start": {
+       "down": 3,
+       "distance": 1,
+       "yardLine": 84,
+       "yardsToEndzone": 16,
+       "downDistanceText": "3rd & 1 at WIS 16",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 86,
+       "yardsToEndzone": 14,
+       "downDistanceText": "1st & 10 at WIS 14",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850239",
+      "sequenceNumber": "8",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(11:06) #81 D.Vonnahme rush right for 8 yards gain to the WISC06 (#8 M.Posa; #44 C.Catalano)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "11:00"
+      },
+      "scoringPlay": false,
+      "statYardage": 8,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 86,
+       "yardsToEndzone": 14,
+       "downDistanceText": "1st & 10 at WIS 14",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 2,
+       "yardLine": 94,
+       "yardsToEndzone": 6,
+       "downDistanceText": "2nd & 2 at WIS 6",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850243",
+      "sequenceNumber": "9",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(10:32) Shotgun #21 L.Phillips Jr. rush middle for 0 yards to the WISC06 (#15 S.Cheeks; #21 C.Skanes)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "10:24"
+      },
+      "scoringPlay": false,
+      "statYardage": 0,
+      "start": {
+       "down": 2,
+       "distance": 2,
+       "yardLine": 94,
+       "yardsToEndzone": 6,
+       "downDistanceText": "2nd & 2 at WIS 6",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 2,
+       "yardLine": 94,
+       "yardsToEndzone": 6,
+       "downDistanceText": "3rd & 2 at WIS 6",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850247",
+      "sequenceNumber": "10",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(09:49) Shotgun #22 B.Jackson rush left for 0 yards to the WISC06 (#30 C.Perkins)",
+      "awayScore": 0,
+      "homeScore": 0,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "9:41"
+      },
+      "scoringPlay": false,
+      "statYardage": 0,
+      "start": {
+       "down": 3,
+       "distance": 2,
+       "yardLine": 94,
+       "yardsToEndzone": 6,
+       "downDistanceText": "3rd & 2 at WIS 6",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 4,
+       "distance": 2,
+       "yardLine": 94,
+       "yardsToEndzone": 6,
+       "downDistanceText": "4th & 2 at WIS 6",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850251",
+      "sequenceNumber": "11",
+      "type": {
+       "id": "59",
+       "text": "Field Goal Good",
+       "abbreviation": "FG"
+      },
+      "text": "(09:08) #92 C.Buhr field goal attempt from 24 yards GOOD (H: #35 T.Philpott, LS: #69 I.Speltz), clock 09:08",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "9:08"
+      },
+      "scoringPlay": true,
+      "statYardage": 24,
+      "start": {
+       "down": 4,
+       "distance": 2,
+       "yardLine": 94,
+       "yardsToEndzone": 6,
+       "downDistanceText": "4th & 2 at WIS 6",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": -1,
+       "distance": -1,
+       "yardLine": 35,
+       "yardsToEndzone": 65,
+       "team": {
+        "id": "2294"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "4018585024",
+    "team": {
+     "id": "275",
+     "abbreviation": "WIS"
+    },
+    "description": "3 plays, 0 yards, 1:53",
+    "displayResult": "Punt",
+    "isScore": false,
+    "plays": [
+     {
+      "id": "40185850254",
+      "sequenceNumber": "12",
+      "type": {
+       "id": "53",
+       "text": "Kickoff",
+       "abbreviation": "K"
+      },
+      "text": "(09:08) #25 E.Ozick kickoff 65 yards to the WISC00 #21 B.Jackson return 27 yards to the WISC27 (#1 D.Jones)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "9:02"
+      },
+      "scoringPlay": false,
+      "statYardage": 27,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 35,
+       "yardsToEndzone": 65,
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 73,
+       "yardsToEndzone": 73,
+       "downDistanceText": "1st & 10 at WIS 27",
+       "team": {
+        "id": "275"
+       }
+      }
+     },
+     {
+      "id": "40185850259",
+      "sequenceNumber": "13",
+      "type": {
+       "id": "7",
+       "text": "Sack"
+      },
+      "text": "(09:02) Shotgun #1 C.Joseph sacked for loss of 5 yards to the WISC22 (#33 C.Buffington)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "8:53"
+      },
+      "scoringPlay": false,
+      "statYardage": -5,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 73,
+       "yardsToEndzone": 73,
+       "downDistanceText": "1st & 10 at WIS 27",
+       "team": {
+        "id": "275"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 15,
+       "yardLine": 78,
+       "yardsToEndzone": 78,
+       "downDistanceText": "2nd & 15 at WIS 22",
+       "team": {
+        "id": "275"
+       }
+      }
+     },
+     {
+      "id": "40185850263",
+      "sequenceNumber": "14",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(08:39) Shotgun #1 C.Joseph rush middle for 3 yards gain to the WISC25 (#11 J.Wallace)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "8:29"
+      },
+      "scoringPlay": false,
+      "statYardage": 3,
+      "start": {
+       "down": 2,
+       "distance": 15,
+       "yardLine": 78,
+       "yardsToEndzone": 78,
+       "downDistanceText": "2nd & 15 at WIS 22",
+       "team": {
+        "id": "275"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 12,
+       "yardLine": 75,
+       "yardsToEndzone": 75,
+       "downDistanceText": "3rd & 12 at WIS 25",
+       "team": {
+        "id": "275"
+       }
+      }
+     },
+     {
+      "id": "40185850267",
+      "sequenceNumber": "15",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(07:57) Shotgun #1 C.Joseph pass complete short middle to #89 J.Harris caught at WISC25, for 2 yards to the WISC27 (#23 L.Van Kekerix)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "7:43"
+      },
+      "scoringPlay": false,
+      "statYardage": 2,
+      "start": {
+       "down": 3,
+       "distance": 12,
+       "yardLine": 75,
+       "yardsToEndzone": 75,
+       "downDistanceText": "3rd & 12 at WIS 25",
+       "team": {
+        "id": "275"
+       }
+      },
+      "end": {
+       "down": 4,
+       "distance": 10,
+       "yardLine": 73,
+       "yardsToEndzone": 73,
+       "downDistanceText": "4th & 10 at WIS 27",
+       "team": {
+        "id": "275"
+       }
+      }
+     },
+     {
+      "id": "40185850272",
+      "sequenceNumber": "16",
+      "type": {
+       "id": "14",
+       "text": "Punt Return"
+      },
+      "text": "(07:19) #91 S.West punt 55 yards to the IOWA18 #8 E.James return 7 yards to the IOWA25 (#21 C.Skanes; #56 J.Roe)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "7:09"
+      },
+      "scoringPlay": false,
+      "statYardage": 7,
+      "start": {
+       "down": 4,
+       "distance": 10,
+       "yardLine": 73,
+       "yardsToEndzone": 73,
+       "downDistanceText": "4th & 10 at WIS 27",
+       "team": {
+        "id": "275"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "yardsToEndzone": 75,
+       "downDistanceText": "1st & 10 at IOWA 25",
+       "team": {
+        "id": "2294"
+       }
+      }
+     }
+    ]
+   },
+   {
+    "id": "4018585025",
+    "team": {
+     "id": "2294",
+     "abbreviation": "IOWA"
+    },
+    "description": "12 plays, 75 yards, 6:07",
+    "displayResult": "Touchdown",
+    "isScore": true,
+    "plays": [
+     {
+      "id": "40185850278",
+      "sequenceNumber": "17",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(07:03) #9 H.Brown pass complete short right to #81 D.Vonnahme caught at IOWA25, for 2 yards to the IOWA27 (#8 M.Posa)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "6:57"
+      },
+      "scoringPlay": false,
+      "statYardage": 2,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 25,
+       "yardsToEndzone": 75,
+       "downDistanceText": "1st & 10 at IOWA 25",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 8,
+       "yardLine": 27,
+       "yardsToEndzone": 73,
+       "downDistanceText": "2nd & 8 at IOWA 27",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850283",
+      "sequenceNumber": "18",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(06:28) Shotgun #26 X.Williams rush middle for 2 yards gain to the IOWA29 (#91 H.Russell IV; #8 M.Posa)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "6:22"
+      },
+      "scoringPlay": false,
+      "statYardage": 2,
+      "start": {
+       "down": 2,
+       "distance": 8,
+       "yardLine": 27,
+       "yardsToEndzone": 73,
+       "downDistanceText": "2nd & 8 at IOWA 27",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 6,
+       "yardLine": 29,
+       "yardsToEndzone": 71,
+       "downDistanceText": "3rd & 6 at IOWA 29",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850287",
+      "sequenceNumber": "19",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(05:50) Shotgun #9 H.Brown pass complete short right to #2 R.Vander Zee caught at IOWA39, for 10 yards to the IOWA39, End Of Play, 1ST DOWN",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "5:29"
+      },
+      "scoringPlay": false,
+      "statYardage": 10,
+      "start": {
+       "down": 3,
+       "distance": 6,
+       "yardLine": 29,
+       "yardsToEndzone": 71,
+       "downDistanceText": "3rd & 6 at IOWA 29",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 39,
+       "yardsToEndzone": 61,
+       "downDistanceText": "1st & 10 at IOWA 39",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850292",
+      "sequenceNumber": "20",
+      "type": {
+       "id": "69",
+       "text": "Fumble",
+       "abbreviation": "F"
+      },
+      "text": "(05:13) #9 H.Brown pass complete short left to #14 T.Diaz caught at WISC49, for 9 yards to the IOWA48 fumbled by #14 T.Diaz at IOWA48 forced by #59 A.Witt (#59 A.Witt), out of bounds",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "4:39"
+      },
+      "scoringPlay": false,
+      "statYardage": 9,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 39,
+       "yardsToEndzone": 61,
+       "downDistanceText": "1st & 10 at IOWA 39",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 1,
+       "yardLine": 48,
+       "yardsToEndzone": 52,
+       "downDistanceText": "2nd & 1 at IOWA 48",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "40185850298",
+      "sequenceNumber": "21",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(04:26) #21 L.Phillips Jr. rush middle for 6 yards gain to the WISC46 (#8 M.Posa), 1ST DOWN",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "4:22"
+      },
+      "scoringPlay": false,
+      "statYardage": 6,
+      "start": {
+       "down": 2,
+       "distance": 1,
+       "yardLine": 48,
+       "yardsToEndzone": 52,
+       "downDistanceText": "2nd & 1 at IOWA 48",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 54,
+       "yardsToEndzone": 46,
+       "downDistanceText": "1st & 10 at WIS 46",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502102",
+      "sequenceNumber": "22",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(04:12) #9 H.Brown pass complete short middle to #21 L.Phillips Jr. caught at WISC45, for 3 yards to the WISC43 (#6 J.Scott)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "4:03"
+      },
+      "scoringPlay": false,
+      "statYardage": 3,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 54,
+       "yardsToEndzone": 46,
+       "downDistanceText": "1st & 10 at WIS 46",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 7,
+       "yardLine": 57,
+       "yardsToEndzone": 43,
+       "downDistanceText": "2nd & 7 at WIS 43",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502107",
+      "sequenceNumber": "23",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(03:42) #21 L.Phillips Jr. rush middle for 3 yards gain to the WISC40 (#8 M.Posa)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "3:36"
+      },
+      "scoringPlay": false,
+      "statYardage": 3,
+      "start": {
+       "down": 2,
+       "distance": 7,
+       "yardLine": 57,
+       "yardsToEndzone": 43,
+       "downDistanceText": "2nd & 7 at WIS 43",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 4,
+       "yardLine": 60,
+       "yardsToEndzone": 40,
+       "downDistanceText": "3rd & 4 at WIS 40",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502111",
+      "sequenceNumber": "24",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(03:01) Shotgun #9 H.Brown rush middle for 15 yards gain to the WISC25 (#44 C.Catalano), 1ST DOWN",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "2:53"
+      },
+      "scoringPlay": false,
+      "statYardage": 15,
+      "start": {
+       "down": 3,
+       "distance": 4,
+       "yardLine": 60,
+       "yardsToEndzone": 40,
+       "downDistanceText": "3rd & 4 at WIS 40",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "yardsToEndzone": 25,
+       "downDistanceText": "1st & 10 at WIS 25",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502115",
+      "sequenceNumber": "25",
+      "type": {
+       "id": "24",
+       "text": "Pass Reception",
+       "abbreviation": "REC"
+      },
+      "text": "(02:23) #9 H.Brown pass complete short left to #14 T.Diaz caught at WISC20, for 17 yards to the WISC08 (#29 M.Jung), out of bounds, 1ST DOWN",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "2:13"
+      },
+      "scoringPlay": false,
+      "statYardage": 17,
+      "start": {
+       "down": 1,
+       "distance": 10,
+       "yardLine": 75,
+       "yardsToEndzone": 25,
+       "downDistanceText": "1st & 10 at WIS 25",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 1,
+       "distance": 8,
+       "yardLine": 92,
+       "yardsToEndzone": 8,
+       "downDistanceText": "1st & Goal at WIS 8",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502120",
+      "sequenceNumber": "26",
+      "type": {
+       "id": "5",
+       "text": "Rush",
+       "abbreviation": "RUSH"
+      },
+      "text": "(01:44) #26 X.Williams rush left for 4 yards gain to the WISC04 (#51 M.Garner; #92 N.Vils)",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "1:35"
+      },
+      "scoringPlay": false,
+      "statYardage": 4,
+      "start": {
+       "down": 1,
+       "distance": 8,
+       "yardLine": 92,
+       "yardsToEndzone": 8,
+       "downDistanceText": "1st & Goal at WIS 8",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 2,
+       "distance": 4,
+       "yardLine": 96,
+       "yardsToEndzone": 4,
+       "downDistanceText": "2nd & Goal at WIS 4",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502124",
+      "sequenceNumber": "27",
+      "type": {
+       "id": "3",
+       "text": "Pass Incompletion"
+      },
+      "text": "(01:07) Shotgun #9 H.Brown pass incomplete short right to #14 T.Diaz thrown to WISC00",
+      "awayScore": 0,
+      "homeScore": 3,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "1:07"
+      },
+      "scoringPlay": false,
+      "statYardage": 0,
+      "start": {
+       "down": 2,
+       "distance": 4,
+       "yardLine": 96,
+       "yardsToEndzone": 4,
+       "downDistanceText": "2nd & Goal at WIS 4",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": 3,
+       "distance": 4,
+       "yardLine": 96,
+       "yardsToEndzone": 4,
+       "downDistanceText": "3rd & Goal at WIS 4",
+       "team": {
+        "id": "2294"
+       }
+      }
+     },
+     {
+      "id": "401858502127",
+      "sequenceNumber": "28",
+      "type": {
+       "id": "67",
+       "text": "Passing Touchdown",
+       "abbreviation": "TD"
+      },
+      "text": "(01:05) Shotgun #9 H.Brown pass complete short right to #81 D.Vonnahme caught at WISC00, for 4 yards to the WISC00 TOUCHDOWN, clock 01:02 #92 C.Buhr kick attempt good (H: #35 T.Philpott, LS: #69 I.Speltz)",
+      "awayScore": 0,
+      "homeScore": 10,
+      "period": {
+       "number": 1
+      },
+      "clock": {
+       "displayValue": "1:02"
+      },
+      "scoringPlay": true,
+      "statYardage": 4,
+      "start": {
+       "down": 3,
+       "distance": 4,
+       "yardLine": 96,
+       "yardsToEndzone": 4,
+       "downDistanceText": "3rd & Goal at WIS 4",
+       "team": {
+        "id": "2294"
+       }
+      },
+      "end": {
+       "down": -1,
+       "distance": 0,
+       "yardLine": 100,
+       "yardsToEndzone": 0,
+       "team": {
+        "id": "2294"
+       }
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "winprobability": [
+  {
+   "homeWinPercentage": 0.5894,
+   "tiePercentage": 0.0,
+   "playId": "4018585023"
+  },
+  {
+   "homeWinPercentage": 0.5752,
+   "tiePercentage": 0.0,
+   "playId": "40185850214"
+  },
+  {
+   "homeWinPercentage": 0.57,
+   "tiePercentage": 0.0,
+   "playId": "40185850218"
+  },
+  {
+   "homeWinPercentage": 0.6539,
+   "tiePercentage": 0.0,
+   "playId": "40185850222"
+  },
+  {
+   "homeWinPercentage": 0.6587,
+   "tiePercentage": 0.0,
+   "playId": "40185850227"
+  },
+  {
+   "homeWinPercentage": 0.6638,
+   "tiePercentage": 0.0,
+   "playId": "40185850231"
+  },
+  {
+   "homeWinPercentage": 0.674,
+   "tiePercentage": 0.0,
+   "playId": "40185850235"
+  },
+  {
+   "homeWinPercentage": 0.6891,
+   "tiePercentage": 0.0,
+   "playId": "40185850239"
+  },
+  {
+   "homeWinPercentage": 0.6766,
+   "tiePercentage": 0.0,
+   "playId": "40185850243"
+  },
+  {
+   "homeWinPercentage": 0.6189,
+   "tiePercentage": 0.0,
+   "playId": "40185850247"
+  },
+  {
+   "homeWinPercentage": 0.6241,
+   "tiePercentage": 0.0,
+   "playId": "40185850251"
+  },
+  {
+   "homeWinPercentage": 0.6204,
+   "tiePercentage": 0.0,
+   "playId": "40185850254"
+  },
+  {
+   "homeWinPercentage": 0.6477,
+   "tiePercentage": 0.0,
+   "playId": "40185850259"
+  },
+  {
+   "homeWinPercentage": 0.6526,
+   "tiePercentage": 0.0,
+   "playId": "40185850263"
+  },
+  {
+   "homeWinPercentage": 0.6658,
+   "tiePercentage": 0.0,
+   "playId": "40185850267"
+  },
+  {
+   "homeWinPercentage": 0.655,
+   "tiePercentage": 0.0,
+   "playId": "40185850272"
+  },
+  {
+   "homeWinPercentage": 0.6455,
+   "tiePercentage": 0.0,
+   "playId": "40185850278"
+  },
+  {
+   "homeWinPercentage": 0.6384,
+   "tiePercentage": 0.0,
+   "playId": "40185850283"
+  },
+  {
+   "homeWinPercentage": 0.6711,
+   "tiePercentage": 0.0,
+   "playId": "40185850287"
+  },
+  {
+   "homeWinPercentage": 0.6823,
+   "tiePercentage": 0.0,
+   "playId": "40185850292"
+  },
+  {
+   "homeWinPercentage": 0.6895,
+   "tiePercentage": 0.0,
+   "playId": "40185850298"
+  },
+  {
+   "homeWinPercentage": 0.684,
+   "tiePercentage": 0.0,
+   "playId": "401858502102"
+  },
+  {
+   "homeWinPercentage": 0.68,
+   "tiePercentage": 0.0,
+   "playId": "401858502107"
+  },
+  {
+   "homeWinPercentage": 0.7198,
+   "tiePercentage": 0.0,
+   "playId": "401858502111"
+  },
+  {
+   "homeWinPercentage": 0.7549,
+   "tiePercentage": 0.0,
+   "playId": "401858502115"
+  },
+  {
+   "homeWinPercentage": 0.7515,
+   "tiePercentage": 0.0,
+   "playId": "401858502120"
+  },
+  {
+   "homeWinPercentage": 0.7377,
+   "tiePercentage": 0.0,
+   "playId": "401858502124"
+  },
+  {
+   "homeWinPercentage": 0.7853,
+   "tiePercentage": 0.0,
+   "playId": "401858502127"
+  }
+ ]
+}

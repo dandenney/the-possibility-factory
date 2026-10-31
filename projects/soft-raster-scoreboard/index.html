@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Soft-Raster Scoreboard</title>
+    <meta name="description" content="College football replays drawn by a software rasterizer: every pixel computed in JavaScript, no GPU, no WebGL." />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><ellipse cx='8' cy='8' rx='7' ry='4.2' fill='%238b4513' transform='rotate(-30 8 8)'/></svg>" />
+  </head>
+  <body>
+    <header class="top">
+      <div>
+        <h1>Soft-Raster Scoreboard</h1>
+        <p class="tagline">College football, replayed play by play. Every pixel is computed on the CPU in a <code>Uint32Array</code>. No GPU, no WebGL.</p>
+      </div>
+    </header>
+
+    <section class="picker" aria-label="Pick a game">
+      <div class="featured" id="featured"></div>
+      <div class="browse">
+        <label>Date <input type="date" id="date" /></label>
+        <label class="grow">Game <select id="games"><option>Loading…</option></select></label>
+      </div>
+    </section>
+
+    <main class="stage-wrap">
+      <div class="stage" id="stage">
+        <canvas id="screen" width="480" height="270" aria-label="Software-rendered replay of the selected game"></canvas>
+        <div class="bug" id="bug" hidden>
+          <div class="bug-team" id="bug-away"><span class="abbr"></span><span class="score"></span></div>
+          <div class="bug-team" id="bug-home"><span class="abbr"></span><span class="score"></span></div>
+          <div class="bug-clock"><span id="bug-period"></span><span id="bug-clock"></span></div>
+          <div class="bug-down" id="bug-down"></div>
+        </div>
+        <div class="bet" id="bet" hidden></div>
+        <div class="stats" id="stats"></div>
+        <div class="notice" id="notice" hidden></div>
+      </div>
+
+      <div class="controls">
+        <button type="button" id="prev" aria-label="Previous play" title="Previous play (←)">◂</button>
+        <button type="button" id="play" aria-label="Play" title="Play / pause (space)">▶</button>
+        <button type="button" id="next" aria-label="Next play" title="Next play (→)">▸</button>
+        <input type="range" id="scrub" min="0" max="0" value="0" aria-label="Play" />
+        <span class="count" id="count">0 / 0</span>
+        <button type="button" id="live" class="live" hidden>● Live</button>
+        <select id="speed" aria-label="Speed">
+          <option value="1">1×</option>
+          <option value="2">2×</option>
+          <option value="4" selected>4×</option>
+          <option value="8">8×</option>
+        </select>
+        <select id="camera" aria-label="Camera">
+          <option value="broadcast">Broadcast cam</option>
+          <option value="endzone">Behind the ball</option>
+          <option value="blimp">Blimp</option>
+        </select>
+        <select id="res" aria-label="Resolution">
+          <option value="320">320×180 (crunchy)</option>
+          <option value="480" selected>480×270</option>
+          <option value="640">640×360</option>
+          <option value="960">960×540 (CPU sweat)</option>
+        </select>
+      </div>
+
+      <div class="ticker" id="ticker" aria-live="polite"></div>
+
+      <figure class="wp">
+        <figcaption><span id="wp-label">Win probability</span><span class="legend" id="wp-legend"></span></figcaption>
+        <svg id="wp" viewBox="0 0 1000 120" preserveAspectRatio="none" role="img" aria-label="Win probability chart"></svg>
+      </figure>
+    </main>
+
+    <footer>
+      <p>Data from ESPN's public scoreboard API, refreshed every 20 seconds while a game is live. Heatmap = where each team's runs and passes ended, weighted by yards gained. Ball paths are inferred from the play-by-play text, so they're impressionistic.</p>
+      <p>Built by <a href="https://github.com/dandenney/the-possibility-factory/tree/main/projects/soft-raster-scoreboard">The Possibility Factory</a>.</p>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

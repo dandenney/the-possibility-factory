@@ -1,0 +1,9 @@
+# Netlify site "soft-raster-scoreboard", base directory projects/soft-raster-scoreboard.
+[build]
+  command = "pnpm install --frozen-lockfile && pnpm build"
+  publish = "dist"
+  # Only rebuild when this project changed.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+
+[build.environment]
+  NODE_VERSION = "22.22.0"
