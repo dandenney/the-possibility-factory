@@ -105,6 +105,7 @@ h1 {
 .invent { flex: 1; display: flex; gap: 6px; min-width: 0; }
 .invent input {
   flex: 1;
+  width: 0;
   min-width: 0;
   padding: 10px 14px;
   border: 2px solid #fff6;
