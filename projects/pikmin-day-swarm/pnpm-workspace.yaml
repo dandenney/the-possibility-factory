@@ -1,0 +1,4 @@
+# Standalone project: this file makes projects/pikmin-day-swarm its own pnpm root,
+# separate from the factory workspace.
+allowBuilds:
+  esbuild: true
