@@ -1,0 +1,97 @@
+---
+import type { IdeaStatus, IdeaWithSignals } from "@factory/core";
+import { hostname, kindLabels, timeAgo } from "@/lib/labels";
+
+interface Props {
+  idea: IdeaWithSignals;
+  /** Anchor to land on after acting on this card, usually the next card in the list. */
+  next: string;
+}
+
+const { idea, next } = Astro.props;
+const kinds = [...new Set(idea.signals.map((s) => kindLabels[s.kind]))];
+const signals = idea.signals.filter((s, i, all) => all.findIndex((o) => o.title === s.title) === i);
+
+const actions: Record<IdeaStatus, { status: IdeaStatus; label: string; primary?: boolean }[]> = {
+  inbox: [
+    { status: "shortlisted", label: "★ Shortlist", primary: true },
+    { status: "archived", label: "Archive" },
+  ],
+  shortlisted: [
+    { status: "shipped", label: "Mark shipped", primary: true },
+    { status: "inbox", label: "Back to inbox" },
+    { status: "archived", label: "Archive" },
+  ],
+  shipped: [{ status: "shortlisted", label: "Back to shortlist" }],
+  archived: [{ status: "inbox", label: "Restore to inbox" }],
+};
+---
+
+<article id={`idea-${idea.id}`} class="min-w-0 scroll-mt-16 rounded-xl border border-rule bg-panel p-5 sm:p-6">
+  <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted">
+    <span class="font-mono">#{idea.id}</span>
+    {kinds.map((k) => <span class="chip">{k}</span>)}
+    {idea.origin === "manual" && <span class="chip">yours</span>}
+    <span class="ml-auto" title={idea.createdAt.toLocaleString()}>{timeAgo(idea.createdAt)}</span>
+  </div>
+
+  <h3 class="mt-2 text-lg leading-snug font-semibold tracking-tight text-balance">{idea.title}</h3>
+  {idea.pitch && <p class="mt-2 text-[0.9375rem] leading-relaxed text-pretty whitespace-pre-line">{idea.pitch}</p>}
+
+  {
+    idea.notes && (
+      <div class="mt-4 border-l-2 border-signal/50 pl-3">
+        <p class="label">{idea.origin === "automation" ? "Why now" : "Notes"}</p>
+        <p class="mt-1 line-clamp-6 text-sm leading-relaxed text-pretty whitespace-pre-line text-muted">{idea.notes}</p>
+      </div>
+    )
+  }
+
+  {
+    signals.length > 0 && (
+      <ul class="mt-4 flex flex-wrap gap-1.5" aria-label="Sparked by">
+        {signals.map((s) => {
+          const host = hostname(s.url);
+          const inner = (
+            <>
+              <span class="truncate">{s.title}</span>
+              {host && <span class="shrink-0 text-muted">{host}</span>}
+            </>
+          );
+          return (
+            <li class="max-w-full">
+              {s.url ? (
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex max-w-full items-center gap-1.5 rounded-full border border-rule px-2.5 py-0.5 text-xs transition-colors hover:border-ink"
+                >
+                  {inner}
+                </a>
+              ) : (
+                <span class="flex max-w-full items-center gap-1.5 rounded-full border border-rule px-2.5 py-0.5 text-xs">
+                  {inner}
+                </span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    )
+  }
+
+  <form method="post" class="mt-5 flex flex-wrap items-center gap-2 border-t border-rule pt-4">
+    <input type="hidden" name="action" value="move" />
+    <input type="hidden" name="id" value={idea.id} />
+    <input type="hidden" name="next" value={next} />
+    {
+      actions[idea.status].map((a) => (
+        <button class:list={["btn", !a.primary && "btn-ghost"]} type="submit" name="status" value={a.status}>
+          {a.label}
+        </button>
+      ))
+    }
+    <a href={`/ideas/${idea.id}`} class="ml-auto text-xs text-muted hover:text-ink">Edit &rarr;</a>
+  </form>
+</article>

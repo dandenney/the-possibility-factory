@@ -1,65 +1,132 @@
 ---
-import { countSignalsByStatus, IDEA_STATUSES, listIdeas } from "@factory/core";
+import { countIdeasByStatus, countSignalsByStatus, IDEA_STATUSES, listIdeasWithSignals, setIdeasStatus } from "@factory/core";
+import IdeaCard from "@/components/IdeaCard.astro";
 import Layout from "@/layouts/Layout.astro";
 import { getDb } from "@/lib/db";
-import { ideaStatusLabels, timeAgo } from "@/lib/labels";
+import { ids, oneOf, safeNext, str } from "@/lib/forms";
+import { dayKey, dayLabel, ideaStatusLabels } from "@/lib/labels";
 
 const db = await getDb();
-const [ideas, signalCounts] = await Promise.all([listIdeas(db), countSignalsByStatus(db)]);
-const columns = IDEA_STATUSES.filter((s) => s !== "archived").map((status) => ({
-  status,
-  ideas: ideas.filter((i) => i.status === status),
-}));
-const archivedCount = ideas.filter((i) => i.status === "archived").length;
+
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData();
+  const status = oneOf(str(form, "status"), IDEA_STATUSES);
+  if (status) await setIdeasStatus(db, ids([str(form, "id"), str(form, "ids")]), status);
+  return Astro.redirect(safeNext(str(form, "next")));
+}
+
+const tabs = ["inbox", "shortlisted", "shipped"] as const;
+const view = oneOf(Astro.url.searchParams.get("view"), IDEA_STATUSES) ?? "inbox";
+const [ideas, counts, signalCounts] = await Promise.all([
+  listIdeasWithSignals(db, view),
+  countIdeasByStatus(db),
+  countSignalsByStatus(db),
+]);
 const newSignals = signalCounts.new ?? 0;
+const viewHref = (status: string) => (status === "inbox" ? "/" : `/?view=${status}`);
+const nextFor = (i: number) => {
+  const target = ideas[i + 1] ?? ideas[i - 1];
+  return `${viewHref(view)}${target ? `#idea-${target.id}` : ""}`;
+};
+
+const days: { key: string; label: string; items: { idea: (typeof ideas)[number]; index: number }[] }[] = [];
+ideas.forEach((idea, index) => {
+  const key = view === "inbox" ? dayKey(idea.createdAt) : "all";
+  let day = days.at(-1);
+  if (day?.key !== key) days.push((day = { key, label: dayLabel(idea.createdAt), items: [] }));
+  day.items.push({ idea, index });
+});
+
+const blurbs: Record<string, string> = {
+  inbox: "Read, then shortlist the keepers and archive the rest.",
+  shortlisted: "Ready to build one? Tell Devin “build idea #N” and it moves to Shipped when it's live.",
+  shipped: "Built and out the door.",
+  archived: "Passed on. Restore anything worth a second look.",
+};
+const empties: Record<string, string> = {
+  inbox: "Inbox zero. A fresh batch lands every morning.",
+  shortlisted: "Nothing shortlisted yet. Star ideas from the inbox.",
+  shipped: "Nothing shipped yet.",
+  archived: "Nothing archived.",
+};
 ---
 
-<Layout title="Board">
-  <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
-    <div>
-      <p class="label">Idea line</p>
-      <h1 class="text-2xl font-semibold tracking-tight">Board</h1>
+<Layout title={ideaStatusLabels[view]}>
+  <div class="mx-auto max-w-3xl">
+    <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+      <nav class="flex gap-1 rounded-lg border border-rule bg-panel p-1" aria-label="Idea status">
+        {
+          tabs.map((t) => (
+            <a
+              href={viewHref(t)}
+              class:list={[
+                "flex items-center gap-2 rounded-md px-3 py-1.5 text-sm font-medium",
+                view === t ? "bg-ink text-paper" : "text-muted hover:text-ink",
+              ]}
+              aria-current={view === t ? "page" : undefined}
+            >
+              {ideaStatusLabels[t]}
+              <span class:list={["font-mono text-xs tabular-nums", view === t ? "text-paper/70" : "text-muted"]}>
+                {counts[t] ?? 0}
+              </span>
+            </a>
+          ))
+        }
+      </nav>
+      <div class="flex items-center gap-4 text-xs text-muted">
+        <a href="/signals" class="hover:text-ink">
+          <span class="font-mono text-ink tabular-nums">{newSignals}</span> new signal{newSignals === 1 ? "" : "s"}
+        </a>
+        <a
+          href={viewHref("archived")}
+          class:list={["hover:text-ink", view === "archived" && "text-ink underline"]}
+          aria-current={view === "archived" ? "page" : undefined}
+        >
+          {counts.archived ?? 0} archived
+        </a>
+      </div>
     </div>
-    <a href="/signals" class="text-sm text-muted hover:text-ink">
-      <span class="font-mono text-ink tabular-nums">{newSignals}</span> unprocessed signal{newSignals === 1 ? "" : "s"} &rarr;
-    </a>
-  </div>
 
-  <form method="post" action="/ideas/new" class="mb-8 flex gap-2">
-    <input class="field" name="title" placeholder="Quick idea: what if..." required aria-label="Idea title" />
-    <button class="btn shrink-0" type="submit">Add to inbox</button>
-  </form>
+    <p class="mb-6 text-sm text-muted">{blurbs[view]}</p>
 
-  <div class="grid gap-4 md:grid-cols-3 xl:grid-cols-5">
     {
-      columns.map((col) => (
-        <section class="flex min-h-40 flex-col rounded-lg border border-rule bg-panel/60">
-          <header class="flex items-center justify-between border-b border-rule px-3 py-2">
-            <h2 class="label">{ideaStatusLabels[col.status]}</h2>
-            <span class="font-mono text-xs text-muted tabular-nums">{col.ideas.length}</span>
-          </header>
-          <ul class="flex flex-col gap-2 p-2">
-            {col.ideas.map((idea) => (
-              <li>
-                <a
-                  href={`/ideas/${idea.id}`}
-                  class="block rounded-md border border-rule bg-panel p-3 transition-colors hover:border-ink"
-                >
-                  <p class="text-sm leading-snug font-medium">{idea.title}</p>
-                  {idea.pitch && <p class="mt-1 text-xs whitespace-pre-line text-muted">{idea.pitch}</p>}
-                  <p class="mt-2 flex gap-2 text-[0.6875rem] text-muted">
-                    <span>{timeAgo(idea.updatedAt)}</span>
-                    {idea.signalCount > 0 && <span>· {idea.signalCount} signal{idea.signalCount === 1 ? "" : "s"}</span>}
-                    {idea.origin === "automation" && <span>· generated</span>}
-                  </p>
-                </a>
-              </li>
+      view === "inbox" && (
+        <form method="post" action="/ideas/new" class="mb-8 flex gap-2">
+          <input class="field" name="title" placeholder="Quick idea: what if..." required aria-label="Idea title" />
+          <button class="btn btn-ghost shrink-0" type="submit">
+            Add
+          </button>
+        </form>
+      )
+    }
+
+    {ideas.length === 0 && <p class="rounded-xl border border-dashed border-rule px-6 py-16 text-center text-sm text-muted">{empties[view]}</p>}
+
+    {
+      days.map((day) => (
+        <section class="mb-10">
+          {day.key !== "all" && <header class="sticky top-0 z-10 -mx-2 mb-3 flex items-center justify-between gap-3 bg-paper/90 px-2 py-2 backdrop-blur">
+            <h2 class="label">
+              {day.label} <span class="tabular-nums">· {day.items.length}</span>
+            </h2>
+            {view === "inbox" && day.items.length > 1 && (
+              <form method="post" onsubmit={`return confirm('Archive all ${day.items.length} ideas from ${day.label}?')`}>
+                <input type="hidden" name="ids" value={day.items.map((d) => d.idea.id).join(",")} />
+                <input type="hidden" name="status" value="archived" />
+                <input type="hidden" name="next" value="/" />
+                <button class="text-xs text-muted underline-offset-2 hover:text-ink hover:underline" type="submit">
+                  Archive all {day.items.length}
+                </button>
+              </form>
+            )}
+          </header>}
+          <div class="space-y-4">
+            {day.items.map(({ idea, index }) => (
+              <IdeaCard idea={idea} next={nextFor(index)} />
             ))}
-            {col.ideas.length === 0 && <li class="px-1 py-4 text-center text-xs text-muted">Empty</li>}
-          </ul>
+          </div>
         </section>
       ))
     }
   </div>
-  {archivedCount > 0 && <p class="mt-6 text-xs text-muted">{archivedCount} archived</p>}
 </Layout>

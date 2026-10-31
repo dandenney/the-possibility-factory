@@ -3,6 +3,7 @@ import { migrate } from "drizzle-orm/libsql/migrator";
 import { beforeEach, describe, expect, it } from "vitest";
 import { createDb, type Db } from "./db.ts";
 import {
+  countIdeasByStatus,
   countSignalsByStatus,
   createIdea,
   createSignal,
@@ -10,8 +11,10 @@ import {
   getIdea,
   getSetting,
   listIdeas,
+  listIdeasWithSignals,
   listFreshSignals,
   listSignals,
+  setIdeasStatus,
   setSetting,
   setSignalStatus,
   upsertSignals,
@@ -57,6 +60,26 @@ describe("ideas", () => {
     expect(full?.signals.map((x) => x.id)).toEqual([s.id]);
     expect((await listSignals(db))[0]?.status).toBe("used");
     expect((await listIdeas(db))[0]?.signalCount).toBe(1);
+  });
+
+  it("lists ideas in a status with their signals", async () => {
+    const a = await createSignal(db, { title: "a" });
+    const b = await createSignal(db, { title: "b" });
+    const first = await createIdea(db, { title: "First" }, [a.id, b.id]);
+    const second = await createIdea(db, { title: "Second" });
+    await createIdea(db, { title: "Elsewhere", status: "shortlisted" }, [a.id]);
+    const inbox = await listIdeasWithSignals(db, "inbox");
+    expect(inbox.map((i) => i.id)).toEqual([second.id, first.id]);
+    expect(inbox[1]?.signals.map((s) => s.title).sort()).toEqual(["a", "b"]);
+    expect(inbox[0]?.signals).toEqual([]);
+  });
+
+  it("bulk-updates status and counts by status", async () => {
+    const a = await createIdea(db, { title: "A" });
+    const b = await createIdea(db, { title: "B" });
+    await createIdea(db, { title: "C" });
+    await setIdeasStatus(db, [a.id, b.id], "archived");
+    expect(await countIdeasByStatus(db)).toEqual({ inbox: 1, archived: 2 });
   });
 
   it("deletes an idea and its links", async () => {

@@ -75,6 +75,40 @@ export async function listIdeas(db: Db): Promise<IdeaWithSignalCount[]> {
   return rows.map((r) => ({ ...r.idea, signalCount: Number(r.signalCount) }));
 }
 
+export type IdeaWithSignals = Idea & { signals: Signal[] };
+
+/** Ideas in one status with their linked signals, newest first. */
+export async function listIdeasWithSignals(db: Db, status: IdeaStatus): Promise<IdeaWithSignals[]> {
+  const rows = await db
+    .select()
+    .from(ideas)
+    .where(eq(ideas.status, status))
+    .orderBy(desc(ideas.createdAt), desc(ideas.id));
+  if (rows.length === 0) return [];
+  const links = await db
+    .select({ ideaId: ideaSignals.ideaId, signal: signals })
+    .from(ideaSignals)
+    .innerJoin(signals, eq(signals.id, ideaSignals.signalId))
+    .where(
+      inArray(
+        ideaSignals.ideaId,
+        rows.map((r) => r.id),
+      ),
+    )
+    .orderBy(desc(signals.createdAt), desc(signals.id));
+  const byIdea = new Map<number, Signal[]>();
+  for (const { ideaId, signal } of links) byIdea.set(ideaId, [...(byIdea.get(ideaId) ?? []), signal]);
+  return rows.map((idea) => ({ ...idea, signals: byIdea.get(idea.id) ?? [] }));
+}
+
+export async function countIdeasByStatus(db: Db) {
+  const rows = await db
+    .select({ status: ideas.status, count: sql<number>`count(*)` })
+    .from(ideas)
+    .groupBy(ideas.status);
+  return Object.fromEntries(rows.map((r) => [r.status, Number(r.count)])) as Partial<Record<IdeaStatus, number>>;
+}
+
 export async function getIdea(db: Db, id: number) {
   const idea = await db.query.ideas.findFirst({ where: eq(ideas.id, id) });
   if (!idea) return undefined;
@@ -99,6 +133,11 @@ export async function updateIdea(db: Db, id: number, patch: Partial<Pick<Idea, "
 
 export async function setIdeaStatus(db: Db, id: number, status: IdeaStatus) {
   await updateIdea(db, id, { status });
+}
+
+export async function setIdeasStatus(db: Db, ids: number[], status: IdeaStatus) {
+  if (ids.length === 0) return;
+  await db.update(ideas).set({ status }).where(inArray(ideas.id, ids));
 }
 
 export async function deleteIdea(db: Db, id: number) {

@@ -52,7 +52,7 @@ const available = idea ? (await listSignals(db, { status: "new", limit: 50 })).f
         <form method="post" class="space-y-5">
           <input type="hidden" name="action" value="update" />
           <div class="flex items-center gap-2 text-xs text-muted">
-            <a href="/" class="hover:text-ink">&larr; Board</a>
+            <a href={idea.status === "inbox" ? `/#idea-${idea.id}` : `/?view=${idea.status}#idea-${idea.id}`} class="hover:text-ink">&larr; {ideaStatusLabels[idea.status]}</a>
             <span>·</span>
             <span>Updated {timeAgo(idea.updatedAt)}</span>
             {idea.origin === "automation" && <span class="chip">generated</span>}

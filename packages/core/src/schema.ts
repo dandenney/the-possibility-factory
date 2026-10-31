@@ -3,7 +3,7 @@ import { index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "driz
 
 export const SIGNAL_KINDS = ["model_release", "tooling_release", "culture", "interest", "other"] as const;
 export const SIGNAL_STATUSES = ["new", "used", "dismissed"] as const;
-export const IDEA_STATUSES = ["inbox", "shortlisted", "specced", "building", "shipped", "archived"] as const;
+export const IDEA_STATUSES = ["inbox", "shortlisted", "shipped", "archived"] as const;
 export const ORIGINS = ["manual", "automation"] as const;
 
 export type SignalKind = (typeof SIGNAL_KINDS)[number];
