@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" width="480" height="320">
+  <rect width="480" height="320" fill="#e8f4fc"/>
+  <ellipse cx="240" cy="290" rx="200" ry="12" fill="#c5d5e0"/>
+
+  
+  <g stroke="#2c3e50" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="150" cy="230" r="48"/>
+    <circle cx="330" cy="230" r="48"/>
+    <path d="M150 230 L210 230 L250 160 L330 230"/>
+    <path d="M210 230 L210 155"/>
+    <path d="M185 155 L250 155"/>
+    <path d="M250 160 L275 130"/>
+    <path d="M260 130 L290 130"/>
+  </g>
+  <circle cx="150" cy="230" r="8" fill="#2c3e50"/>
+  <circle cx="330" cy="230" r="8" fill="#2c3e50"/>
+  <circle cx="210" cy="230" r="10" fill="none" stroke="#2c3e50" stroke-width="3"/>
+  <line x1="210" y1="230" x2="198" y2="214" stroke="#2c3e50" stroke-width="3" stroke-linecap="round"/>
+  <line x1="210" y1="230" x2="226" y2="218" stroke="#2c3e50" stroke-width="3" stroke-linecap="round"/>
+
+  
+  <ellipse cx="230" cy="145" rx="52" ry="36" fill="#f4f1ea" stroke="#2c3e50" stroke-width="3"/>
+  
+  <path d="M200 140 Q175 110 210 100 Q230 125 235 145" fill="#dfe6ea" stroke="#2c3e50" stroke-width="2.5"/>
+  
+  <path d="M265 125 Q300 100 295 70" fill="none" stroke="#f4f1ea" stroke-width="18" stroke-linecap="round"/>
+  <path d="M265 125 Q300 100 295 70" fill="none" stroke="#2c3e50" stroke-width="3"/>
+  
+  <circle cx="300" cy="62" r="22" fill="#f4f1ea" stroke="#2c3e50" stroke-width="3"/>
+  <circle cx="308" cy="56" r="3.5" fill="#1a1a1a"/>
+  
+  <path d="M318 66 L400 78 L318 90 Z" fill="#f0a04b" stroke="#2c3e50" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M322 78 L390 82" stroke="#c47a2a" stroke-width="1.5"/>
+  
+  <path d="M318 88 Q360 118 318 100" fill="#f6c98a" stroke="#2c3e50" stroke-width="2"/>
+  
+  <path d="M215 172 L198 214" stroke="#f0a04b" stroke-width="5" stroke-linecap="round"/>
+  <path d="M235 175 L226 218" stroke="#f0a04b" stroke-width="5" stroke-linecap="round"/>
+  
+  <path d="M180 150 L145 140 L155 158 L140 165 L175 165 Z" fill="#f4f1ea" stroke="#2c3e50" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

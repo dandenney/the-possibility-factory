@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500" role="img">
+<title>Pelican Riding a Bicycle</title>
+<desc>A cartoon pelican with a big orange beak and helmet riding a red bicycle</desc>
+
+
+<rect width="800" height="500" fill="#87CEEB"/>
+<circle cx="680" cy="85" r="38" fill="#FFE066" stroke="#333" stroke-width="3"/>
+<rect y="398" width="800" height="102" fill="#A8D86E"/>
+<rect y="392" width="800" height="14" fill="#8CBF4A"/>
+
+<line x1="0" y1="472" x2="800" y2="472" stroke="white" stroke-width="6" stroke-dasharray="28 28" opacity="0.95"/>
+
+
+<g fill="white" opacity="0.96">
+  <g>
+    <ellipse cx="115" cy="90" rx="42" ry="26"/>
+    <ellipse cx="148" cy="76" rx="35" ry="22"/>
+    <ellipse cx="82" cy="82" rx="28" ry="18"/>
+    <ellipse cx="145" cy="98" rx="25" ry="16"/>
+  </g>
+  <g>
+    <ellipse cx="530" cy="68" rx="36" ry="22"/>
+    <ellipse cx="558" cy="58" rx="30" ry="18"/>
+    <ellipse cx="502" cy="62" rx="24" ry="15"/>
+  </g>
+  <g opacity="0.7">
+    <ellipse cx="280" cy="110" rx="22" ry="12"/>
+    <ellipse cx="295" cy="105" rx="18" ry="10"/>
+  </g>
+</g>
+
+
+<ellipse cx="350" cy="408" rx="165" ry="14" fill="#000" opacity="0.15"/>
+
+
+<g id="bicycle">
+  
+  <ellipse cx="282" cy="330" rx="62" ry="52" fill="none" stroke="#555" stroke-width="3.5" stroke-dasharray="7 5" opacity="0.9"/>
+  
+  
+  <g id="rear-wheel">
+    <circle cx="220" cy="334" r="71" fill="none" stroke="#222" stroke-width="10" />
+    <circle cx="220" cy="334" r="71" fill="none" stroke="white" stroke-width="2" opacity="0.25"/>
+    <g stroke="#5A5A5A" stroke-width="2.3" stroke-linecap="round" opacity="0.9">
+      <line x1="220" y1="263" x2="220" y2="405"/>
+      <line x1="152" y1="334" x2="288" y2="334"/>
+      <line x1="170" y1="286" x2="270" y2="382"/>
+      <line x1="170" y1="382" x2="270" y2="286"/>
+      <animateTransform attributeName="transform" type="rotate" from="0 220 334" to="360 220 334" dur="0.6s" repeatCount="indefinite"/>
+    </g>
+    <circle cx="220" cy="334" r="12" fill="#222"/>
+    <circle cx="220" cy="334" r="4" fill="#888"/>
+  </g>
+
+  
+  <g id="front-wheel">
+    <circle cx="480" cy="334" r="71" fill="none" stroke="#222" stroke-width="10"/>
+    <circle cx="480" cy="334" r="71" fill="none" stroke="white" stroke-width="2" opacity="0.25"/>
+    <g stroke="#5A5A5A" stroke-width="2.3" stroke-linecap="round" opacity="0.9">
+      <line x1="480" y1="263" x2="480" y2="405"/>
+      <line x1="409" y1="334" x2="551" y2="334"/>
+      <line x1="430" y1="286" x2="530" y2="382"/>
+      <line x1="430" y1="382" x2="530" y2="286"/>
+      <animateTransform attributeName="transform" type="rotate" from="0 480 334" to="360 480 334" dur="0.6s" repeatCount="indefinite"/>
+    </g>
+    <circle cx="480" cy="334" r="12" fill="#222"/>
+    <circle cx="480" cy="334" r="4" fill="#888"/>
+  </g>
+
+  
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    
+    <line x1="220" y1="334" x2="283" y2="235" stroke="#E63946" stroke-width="7.5"/>
+    <line x1="220" y1="334" x2="338" y2="326" stroke="#E63946" stroke-width="7.5"/>
+    
+    <line x1="283" y1="235" x2="338" y2="326" stroke="#E63946" stroke-width="8"/>
+    
+    <line x1="283" y1="238" x2="456" y2="236" stroke="#E63946" stroke-width="8"/>
+    
+    <line x1="338" y1="326" x2="465" y2="272" stroke="#E63946" stroke-width="8"/>
+    
+    <line x1="456" y1="236" x2="465" y2="278" stroke="#1D3557" stroke-width="11"/>
+    
+    <line x1="462" y1="266" x2="480" y2="334" stroke="#1D3557" stroke-width="7"/>
+    <line x1="458" y1="250" x2="480" y2="334" stroke="#1D3557" stroke-width="7"/>
+  </g>
+
+  
+  <ellipse cx="280" cy="224" rx="34" ry="11" fill="#222"/>
+  <path d="M 252 221 Q 282 208 312 219" stroke="#444" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  
+  <g stroke-linecap="round">
+    <path d="M 456 236 C 448 216 465 199 484 210 L 508 216" stroke="#222" stroke-width="8" fill="none"/>
+    <line x1="498" y1="213" x2="510" y2="225" stroke="#FFB703" stroke-width="8"/>
+    <circle cx="482" cy="209" r="4.5" fill="#333"/>
+  </g>
+
+  
+  <circle cx="338" cy="326" r="14" fill="#333" stroke="#111" stroke-width="2"/>
+  <circle cx="338" cy="326" r="5" fill="#888"/>
+  
+  <line x1="338" y1="326" x2="372" y2="316" stroke="#444" stroke-width="7" stroke-linecap="round"/>
+  <line x1="338" y1="326" x2="302" y2="342" stroke="#444" stroke-width="7" stroke-linecap="round"/>
+  <g fill="#222" stroke="#111" stroke-width="1.5" rx="5">
+    <rect x="364" y="308" width="26" height="14" rx="4" transform="rotate(-8 377 315)"/>
+    <rect x="282" y="338" width="26" height="14" rx="4" transform="rotate(-8 295 345)"/>
+  </g>
+</g>
+
+
+
+
+<path d="M 250 242 L 192 255 L 212 269 L 200 285 L 248 268 Z" fill="#EEE8D5" stroke="#333" stroke-width="3.2" stroke-linejoin="round"/>
+
+
+<g stroke="#FB8500" stroke-width="7" stroke-linecap="round" fill="none">
+  
+  <path d="M 276 292 Q 288 315 296 344" />
+  
+  <path d="M 295 283 Q 328 306 369 316" />
+</g>
+
+<g fill="#FB8500" stroke="#333" stroke-width="2.2" stroke-linejoin="round">
+  <path d="M 368 316 L 387 311 L 384 324 L 371 326 Z"/>
+  <path d="M 297 343 L 315 337 L 312 350 L 295 348 Z"/>
+</g>
+
+
+<ellipse cx="307" cy="241" rx="67" ry="55" fill="#FFFEF9" stroke="#333" stroke-width="3.5"/>
+
+<ellipse cx="308" cy="257" rx="36" ry="22" fill="#FFF2C8" opacity="0.85"/>
+
+
+<g>
+  <ellipse cx="299" cy="244" rx="44" ry="30" fill="white" stroke="#333" stroke-width="3" transform="rotate(-18 299 244)"/>
+  <path d="M 265 250 Q 285 271 305 263" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 278 240 Q 297 260 317 251" fill="none" stroke="#333" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 285 229 Q 302 245 321 237" fill="none" stroke="#333" stroke-width="1.8" stroke-linecap="round"/>
+</g>
+
+
+<path d="M 322 203 C 352 176 358 142 382 129" stroke="#333" stroke-width="31" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 322 203 C 352 176 358 142 382 129" stroke="#FFFEF9" stroke-width="25" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+
+<g>
+  <ellipse cx="399" cy="248" rx="54" ry="23" fill="#FFFEF9" stroke="#333" stroke-width="3.2" transform="rotate(-14 399 248)"/>
+  
+  <path d="M 442 232 Q 452 230 456 239" stroke="#333" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <path d="M 445 237 Q 454 237 458 244" stroke="#333" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+  <path d="M 275 230 Q 298 250 320 242" fill="none" stroke="#333" stroke-width="1.6" opacity="0.4"/>
+</g>
+
+
+<circle cx="386" cy="122" r="31.5" fill="#FFFEF9" stroke="#333" stroke-width="3.2"/>
+
+<ellipse cx="378" cy="137" rx="9" ry="5.5" fill="#FFAFCC" opacity="0.45"/>
+
+
+<path d="M 404 109 L 538 142 L 405 132 Z" fill="#FFB703" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+
+<path d="M 420 116 L 515 141" stroke="white" stroke-width="2.2" opacity="0.55" stroke-linecap="round"/>
+
+<ellipse cx="426" cy="121" rx="3.2" ry="1.6" fill="#333" opacity="0.85"/>
+
+
+<path d="M 408 133 L 540 147 C 545 148 544 153 538 155 Q 415 172 319 214 L 320 200 Q 370 174 408 140 Z" fill="#FB8500" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+
+<path d="M 422 140 Q 400 162 368 182 Q 342 197 322 203 L 330 211 Q 420 165 536 151 Z" fill="#FFD6A3" stroke="#333" stroke-width="2.1" stroke-linejoin="round"/>
+
+<path d="M 455 150 Q 430 160 405 168" stroke="#333" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.6"/>
+<path d="M 440 157 Q 418 166 390 175" stroke="#333" stroke-width="1.4" fill="none" stroke-linecap="round" opacity="0.6"/>
+
+<line x1="405" y1="132" x2="538" y2="144.5" stroke="#333" stroke-width="2.1" stroke-linecap="round"/>
+
+
+<circle cx="393" cy="117" r="7.5" fill="#222"/>
+<circle cx="395.5" cy="114.5" r="2.6" fill="white"/>
+<circle cx="391" cy="119.5" r="1.2" fill="white" opacity="0.9"/>
+
+<path d="M 384 106 Q 394 104 402 108" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+
+<g>
+  <path d="M 357.5 108 C 358 76 415 74 419.5 107 Z" fill="#2EC4B6" stroke="#333" stroke-width="3" stroke-linejoin="round"/>
+  
+  <path d="M 376 78 L 375 107" stroke="#E63946" stroke-width="5" opacity="0.95"/>
+  <path d="M 390 79 L 391 107" stroke="#E63946" stroke-width="5" opacity="0.95"/>
+  <path d="M 403 84 L 404 107" stroke="#E63946" stroke-width="5" opacity="0.95"/>
+  
+  <path d="M 354 108 Q 388 124 423 107" fill="none" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+  
+  <path d="M 366 106 Q 385 132 405 107" fill="none" stroke="#333" stroke-width="2.6" stroke-linecap="round"/>
+  <circle cx="365.5" cy="112" r="2.2" fill="#333"/>
+  <circle cx="405.5" cy="112" r="2.2" fill="#333"/>
+</g>
+
+
+<g stroke="#333" stroke-width="2.5" stroke-linecap="round" opacity="0.55" fill="none">
+  <path d="M 560 310 Q 580 312 590 305"/>
+  <path d="M 565 325 Q 585 326 595 322"/>
+  <path d="M 82 318 Q 102 316 110 310"/>
+</g>
+
+
+<text x="400" y="485" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="900" fill="#1D3557" stroke="white" stroke-width="6" paint-order="stroke">PEEP! PEEP! OUT OF MY WAY!</text>
+<text x="400" y="485" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" font-weight="900" fill="#1D3557">PEEP! PEEP! OUT OF MY WAY!</text>
+</svg>

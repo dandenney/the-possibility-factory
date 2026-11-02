@@ -1,0 +1,17 @@
+{
+  "prompt": "Generate an SVG of a pelican riding a bicycle",
+  "samplesPerModel": 3,
+  "maxTokens": 16000,
+  "models": [
+    { "slug": "gemini-4-argon", "id": "google/gemini-4-argon", "name": "Gemini 4 Argon", "lab": "Google DeepMind", "featured": true, "link": "https://deepmind.google/blog/introducing-gemini-4-argon/" },
+    { "slug": "muse-spark-open", "id": "meta/muse-spark-open", "name": "Muse Spark Open", "lab": "Meta", "featured": true, "link": "https://huggingface.co/blog/meta-muse-spark-open" },
+    { "slug": "lfm-2.5-24b", "id": "liquid/lfm-2.5-24b-a2b", "name": "LFM2.5-24B-A2B", "lab": "Liquid AI", "featured": true, "maxTokens": 8000, "link": "https://huggingface.co/blog/LiquidAI/lfm25-24b-a2b" },
+    { "slug": "beam-1.0", "id": "reflection/beam-1.0-501b-a23b", "name": "Beam 1.0 501B", "lab": "Reflection", "featured": true, "link": "https://huggingface.co/blog/reflection-beam" },
+    { "slug": "claude-opus-5.5", "id": "anthropic/claude-opus-5.5", "name": "Claude Opus 5.5", "lab": "Anthropic", "featured": false },
+    { "slug": "gpt-5.6-terra-pro", "id": "openai/gpt-5.6-terra-pro", "name": "GPT-5.6 Terra Pro", "lab": "OpenAI", "featured": false },
+    { "slug": "grok-4.7", "id": "x-ai/grok-4.7", "name": "Grok 4.7", "lab": "xAI", "featured": false },
+    { "slug": "kimi-k3.1-pro", "id": "moonshotai/kimi-k3.1-pro", "name": "Kimi K3.1 Pro", "lab": "Moonshot AI", "featured": false },
+    { "slug": "deepseek-v4.1-flash", "id": "deepseek/deepseek-v4.1-flash", "name": "DeepSeek V4.1 Flash", "lab": "DeepSeek", "featured": false },
+    { "slug": "glm-5.3", "id": "z-ai/glm-5.3", "name": "GLM 5.3", "lab": "Z.ai", "featured": false }
+  ]
+}

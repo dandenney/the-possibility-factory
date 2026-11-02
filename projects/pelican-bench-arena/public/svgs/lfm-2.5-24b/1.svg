@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+ 
+ <line x1="0" y1="270" x2="400" y2="270" stroke="#888" stroke-width="2"/>
+
+ 
+ 
+ <circle cx="100" cy="230" r="40" fill="none" stroke="#333" stroke-width="4"/>
+ <circle cx="300" cy="230" r="40" fill="none" stroke="#333" stroke-width="4"/>
+ <circle cx="100" cy="230" r="4" fill="#333"/>
+ <circle cx="300" cy="230" r="4" fill="#333"/>
+
+ 
+ <line x1="100" y1="230" x2="200" y2="180" stroke="#0077cc" stroke-width="4"/>
+ <line x1="300" cy="230" x2="200" y2="180" stroke="#0077cc" stroke-width="4"/>
+ <line x1="100" y1="230" x2="300" y2="230" stroke="#0077cc" stroke-width="4"/>
+ <line x1="200" y1="180" x2="200" y2="150" stroke="#0077cc" stroke-width="4"/>
+ <line x1="200" y1="150" x2="220" y2="145" stroke="#0077cc" stroke-width="4"/>
+
+ 
+ <line x1="200" y1="180" x2="220" y2="145" stroke="#0077cc" stroke-width="4"/>
+ <rect x="215" y="140" width="25" height="8" fill="#5a3d2a" stroke="#333" stroke-width="1"/>
+ <line x1="250" y1="180" x2="250" y2="150" stroke="#0077cc" stroke-width="4"/>
+ <line x1="240" y1="150" x2="260" y2="150" stroke="#0077cc" stroke-width="4"/>
+
+ 
+ <line x1="200" y1="230" x2="180" y2="250" stroke="#cc0000" stroke-width="3"/>
+ <line x1="200" y1="230" x2="220" y2="250" stroke="#cc0000" stroke-width="3"/>
+ <circle cx="200" cy="230" r="5" fill="#333"/>
+
+ 
+ 
+ <polygon points="165,150 155,140 165,130" fill="white" stroke="#333" stroke-width="1"/>
+ 
+ <ellipse cx="200" cy="150" rx="35" ry="25" fill="white" stroke="#333" stroke-width="2"/>
+ 
+ <ellipse cx="185" cy="145" rx="10" ry="6" fill="#999" stroke="#333" stroke-width="1"/>
+ 
+ <path d="M235 155 Q245 130 250 85" fill="none" stroke="#333" stroke-width="2"/>
+ 
+ <circle cx="250" cy="80" r="14" fill="white" stroke="#333" stroke-width="2"/>
+ 
+ <circle cx="255" cy="78" r="2" fill="black"/>
+ 
+ <path d="M250 80 L295 80 L295 100 L250 85 Z" fill="orange" stroke="#333" stroke-width="1"/>
+ 
+ <line x1="190" y1="165" x2="180" y2="250" stroke="#888" stroke-width="3"/>
+ <line x1="210" y1="165" x2="220" y2="250" stroke="#888" stroke-width="3"/>
+ 
+ <ellipse cx="180" cy="250" rx="6" ry="3" fill="#ff9999" stroke="#333" stroke-width="1"/>
+ <ellipse cx="220" cy="250" rx="6" ry="3" fill="#ff9999" stroke="#333" stroke-width="1"/>
+</svg>

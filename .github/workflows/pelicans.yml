@@ -1,0 +1,58 @@
+name: Pelican Bench Arena SVGs
+
+# Asks every model in projects/pelican-bench-arena/models.json for its pelican through OpenRouter and commits the
+# results; Netlify redeploys the arena from that push. Add a model to models.json first, then run this.
+on:
+  workflow_dispatch:
+    inputs:
+      models:
+        description: "Model slugs to fill in, space separated (blank = any model missing samples)"
+        required: false
+        default: ""
+      redo:
+        description: "Throw away and regenerate those models' pelicans"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pelicans
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: projects/pelican-bench-arena
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: projects/pelican-bench-arena/package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+          cache: pnpm
+          cache-dependency-path: projects/pelican-bench-arena/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Generate
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          MODELS: ${{ inputs.models }}
+          REDO: ${{ inputs.redo && '--redo' || '' }}
+        run: pnpm generate $MODELS $REDO
+      - run: pnpm check
+      - name: Commit
+        run: |
+          git add public/svgs src/gallery.json
+          if git diff --cached --quiet; then
+            echo "No new pelicans."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(pelican-bench): generate pelicans"
+          git push

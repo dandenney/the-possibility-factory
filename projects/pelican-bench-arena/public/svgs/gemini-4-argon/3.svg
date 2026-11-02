@@ -1,0 +1,387 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#80DEEA" />
+      <stop offset="60%" stop-color="#E0F7FA" />
+      <stop offset="100%" stop-color="#FFF9C4" />
+    </linearGradient>
+    
+    <linearGradient id="sunGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEE58" />
+      <stop offset="100%" stop-color="#FDD835" />
+    </linearGradient>
+
+    <linearGradient id="seaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#26C6DA" />
+      <stop offset="100%" stop-color="#0097A7" />
+    </linearGradient>
+
+    
+    <linearGradient id="pouchGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A65" />
+      <stop offset="50%" stop-color="#FF7043" />
+      <stop offset="100%" stop-color="#E64A19" />
+    </linearGradient>
+
+    <linearGradient id="beakTopGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFD54F" />
+      <stop offset="80%" stop-color="#FFB300" />
+      <stop offset="100%" stop-color="#FF6F00" />
+    </linearGradient>
+
+    <linearGradient id="bodyShade" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="70%" stop-color="#F5F7F8" />
+      <stop offset="100%" stop-color="#CFD8DC" />
+    </linearGradient>
+
+    <linearGradient id="wingShade" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="60%" stop-color="#ECEFF1" />
+      <stop offset="100%" stop-color="#B0BEC5" />
+    </linearGradient>
+
+    <linearGradient id="legGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFA726" />
+      <stop offset="100%" stop-color="#F57C00" />
+    </linearGradient>
+
+    
+    <linearGradient id="frameGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#26A69A" />
+      <stop offset="50%" stop-color="#00897B" />
+      <stop offset="100%" stop-color="#004D40" />
+    </linearGradient>
+
+    <linearGradient id="chrome" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ECEFF1" />
+      <stop offset="50%" stop-color="#90A4AE" />
+      <stop offset="100%" stop-color="#CFD8DC" />
+    </linearGradient>
+
+    <linearGradient id="fishGrad" x1="0%" y1="0%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#29B6F6" />
+      <stop offset="50%" stop-color="#81D4FA" />
+      <stop offset="100%" stop-color="#E1F5FE" />
+    </linearGradient>
+
+    
+    <g id="wheel">
+      
+      <g stroke="#B0BEC5" stroke-width="2">
+        <line x1="-85" y1="0" x2="85" y2="0" />
+        <line x1="0" y1="-85" x2="0" y2="85" />
+        <line x1="-60" y1="-60" x2="60" y2="60" />
+        <line x1="-60" y1="60" x2="60" y2="-60" />
+        <line x1="-78" y1="-32" x2="78" y2="32" />
+        <line x1="-32" y1="-78" x2="32" y2="78" />
+        <line x1="-78" y1="32" x2="78" y2="-32" />
+        <line x1="32" y1="-78" x2="-32" y2="78" />
+      </g>
+      
+      <circle cx="0" cy="0" r="76" fill="none" stroke="url(#chrome)" stroke-width="5" />
+      
+      <circle cx="0" cy="0" r="81" fill="none" stroke="#FFFDE7" stroke-width="6" />
+      
+      <circle cx="0" cy="0" r="88" fill="none" stroke="#263238" stroke-width="10" stroke-linecap="round" />
+      
+      <path d="M -62 -62 A 88 88 0 0 1 62 -62" fill="none" stroke="#455A64" stroke-width="3" />
+    </g>
+    
+    
+    <g id="cloud" fill="#FFFFFF" opacity="0.85">
+      <path d="M 0,0 Q 15,-20 35,-15 Q 50,-35 75,-20 Q 95,-25 105,-5 Q 120,0 115,15 Q 110,20 5,20 Q -15,20 -10,5 Q -5,-2 0,0 Z" />
+    </g>
+    
+    
+    <path id="gull" d="M0,0 Q 8,-10 15,-2 Q 22,-10 30,0 Q 22,-4 15,2 Q 8,-4 0,0 Z" fill="#546E7A" />
+  </defs>
+
+  
+  
+  <rect width="800" height="600" fill="#FAFCFD" />
+  
+  <g transform="translate(400, 300)">
+    <circle cx="0" cy="0" r="270" fill="url(#skyGrad)" />
+    
+    
+    <circle cx="-130" cy="-110" r="55" fill="url(#sunGrad)" opacity="0.9" />
+    
+    
+    <use href="#cloud" x="-220" y="-80" transform="scale(0.8)" />
+    <use href="#cloud" x="80" y="-150" transform="scale(1.1)" />
+    <use href="#cloud" x="140" y="-40" transform="scale(0.6)" />
+
+    
+    <path d="M -258,75 Q -130,65 0,75 T 258,75 A 270,270 0 0,1 -258,75 Z" fill="url(#seaGrad)" opacity="0.4" />
+    
+    
+    <use href="#gull" x="-180" y="-160" transform="scale(0.7) rotate(-10)" />
+    <use href="#gull" x="-140" y="-180" transform="scale(0.5) rotate(5)" />
+    <use href="#gull" x="50" y="-200" transform="scale(0.6) rotate(-5)" />
+  </g>
+
+  
+  <ellipse cx="400" cy="545" rx="340" ry="15" fill="#DCE775" opacity="0.4" />
+  <ellipse cx="400" cy="545" rx="280" ry="8" fill="#90A4AE" opacity="0.4" />
+  <line x1="80" y1="545" x2="720" y2="545" stroke="#78909C" stroke-width="4" stroke-linecap="round" />
+  <line x1="40" y1="545" x2="60" y2="545" stroke="#78909C" stroke-width="4" stroke-linecap="round" />
+  <line x1="740" y1="545" x2="760" y2="545" stroke="#78909C" stroke-width="4" stroke-linecap="round" />
+
+
+  
+  
+  <path d="M 380,250 C 420,230 470,210 515,205 C 510,225 480,245 450,250 C 420,255 390,270 380,250 Z" fill="#CFD8DC" stroke="#B0BEC5" stroke-width="2" />
+
+  
+  <g id="far-leg">
+    
+    <path d="M 335,335 L 385,405 L 365,455" fill="none" stroke="#E65100" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="385" cy="405" r="7" fill="#E65100" /> 
+    
+    <path d="M 365,455 L 400,475 L 355,475 L 350,465 Z" fill="#E65100" stroke="#E65100" stroke-width="4" stroke-linejoin="round" />
+    
+    <line x1="360" y1="450" x2="368" y2="475" stroke="#78909C" stroke-width="6" stroke-linecap="round" />
+    <rect x="350" y="472" width="36" height="8" rx="4" fill="#37474F" />
+  </g>
+
+
+  
+  
+  <use href="#wheel" x="210" y="450" />
+  
+  
+  <use href="#wheel" x="570" y="450" />
+
+  
+  <path d="M 112,440 A 98,98 0 0,1 295,395" fill="none" stroke="url(#frameGrad)" stroke-width="10" stroke-linecap="round" />
+  <path d="M 112,440 A 98,98 0 0,1 295,395" fill="none" stroke="#80CBC4" stroke-width="2" stroke-linecap="round" />
+  
+  <path d="M 480,405 A 98,98 0 0,1 655,395" fill="none" stroke="url(#frameGrad)" stroke-width="10" stroke-linecap="round" />
+  <path d="M 480,405 A 98,98 0 0,1 655,395" fill="none" stroke="#80CBC4" stroke-width="2" stroke-linecap="round" />
+
+  
+  <g id="frame">
+    
+    <line x1="210" y1="450" x2="360" y2="450" stroke="url(#frameGrad)" stroke-width="10" stroke-linecap="round" />
+    
+    <line x1="210" y1="450" x2="290" y2="330" stroke="url(#frameGrad)" stroke-width="9" stroke-linecap="round" />
+    
+    <line x1="360" y1="450" x2="280" y2="310" stroke="url(#frameGrad)" stroke-width="12" stroke-linecap="round" />
+    
+    <path d="M 360,450 C 410,450 470,380 510,290" fill="none" stroke="url(#frameGrad)" stroke-width="13" stroke-linecap="round" />
+    
+    <path d="M 288,325 C 360,340 430,330 515,275" fill="none" stroke="url(#frameGrad)" stroke-width="12" stroke-linecap="round" />
+    
+    
+    <path d="M 288,322 C 360,337 430,327 515,272" fill="none" stroke="#80CBC4" stroke-width="2" stroke-linecap="round" />
+    
+    
+    <path d="M 510,290 L 555,435 Q 560,450 570,450" fill="none" stroke="url(#chrome)" stroke-width="8" stroke-linecap="round" />
+    <line x1="517" y1="265" x2="508" y2="295" stroke="url(#frameGrad)" stroke-width="16" stroke-linecap="round" /> 
+    <line x1="519" y1="262" x2="515" y2="270" stroke="url(#chrome)" stroke-width="18" stroke-linecap="round" /> 
+
+    
+    <line x1="280" y1="310" x2="270" y2="290" stroke="url(#chrome)" stroke-width="8" stroke-linecap="round" />
+    
+    
+    <path d="M 235,285 C 235,270 260,280 300,280 C 315,280 315,295 295,298 C 270,302 235,305 235,285 Z" fill="#5D4037" stroke="#3E2723" stroke-width="3" />
+    
+    <path d="M 250,298 L 245,310 L 260,308 L 255,318" fill="none" stroke="#90A4AE" stroke-width="3" stroke-linejoin="round" />
+
+    
+    <path d="M 517,262 L 525,220 C 527,205 515,195 495,200 L 450,215" fill="none" stroke="url(#chrome)" stroke-width="9" stroke-linecap="round" />
+    
+    <line x1="515" y1="205" x2="495" y2="210" stroke="#37474F" stroke-width="11" stroke-linecap="round" />
+
+    
+    <circle cx="210" cy="450" r="12" fill="url(#chrome)" stroke="#37474F" stroke-width="2" />
+    <circle cx="570" cy="450" r="12" fill="url(#chrome)" stroke="#37474F" stroke-width="2" />
+  </g>
+
+
+  
+  <g id="pelican-body">
+    
+    <path d="M 245,270 L 195,255 L 210,275 L 190,285 L 240,290 Z" fill="#CFD8DC" stroke="#B0BEC5" stroke-width="2" stroke-linejoin="round" />
+    
+    
+    <path d="M 240,275 C 225,230 270,200 320,210 C 370,220 405,210 415,160 C 420,120 400,90 415,75 C 430,60 465,65 470,95 C 475,125 450,160 445,210 C 440,260 430,320 385,345 C 340,370 285,355 265,315 C 255,295 245,290 240,275 Z" fill="url(#bodyShade)" />
+    
+    
+    <path d="M 265,315 C 300,345 360,350 395,315" fill="none" stroke="#B0BEC5" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+    
+    
+    <path d="M 438,235 Q 450,245 435,255 Q 445,265 430,275" fill="none" stroke="#CFD8DC" stroke-width="3" stroke-linecap="round" />
+
+    
+    <g id="fish" transform="translate(540, 145) rotate(-25)">
+      
+      <path d="M 60,0 L 95,-20 L 85,0 L 95,20 Z" fill="#0288D1" />
+      
+      <path d="M -20,0 Q 20,-25 65,0 Q 20,25 -20,0 Z" fill="url(#fishGrad)" stroke="#0288D1" stroke-width="2" />
+      
+      <path d="M 15,-12 Q 20,0 15,12" fill="none" stroke="#0288D1" stroke-width="2" opacity="0.5" />
+      <path d="M 30,-10 Q 35,0 30,10" fill="none" stroke="#0288D1" stroke-width="2" opacity="0.5" />
+      <path d="M 45,-6 Q 50,0 45,6" fill="none" stroke="#0288D1" stroke-width="2" opacity="0.5" />
+      
+      <path d="M 5,5 L 20,20 L 0,15 Z" fill="#0288D1" />
+      
+      <circle cx="-5" cy="-4" r="4" fill="#FFFFFF" />
+      <circle cx="-6" cy="-4" r="2" fill="#000000" />
+    </g>
+
+    
+    <path d="M 615,95 Q 630,80 635,90 Q 625,100 615,95 Z" fill="#4FC3F7" />
+    <circle cx="645" cy="105" r="4" fill="#4FC3F7" />
+    <path d="M 590,85 Q 595,65 605,70 Q 600,85 590,85 Z" fill="#4FC3F7" />
+
+
+    
+    
+    <path d="M 455,105 C 455,165 480,220 555,215 C 625,210 660,150 670,115 C 630,120 580,125 535,120 C 490,115 470,105 455,105 Z" fill="url(#pouchGrad)" stroke="#D84315" stroke-width="2" stroke-linejoin="round" />
+    
+    
+    <path d="M 465,125 C 480,175 515,205 570,200" fill="none" stroke="#BF360C" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+    <path d="M 475,118 C 495,165 535,190 595,180" fill="none" stroke="#BF360C" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+    <path d="M 490,118 C 515,155 560,170 620,160" fill="none" stroke="#BF360C" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+    <path d="M 520,122 C 550,145 590,150 640,140" fill="none" stroke="#BF360C" stroke-width="1.5" opacity="0.4" stroke-linecap="round" />
+
+    
+    <path d="M 455,82 C 520,75 610,75 675,90 C 685,92 688,105 680,115 C 675,120 670,118 668,112 C 620,118 560,122 515,115 C 480,110 465,105 450,105 Z" fill="url(#beakTopGrad)" stroke="#E65100" stroke-width="2" stroke-linejoin="round" />
+    
+    <path d="M 470,86 C 530,82 600,82 665,94" fill="none" stroke="#FFF8E1" stroke-width="3" stroke-linecap="round" opacity="0.7" />
+    
+    <path d="M 485,90 L 495,92" stroke="#BF360C" stroke-width="2.5" stroke-linecap="round" />
+
+    
+    <circle cx="445" cy="92" r="14" fill="#FFE082" />
+    
+    <circle cx="445" cy="92" r="8" fill="#FFFFFF" stroke="#37474F" stroke-width="1.5" />
+    <circle cx="448" cy="92" r="4.5" fill="#263238" />
+    <circle cx="449" cy="90" r="2" fill="#FFFFFF" /> 
+    
+    <path d="M 435,96 Q 445,92 455,95" fill="none" stroke="#FFE082" stroke-width="4" />
+    <path d="M 436,96 Q 445,92 454,95" fill="none" stroke="#37474F" stroke-width="1.5" stroke-linecap="round" />
+    
+    
+    <path d="M 412,78 L 395,72 L 408,85 L 392,85 L 408,95" fill="#FFFFFF" stroke="#CFD8DC" stroke-width="1.5" stroke-linejoin="round" />
+
+    
+    <g transform="translate(425, 62) rotate(-15)">
+      <path d="M -20,5 C -20,-15 20,-15 25,5 Z" fill="#FFFFFF" stroke="#CFD8DC" stroke-width="2" />
+      <rect x="-22" y="2" width="48" height="7" rx="3" fill="#1E88E5" />
+      
+      <path d="M -22,5 L 26,5" stroke="#FFFFFF" stroke-width="1.5" />
+      
+      <path d="M 5,6 C 15,6 32,8 35,14 C 25,16 10,12 5,9 Z" fill="#0D47A1" />
+      
+      <circle cx="2" cy="5.5" r="2.5" fill="#FFD54F" />
+    </g>
+  </g>
+
+
+  
+  
+  <g id="drivetrain" transform="translate(360, 450)">
+    
+    <line x1="-150" y1="-12" x2="0" y2="-24" stroke="#546E7A" stroke-width="4" stroke-dasharray="6,4" />
+    <line x1="-150" y1="12" x2="0" y2="24" stroke="#546E7A" stroke-width="4" stroke-dasharray="6,4" />
+    
+    <circle cx="0" cy="0" r="25" fill="#CFD8DC" stroke="#37474F" stroke-width="4" />
+    
+    <circle cx="0" cy="-14" r="5" fill="#E0F7FA" stroke="#37474F" stroke-width="1.5" />
+    <circle cx="14" cy="0" r="5" fill="#E0F7FA" stroke="#37474F" stroke-width="1.5" />
+    <circle cx="0" cy="14" r="5" fill="#E0F7FA" stroke="#37474F" stroke-width="1.5" />
+    <circle cx="-14" cy="0" r="5" fill="#E0F7FA" stroke="#37474F" stroke-width="1.5" />
+    <circle cx="0" cy="0" r="6" fill="#78909C" />
+  </g>
+
+
+  
+  
+  <g id="near-leg">
+    
+    <path d="M 300,320 C 300,340 325,350 335,330 Z" fill="#ECEFF1" />
+    
+    <path d="M 320,330 L 375,335 L 340,405" fill="none" stroke="url(#legGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    <circle cx="375" cy="335" r="7" fill="#F57C00" /> 
+    
+    <path d="M 340,405 L 380,420 L 335,425 L 328,415 Z" fill="url(#legGrad)" stroke="#E65100" stroke-width="4" stroke-linejoin="round" />
+    <path d="M 340,405 L 365,421" stroke="#E65100" stroke-width="2" /> 
+    <path d="M 340,405 L 350,423" stroke="#E65100" stroke-width="2" /> 
+  </g>
+
+  
+  <line x1="360" y1="450" x2="345" y2="420" stroke="url(#chrome)" stroke-width="7" stroke-linecap="round" />
+  <circle cx="360" cy="450" r="4" fill="#37474F" />
+  <rect x="330" y="418" width="36" height="8" rx="4" fill="#263238" stroke="#CFD8DC" stroke-width="1" />
+
+  
+  <g id="near-wing">
+    
+    <path d="M 330,240 C 315,260 330,300 370,295 C 410,290 440,260 475,235 C 485,225 480,210 465,212 C 430,220 400,255 370,250 C 350,245 340,230 330,240 Z" fill="url(#wingShade)" stroke="#B0BEC5" stroke-width="2" />
+    
+    
+    <path d="M 435,258 C 455,250 475,235 480,225 C 485,215 475,208 465,212 C 455,215 450,225 435,235 C 425,242 425,255 435,258 Z" fill="#455A64" />
+    
+    
+    <path d="M 442,248 C 460,240 475,228 478,220" fill="none" stroke="#263238" stroke-width="2" stroke-linecap="round" />
+    <path d="M 435,240 C 455,232 470,220 472,213" fill="none" stroke="#263238" stroke-width="2" stroke-linecap="round" />
+    <path d="M 365,275 C 390,275 415,260 435,245" fill="none" stroke="#B0BEC5" stroke-width="2" stroke-linecap="round" />
+    <path d="M 380,285 C 405,280 425,265 440,252" fill="none" stroke="#B0BEC5" stroke-width="2" stroke-linecap="round" />
+
+    
+    <line x1="468" y1="210" x2="442" y2="218" stroke="#D84315" stroke-width="12" stroke-linecap="round" />
+    <circle cx="442" cy="218" r="6" fill="#BF360C" />
+    
+    <path d="M 455,208 C 465,205 470,218 460,225 C 450,230 445,220 455,208 Z" fill="#37474F" />
+    
+    
+    <path d="M 475,198 A 10,10 0 0,1 495,195 Z" fill="#FFD54F" stroke="#F57F17" stroke-width="1.5" />
+    <rect x="483" y="196" width="4" height="6" fill="#78909C" />
+  </g>
+
+
+  
+  
+  <g id="scarf">
+    
+    <path d="M 400,175 C 415,185 435,190 452,185 C 455,195 450,205 445,205 C 425,210 400,200 395,190 Z" fill="#E53935" stroke="#B71C1C" stroke-width="2" stroke-linejoin="round" />
+    <path d="M 412,181 L 408,198" stroke="#FFFFFF" stroke-width="5" />
+    <path d="M 432,186 L 428,204" stroke="#FFFFFF" stroke-width="5" />
+    
+    
+    <path d="M 400,185 C 350,180 310,150 260,165 C 230,175 200,160 180,145 L 175,165 C 200,185 235,195 265,185 C 315,170 350,200 398,195 Z" fill="#E53935" stroke="#B71C1C" stroke-width="2" stroke-linejoin="round" />
+    
+    <path d="M 365,180 L 362,193" stroke="#FFFFFF" stroke-width="6" />
+    <path d="M 330,172 L 325,186" stroke="#FFFFFF" stroke-width="6" />
+    <path d="M 295,164 L 290,179" stroke="#FFFFFF" stroke-width="6" />
+    <path d="M 255,167 L 260,185" stroke="#FFFFFF" stroke-width="6" />
+    <path d="M 220,167 L 218,184" stroke="#FFFFFF" stroke-width="6" />
+    <path d="M 190,153 L 185,171" stroke="#FFFFFF" stroke-width="6" />
+    
+    <path d="M 180,145 L 165,140 M 178,152 L 163,148 M 176,158 L 162,156 M 175,165 L 162,164" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" />
+
+    
+    <path d="M 395,190 C 360,205 330,195 290,210 L 285,225 C 325,215 360,220 400,198 Z" fill="#C62828" stroke="#B71C1C" stroke-width="1.5" stroke-linejoin="round" />
+  </g>
+
+  
+  <g stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity="0.8">
+    <line x1="120" y1="140" x2="60" y2="140" />
+    <line x1="140" y1="220" x2="90" y2="220" />
+    <line x1="70" y1="220" x2="50" y2="220" />
+    <line x1="110" y1="330" x2="40" y2="330" />
+  </g>
+  
+  <g stroke="#B0BEC5" stroke-width="2" stroke-linecap="round" opacity="0.5">
+    <line x1="90" y1="450" x2="30" y2="450" />
+    <line x1="100" y1="490" x2="60" y2="490" />
+    
+    <path d="M 110,535 C 80,535 60,515 75,500 C 85,490 100,505 90,515" fill="none" />
+    <path d="M 70,540 C 50,540 35,525 45,515" fill="none" />
+  </g>
+
+</svg>

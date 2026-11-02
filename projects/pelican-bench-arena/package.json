@@ -1,0 +1,30 @@
+{
+  "name": "pelican-bench-arena",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Blind-vote arena for the 'pelican riding a bicycle' SVG test across this week's new models, with a Bradley-Terry leaderboard.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "packageManager": "pnpm@11.21.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "generate": "node scripts/generate.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "@netlify/blobs": "^11.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

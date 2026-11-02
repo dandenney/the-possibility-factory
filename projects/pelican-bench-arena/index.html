@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f3ead8" />
+    <title>Pelican Bench Arena: which new model draws the best pelican on a bicycle?</title>
+    <meta name="description" content="The same 'pelican riding a bicycle' SVG prompt, run on Gemini 4 Argon, Muse Spark Open, LFM2.5, Beam and more. Vote blind, then see the leaderboard." />
+    <meta property="og:title" content="Pelican Bench Arena" />
+    <meta property="og:description" content="Gemini 4 vs Muse vs open weights: vote blind on who draws the best pelican riding a bicycle." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pelican-bench-arena.netlify.app/" />
+    <meta property="og:image" content="https://pelican-bench-arena.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='8' cy='24' r='6' fill='none' stroke='%231d3557' stroke-width='2.5'/><circle cx='24' cy='24' r='6' fill='none' stroke='%231d3557' stroke-width='2.5'/><ellipse cx='16' cy='14' rx='7' ry='5' fill='%23fff' stroke='%231d3557' stroke-width='1.5'/><path d='M20 8 L31 11 L20 12 Z' fill='%23f4a259'/><circle cx='19' cy='8' r='3' fill='%23fff' stroke='%231d3557' stroke-width='1.5'/></svg>" />
+  </head>
+  <body>
+    <main>
+      <header class="intro">
+        <p class="kicker">Pelican Bench Arena</p>
+        <h1>Which model draws the best pelican riding a bicycle?</h1>
+        <p class="lede">
+          Every new model gets the same test from <a href="https://simonwillison.net/tags/pelican-riding-a-bicycle/" target="_blank" rel="noopener">Simon Willison</a>.
+          We asked this week's releases (and some old favorites) for one SVG each. Pick the better pelican without knowing who drew it.
+        </p>
+        <p class="prompt"><span>Prompt</span><code id="prompt"></code></p>
+      </header>
+
+      <section class="arena" aria-labelledby="arena-title">
+        <h2 id="arena-title" class="sr-only">Blind matchup</h2>
+        <div class="pair" id="pair">
+          <figure class="contender" id="left" data-side="a">
+            <span class="tag">A</span>
+            <div class="frame"><img alt="Pelican A" /></div>
+            <figcaption class="who" hidden></figcaption>
+          </figure>
+          <figure class="contender" id="right" data-side="b">
+            <span class="tag">B</span>
+            <div class="frame"><img alt="Pelican B" /></div>
+            <figcaption class="who" hidden></figcaption>
+          </figure>
+        </div>
+        <div class="choices" id="choices">
+          <button type="button" class="primary" data-outcome="a">A is better</button>
+          <button type="button" class="ghost" data-outcome="tie">Tie</button>
+          <button type="button" class="primary" data-outcome="b">B is better</button>
+        </div>
+        <div class="after" id="after" hidden>
+          <p id="verdict" aria-live="polite"></p>
+          <button type="button" class="primary" id="next">Next pelicans</button>
+        </div>
+        <p class="hint" id="count">Keys: ← A, ↓ tie, → B, Enter for next.</p>
+        <p class="empty" id="empty" hidden>No pelicans yet. Run <code>pnpm generate</code>.</p>
+      </section>
+
+      <section class="board" aria-labelledby="board-title">
+        <div class="board-head">
+          <h2 id="board-title">Leaderboard</h2>
+          <div class="tabs" role="tablist">
+            <button type="button" role="tab" id="tab-all" aria-selected="true">Everyone</button>
+            <button type="button" role="tab" id="tab-you" aria-selected="false">Just you</button>
+          </div>
+        </div>
+        <ol class="standings" id="standings"></ol>
+        <p class="hint" id="board-note"></p>
+      </section>
+
+      <section class="actions">
+        <button type="button" class="primary" id="share">Share the arena</button>
+      </section>
+
+      <section class="gallery" aria-labelledby="gallery-title">
+        <h2 id="gallery-title">Every pelican</h2>
+        <p class="hint">Spoilers: this is who drew what. Tap one to see it big.</p>
+        <div id="gallery"></div>
+      </section>
+
+      <footer>
+        <p>
+          Each SVG is the model's first reply to the prompt with default settings, generated through
+          <a href="https://openrouter.ai" target="_blank" rel="noopener">OpenRouter</a><span id="generated"></span>. Scores are Bradley-Terry ratings on an Elo-like scale, like LMArena's.
+          Made by <a href="https://github.com/dandenney/the-possibility-factory/tree/main/projects/pelican-bench-arena">The Possibility Factory</a>.
+        </p>
+      </footer>
+    </main>
+
+    <dialog id="zoom" aria-label="Pelican">
+      <img alt="" />
+      <p id="zoom-caption"></p>
+      <form method="dialog"><button type="submit" class="ghost">Close</button></form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
