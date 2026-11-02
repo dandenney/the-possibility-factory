@@ -1,0 +1,25 @@
+{
+  "name": "ram-guilt-meter",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A joke dashboard that measures how much DRAM your browser tabs are hoarding from the data centers, with sarcastic verdicts and a shareable guilt card.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@11.21.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

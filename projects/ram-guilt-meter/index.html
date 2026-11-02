@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0e1014" />
+    <title>RAM Guilt Meter: Is your browser tab stealing Altman's DRAM?</title>
+    <meta name="description" content="Find out how much DRAM your browser tabs are hoarding from the data centers, get a sarcastic verdict, and share your guilt card." />
+    <meta property="og:title" content="RAM Guilt Meter" />
+    <meta property="og:description" content="Is your browser tab stealing Altman's DRAM? Measure your guilt and share the card." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ram-guilt-meter.netlify.app/" />
+    <meta property="og:image" content="https://ram-guilt-meter.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='9' width='26' height='14' rx='2' fill='%23ffb224'/><g fill='%230e1014'><rect x='6' y='12' width='4' height='6'/><rect x='12' y='12' width='4' height='6'/><rect x='18' y='12' width='4' height='6'/><rect x='24' y='12' width='2' height='6'/></g><g fill='%23ffb224'><rect x='6' y='23' width='2' height='3'/><rect x='11' y='23' width='2' height='3'/><rect x='16' y='23' width='2' height='3'/><rect x='21' y='23' width='2' height='3'/></g></svg>" />
+  </head>
+  <body>
+    <main>
+      <header class="intro">
+        <p class="kicker">RAM Guilt Meter</p>
+        <h1>Is your browser tab stealing Altman's DRAM?</h1>
+        <p class="lede">The take going around: home computers are wasting scarce memory that belongs in data centers. Let's find out how guilty you are.</p>
+      </header>
+
+      <p class="banner" id="banner" hidden></p>
+
+      <section class="meter" aria-live="polite">
+        <div class="gauge" id="gauge" style="--score: 0">
+          <div class="needle"></div>
+          <div class="hub"></div>
+        </div>
+        <div class="readout"><span id="score">0</span><small>guilt / 100</small></div>
+        <h2 id="tier">Measuring…</h2>
+        <p class="quip" id="quip"></p>
+      </section>
+
+      <form class="controls" id="controls" onsubmit="return false">
+        <div class="field">
+          <label for="tabs">How many tabs are open right now? <span class="hint">Count them. We'll wait.</span></label>
+          <div class="tabs-row">
+            <input type="range" id="tabs-range" min="1" max="200" step="1" value="27" aria-label="Open tabs" />
+            <input type="number" id="tabs" min="1" max="500" step="1" value="27" inputmode="numeric" />
+          </div>
+        </div>
+        <fieldset class="field">
+          <legend>What kind of tabs?</legend>
+          <div class="chips" id="weights"></div>
+        </fieldset>
+        <div class="field">
+          <label for="device">How much RAM does this machine have?</label>
+          <select id="device"></select>
+          <p class="hint" id="device-hint"></p>
+        </div>
+      </form>
+
+      <section class="evidence">
+        <h2>The evidence</h2>
+        <ul id="evidence"></ul>
+      </section>
+
+      <section class="actions">
+        <button type="button" id="share" class="primary">Share my guilt card</button>
+        <button type="button" id="download" class="ghost">Download card</button>
+        <button type="button" id="donate" class="donate">Donate your RAM</button>
+      </section>
+
+      <figure class="card">
+        <canvas id="card" width="1200" height="630" role="img" aria-label="Your guilt card"></canvas>
+        <figcaption>Your guilt card. It updates as you confess.</figcaption>
+      </figure>
+
+      <details class="math">
+        <summary>How the math works</summary>
+        <ul>
+          <li><b>Hoarded RAM</b> = tabs × an average tab weight (90, 180 or 400 MB, ballpark figures for a modern browser tab).</li>
+          <li><b>KV cache tokens</b>: a 70B-class model with grouped-query attention keeps about 320 KB of keys and values per token in fp16 (80 layers × 8 KV heads × 128 dims × 2 × 2 bytes). That's how many tokens of context your tabs could have held instead.</li>
+          <li><b>Chatbot replies</b> = those tokens ÷ 650, about one answer each.</li>
+          <li><b>DDR5 dies</b> = hoarded GB ÷ 2 (one 16 Gb chip).</li>
+          <li><b>Guilt</b> = 100 × (1 − e<sup>−(tabs ÷ 35 + share of your RAM)</sup>). It's vibes with a formula.</li>
+          <li>We can't see your other tabs; browsers don't allow it. In Chrome and Edge we read <code>navigator.deviceMemory</code>, <code>performance.memory</code>, and <code>performance.measureUserAgentSpecificMemory()</code> for this tab. Nothing leaves your browser.</li>
+        </ul>
+      </details>
+
+      <footer>
+        <p>Satire. Not affiliated with OpenAI or Sam Altman. Made by <a href="https://github.com/dandenney/the-possibility-factory/tree/main/projects/ram-guilt-meter">The Possibility Factory</a>.</p>
+      </footer>
+    </main>
+
+    <dialog id="donation" aria-labelledby="donation-title">
+      <h2 id="donation-title">Donating your RAM</h2>
+      <ol id="donation-steps"></ol>
+      <div class="bar"><span id="donation-bar"></span></div>
+      <p id="donation-result" hidden></p>
+      <form method="dialog"><button type="submit" id="donation-close" class="primary" hidden>Fine, I'll close them</button></form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
