@@ -113,6 +113,19 @@ export function drawCard(canvas: HTMLCanvasElement, r: GuiltResult, opts: CardOp
   g.fillStyle = C.dim;
   g.font = `800 24px ${SANS}`;
   g.fillText("RAM GUILT METER", 72, 96);
+  if (r.input.measuredMb) {
+    const w = g.measureText("RAM GUILT METER").width;
+    g.font = `800 18px ${SANS}`;
+    const tag = "MEASURED";
+    const tw = g.measureText(tag).width + 20;
+    g.strokeStyle = C.green;
+    g.fillStyle = C.green;
+    g.lineWidth = 2;
+    g.beginPath();
+    g.roundRect(72 + w + 14, 74, tw, 28, 6);
+    g.stroke();
+    g.fillText(tag, 72 + w + 24, 95);
+  }
 
   const cx = 312, cy = 330;
   gauge(g, cx, cy, 190, r.score);
@@ -140,7 +153,7 @@ export function drawCard(canvas: HTMLCanvasElement, r: GuiltResult, opts: CardOp
 
   const stats: [string, string][] = [
     [`${r.input.tabs}`, r.input.tabs === 1 ? "tab open" : "tabs open"],
-    [formatGb(r.hoardedGb), "of DRAM hoarded"],
+    [formatGb(r.hoardedGb), r.input.measuredMb ? "of DRAM hoarded (measured)" : "of DRAM hoarded"],
     [formatCount(r.kvTokens), "tokens of KV cache it could hold"],
     [formatCount(r.replies), "chatbot replies left unwritten"],
   ];

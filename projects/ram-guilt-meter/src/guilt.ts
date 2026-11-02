@@ -15,13 +15,16 @@ export const TAB_WEIGHTS = [
 ] as const;
 export type TabWeightId = (typeof TAB_WEIGHTS)[number]["id"];
 
-export const DEVICE_GB_OPTIONS = [4, 8, 16, 32, 64, 128] as const;
-export const MAX_TABS = 500;
+export const DEVICE_GB_OPTIONS = [4, 8, 16, 18, 24, 32, 36, 48, 64, 96, 128] as const;
+export const MAX_TABS = 5000;
+export const MAX_DEVICE_GB = 1024;
 
 export interface GuiltInput {
   tabs: number;
   weight: TabWeightId;
   deviceGb: number;
+  /** Total browser memory measured by the Terminal script, in MB. Replaces the tab-weight estimate. */
+  measuredMb?: number;
 }
 
 export interface Tier {
@@ -96,9 +99,12 @@ const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n
 export function normalize(input: Partial<GuiltInput>): GuiltInput {
   const tabs = Math.round(clamp(Number(input.tabs) || 1, 1, MAX_TABS));
   const weight = TAB_WEIGHTS.some((w) => w.id === input.weight) ? (input.weight as TabWeightId) : "typical";
-  const gb = Number(input.deviceGb);
-  const deviceGb = (DEVICE_GB_OPTIONS as readonly number[]).includes(gb) ? gb : 16;
-  return { tabs, weight, deviceGb };
+  const gb = Math.round(Number(input.deviceGb));
+  const deviceGb = gb >= 1 && gb <= MAX_DEVICE_GB ? gb : 16;
+  const mb = Math.round(Number(input.measuredMb));
+  const out: GuiltInput = { tabs, weight, deviceGb };
+  if (mb >= 1 && mb <= MAX_DEVICE_GB * 1024) out.measuredMb = mb;
+  return out;
 }
 
 export function tierFor(score: number): Tier {
@@ -112,7 +118,7 @@ export function guiltScore(tabs: number, shareOfDevice: number): number {
 
 export function computeGuilt(raw: Partial<GuiltInput>): GuiltResult {
   const input = normalize(raw);
-  const mbPerTab = TAB_WEIGHTS.find((w) => w.id === input.weight)!.mb;
+  const mbPerTab = input.measuredMb ? input.measuredMb / input.tabs : TAB_WEIGHTS.find((w) => w.id === input.weight)!.mb;
   const hoardedGb = (input.tabs * mbPerTab) / 1024;
   const shareOfDevice = hoardedGb / input.deviceGb;
   const kvTokens = Math.floor((hoardedGb * 1024 ** 3) / KV_BYTES_PER_TOKEN);
@@ -141,13 +147,19 @@ export function guessDeviceGb(deviceMemory: number | undefined): number {
 
 export function encodeShare(input: GuiltInput): string {
   const p = new URLSearchParams({ t: String(input.tabs), w: input.weight, g: String(input.deviceGb) });
+  if (input.measuredMb) p.set("m", String(input.measuredMb));
   return p.toString();
 }
 
 export function decodeShare(search: string): GuiltInput | undefined {
   const p = new URLSearchParams(search);
   if (!p.has("t")) return undefined;
-  return normalize({ tabs: Number(p.get("t")), weight: p.get("w") as TabWeightId, deviceGb: Number(p.get("g")) });
+  return normalize({
+    tabs: Number(p.get("t")),
+    weight: p.get("w") as TabWeightId,
+    deviceGb: Number(p.get("g")),
+    measuredMb: p.has("m") ? Number(p.get("m")) : undefined,
+  });
 }
 
 const compact = new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 });

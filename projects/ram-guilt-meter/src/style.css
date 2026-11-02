@@ -103,6 +103,18 @@ select { width: 100%; font-family: var(--sans); font-weight: 600; font-size: 1re
 .chips input:checked + span { background: var(--amber); border-color: var(--amber); color: #1a1205; }
 .chips input:focus-visible + span { outline: 2px solid var(--ink); outline-offset: 2px; }
 
+.measured .label { font-weight: 700; margin: 0 0 8px; }
+.measured p { margin: 0; }
+.measured b { font-family: var(--mono); color: var(--amber); }
+button.link { background: none; border: 0; padding: 0; color: var(--amber); text-decoration: underline; font: inherit; font-weight: 600; }
+
+.auto { margin: 26px 0 0; padding: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; }
+.auto h2 { font-size: 1.15rem; }
+.auto p { margin: 8px 0 0; }
+.cmd { display: flex; gap: 8px; align-items: stretch; margin-top: 12px; }
+.cmd code { flex: 1; min-width: 0; overflow-x: auto; white-space: nowrap; padding: 11px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; color: var(--green); font-size: 0.85rem; }
+.cmd button { padding: 10px 14px; }
+
 .evidence { margin: 26px 0 0; }
 .evidence h2 { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--dim); }
 .evidence ul { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 8px; }

@@ -44,16 +44,30 @@
             <input type="number" id="tabs" min="1" max="500" step="1" value="27" inputmode="numeric" />
           </div>
         </div>
-        <fieldset class="field">
+        <fieldset class="field" id="weight-field">
           <legend>What kind of tabs?</legend>
           <div class="chips" id="weights"></div>
         </fieldset>
+        <div class="field measured" id="measured" hidden>
+          <p class="label">Browser memory, measured</p>
+          <p><b id="measured-gb"></b> across your browsers. <button type="button" class="link" id="measured-clear">Estimate instead</button></p>
+        </div>
         <div class="field">
           <label for="device">How much RAM does this machine have?</label>
           <select id="device"></select>
           <p class="hint" id="device-hint"></p>
         </div>
       </form>
+
+      <section class="auto">
+        <h2>Skip the honor system</h2>
+        <p>Web pages can't see your other tabs, but your computer can. Paste this into Terminal to count your real tabs and browser memory and open your card with them:</p>
+        <div class="cmd">
+          <code id="cmd">curl -fsSL https://ram-guilt-meter.netlify.app/measure.sh | sh</code>
+          <button type="button" id="copy-cmd" class="ghost">Copy</button>
+        </div>
+        <p class="hint">On macOS it counts tabs in Chrome, Safari, Arc, Brave and Edge, and asks permission the first time. On Linux, or for Firefox, it measures memory and asks for your tab count. Nothing gets uploaded; your numbers just go into the link it opens. <a href="/measure.sh" target="_blank" rel="noopener">Read the script</a> before you run it.</p>
+      </section>
 
       <section class="evidence">
         <h2>The evidence</h2>
@@ -74,7 +88,7 @@
       <details class="math">
         <summary>How the math works</summary>
         <ul>
-          <li><b>Hoarded RAM</b> = tabs × an average tab weight (90, 180 or 400 MB, ballpark figures for a modern browser tab).</li>
+          <li><b>Hoarded RAM</b> = tabs × an average tab weight (90, 180 or 400 MB, ballpark figures for a modern browser tab), or the memory the Terminal script measured for every browser process you have running.</li>
           <li><b>KV cache tokens</b>: a 70B-class model with grouped-query attention keeps about 320 KB of keys and values per token in fp16 (80 layers × 8 KV heads × 128 dims × 2 × 2 bytes). That's how many tokens of context your tabs could have held instead.</li>
           <li><b>Chatbot replies</b> = those tokens ÷ 650, about one answer each.</li>
           <li><b>DDR5 dies</b> = hoarded GB ÷ 2 (one 16 Gb chip).</li>

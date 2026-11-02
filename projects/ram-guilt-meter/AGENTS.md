@@ -15,6 +15,7 @@ repo but must not import from `apps/` or `packages/`; it has its own pnpm root a
 - `src/guilt.ts`: all the math (no DOM): hoarded GB, KV-cache tokens, score, tiers and quips, share-link encoding.
 - `src/probe.ts`: browser memory APIs. `src/card.ts`: the 1200×630 canvas guilt card. `src/main.ts`: UI wiring.
 - `public/og.png`: social preview, a screenshot of the card for 47 typical tabs on 16 GB.
+- `public/measure.sh`: POSIX sh script users pipe from curl. Counts tabs via AppleScript on macOS, sums browser RSS with `ps`, reads RAM, then opens `?t=&g=&m=&src=cli`. Check it with `sh -n` and `dash -n`; keep it uploading nothing.
 
 ## Rules
 

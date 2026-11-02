@@ -26,6 +26,12 @@ const ui = {
   tabsRange: $<HTMLInputElement>("tabs-range"),
   tabs: $<HTMLInputElement>("tabs"),
   weights: $("weights"),
+  weightField: $("weight-field"),
+  measured: $("measured"),
+  measuredGb: $("measured-gb"),
+  measuredClear: $<HTMLButtonElement>("measured-clear"),
+  cmd: $("cmd"),
+  copyCmd: $<HTMLButtonElement>("copy-cmd"),
   device: $<HTMLSelectElement>("device"),
   deviceHint: $("device-hint"),
   evidence: $("evidence"),
@@ -44,6 +50,7 @@ const ui = {
 const SITE = `${location.origin}${location.pathname}`;
 const params = new URLSearchParams(location.search);
 const shared = decodeShare(location.search);
+const fromCli = params.get("src") === "cli";
 const env = probe();
 let measuredMb: number | undefined;
 let donated = params.get("d") === "1";
@@ -59,10 +66,21 @@ for (const w of TAB_WEIGHTS) {
 }
 for (const gb of DEVICE_GB_OPTIONS) ui.device.add(new Option(`${gb} GB`, String(gb)));
 
+function ensureDeviceOption(gb: number) {
+  const options = [...ui.device.options];
+  if (options.some((o) => Number(o.value) === gb)) return;
+  const before = options.find((o) => Number(o.value) > gb) ?? null;
+  ui.device.add(new Option(`${gb} GB`, String(gb)), before);
+}
+
 function syncControls() {
   ui.tabs.value = String(state.tabs);
   ui.tabsRange.value = String(Math.min(state.tabs, Number(ui.tabsRange.max)));
+  ensureDeviceOption(state.deviceGb);
   ui.device.value = String(state.deviceGb);
+  ui.weightField.hidden = Boolean(state.measuredMb);
+  ui.measured.hidden = !state.measuredMb;
+  if (state.measuredMb) ui.measuredGb.textContent = formatGb(state.measuredMb / 1024);
   for (const input of ui.weights.querySelectorAll<HTMLInputElement>("input")) input.checked = input.value === state.weight;
 }
 
@@ -83,6 +101,16 @@ ui.tabs.addEventListener("input", () => {
 ui.tabs.addEventListener("change", () => render());
 ui.weights.addEventListener("change", (e) => setState({ weight: (e.target as HTMLInputElement).value as TabWeightId }));
 ui.device.addEventListener("change", () => setState({ deviceGb: Number(ui.device.value) }));
+ui.measuredClear.addEventListener("click", () => setState({ measuredMb: undefined }));
+
+ui.copyCmd.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(ui.cmd.textContent ?? "");
+    toast("Copied. Paste it into Terminal.");
+  } catch {
+    getSelection()?.selectAllChildren(ui.cmd);
+  }
+});
 
 // ---------- Rendering ----------
 
@@ -93,6 +121,7 @@ function li(html: string) {
 }
 
 function deviceHint(): string {
+  if (fromCli) return "Measured by the Terminal script.";
   if (env.deviceMemory) {
     return env.deviceMemory >= 8
       ? `Your browser admits to at least 8 GB (it never says more than that), so pick the real number.`
@@ -125,7 +154,7 @@ function render(updateInputs = true) {
 
   const pct = Math.round(r.shareOfDevice * 100);
   ui.evidence.replaceChildren(
-    li(`Your ${r.input.tabs === 1 ? "tab is" : `${r.input.tabs} tabs are`} hoarding about <b>${formatGb(r.hoardedGb)}</b> of DRAM${pct > 100 ? `, more than your machine even has (hello, swap)` : pct >= 1 ? `, ${pct}% of your machine` : ""}.`),
+    li(`Your ${r.input.tabs === 1 ? "tab is" : `${r.input.tabs} tabs are`} hoarding ${r.input.measuredMb ? "a measured" : "about"} <b>${formatGb(r.hoardedGb)}</b> of DRAM${pct > 100 ? `, more than your machine even has (hello, swap)` : pct >= 1 ? `, ${pct}% of your machine` : ""}.`),
     li(`In a data center that memory could hold <b>${formatCount(r.kvTokens)}</b> tokens of context for a 70B-class model.`),
     li(`That's <b>${formatCount(r.replies)}</b> chatbot replies that will never be written because of you.`),
     li(`Or roughly <b>${r.dramDies < 10 ? r.dramDies.toFixed(1) : formatCount(r.dramDies)}</b> DDR5 memory chips, just sitting there.`),
@@ -226,7 +255,10 @@ ui.dialog.addEventListener("close", () => toast("Certified RAM donor. Share the 
 
 // ---------- Start ----------
 
-if (shared) {
+if (shared && fromCli) {
+  ui.banner.innerHTML = `Measured on your machine: <b>${shared.tabs}</b> tabs${shared.measuredMb ? `, <b>${formatGb(shared.measuredMb / 1024)}</b> of browser memory` : ""}, <b>${shared.deviceGb} GB</b> of RAM. No more hiding.`;
+  ui.banner.hidden = false;
+} else if (shared) {
   const theirs = computeGuilt(shared);
   ui.banner.innerHTML = `Someone ${donated ? "donated their RAM and " : ""}scored <b>${theirs.score}</b> (${theirs.tier.title}). Think you're less guilty? <button type="button" class="ghost" id="mine">Measure mine</button>`;
   ui.banner.hidden = false;
@@ -234,7 +266,7 @@ if (shared) {
     donated = false;
     history.replaceState(null, "", location.pathname);
     ui.banner.hidden = true;
-    setState({ tabs: 27, weight: "typical", deviceGb: guessDeviceGb(env.deviceMemory) });
+    setState({ tabs: 27, weight: "typical", deviceGb: guessDeviceGb(env.deviceMemory), measuredMb: undefined });
     ui.tabs.focus();
     ui.tabs.select();
   });

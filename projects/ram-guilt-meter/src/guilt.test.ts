@@ -25,6 +25,13 @@ describe("computeGuilt", () => {
     expect(r.dramDies).toBeCloseTo(2.8125);
   });
 
+  it("uses measured browser memory instead of the tab-weight estimate", () => {
+    const r = computeGuilt({ tabs: 40, weight: "lean", deviceGb: 36, measuredMb: 12_288 });
+    expect(r.hoardedGb).toBeCloseTo(12);
+    expect(r.mbPerTab).toBeCloseTo(307.2);
+    expect(r.shareOfDevice).toBeCloseTo(12 / 36);
+  });
+
   it("picks a quip from the tier deterministically", () => {
     const a = computeGuilt({ tabs: 40, weight: "heavy", deviceGb: 8 });
     const b = computeGuilt({ tabs: 40, weight: "heavy", deviceGb: 8 });
@@ -60,8 +67,10 @@ describe("guiltScore and tiers", () => {
 
 describe("normalize", () => {
   it("clamps tabs and falls back for unknown values", () => {
-    expect(normalize({ tabs: 0, weight: "nope" as never, deviceGb: 12 })).toEqual({ tabs: 1, weight: "typical", deviceGb: 16 });
-    expect(normalize({ tabs: 9999 }).tabs).toBe(500);
+    expect(normalize({ tabs: 0, weight: "nope" as never, deviceGb: 0 })).toEqual({ tabs: 1, weight: "typical", deviceGb: 16 });
+    expect(normalize({ tabs: 99999 }).tabs).toBe(5000);
+    expect(normalize({ deviceGb: 36 }).deviceGb).toBe(36);
+    expect(normalize({ measuredMb: -4 }).measuredMb).toBeUndefined();
     expect(normalize({ tabs: 12.6 }).tabs).toBe(13);
   });
 });
@@ -72,12 +81,17 @@ describe("share links", () => {
     expect(decodeShare(`?${encodeShare(input)}`)).toEqual(input);
   });
 
+  it("round-trips measured memory", () => {
+    const input = { tabs: 63, weight: "typical" as const, deviceGb: 36, measuredMb: 9216 };
+    expect(decodeShare(`?${encodeShare(input)}`)).toEqual(input);
+  });
+
   it("ignores pages without a share", () => {
     expect(decodeShare("")).toBeUndefined();
   });
 
   it("sanitizes tampered links", () => {
-    expect(decodeShare("?t=-5&w=<script>&g=3")).toEqual({ tabs: 1, weight: "typical", deviceGb: 16 });
+    expect(decodeShare("?t=-5&w=<script>&g=9999&m=abc")).toEqual({ tabs: 1, weight: "typical", deviceGb: 16 });
   });
 });
 
