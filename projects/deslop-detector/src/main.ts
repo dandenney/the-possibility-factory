@@ -1,5 +1,5 @@
 import "./style.css";
-import { cardBlob, drawCard, scoreColor, type CardData } from "./card.ts";
+import { cardBlob, drawCard, tierColor, type CardData } from "./card.ts";
 import { detect, formatScore, RULE_BY_ID, RULES, segments, type Mark, type Result, type RuleId } from "./detect.ts";
 import {
   cleanReply,
@@ -28,8 +28,10 @@ const ui = {
   blurb: $("blurb"),
   pin: $("scale-pin"),
   meta: $("meta"),
+  mini: $<HTMLAnchorElement>("mini"),
   legend: $("legend"),
   showAll: $<HTMLButtonElement>("show-all"),
+  flagsTitle: $("flags-title"),
   findings: $("findings"),
   includeText: $<HTMLInputElement>("include-text"),
   share: $<HTMLButtonElement>("share"),
@@ -58,8 +60,12 @@ const DRAFT_KEY = "deslop:text";
 const OLLAMA_KEY = "deslop:ollama";
 const MIN_WORDS = 40;
 const MAX_FINDINGS = 80;
+const TOP_HABITS = 5;
+const wide = matchMedia("(min-width: 960px)");
 
 let focus: RuleId | null = null;
+let active: Mark | null = null;
+let allHabits = false;
 let current: Result = detect("");
 
 // ---------- Rendering ----------
@@ -70,10 +76,8 @@ function el<K extends keyof HTMLElementTagNameMap>(tag: K, props: Partial<HTMLEl
   return node;
 }
 
-function color(node: HTMLElement, c: string, c2?: string) {
-  node.style.setProperty("--c", c);
-  if (c2) node.style.setProperty("--c2", c2);
-}
+const same = (a: Mark | null, b: Mark) => !!a && a.start === b.start && a.end === b.end && a.rule === b.rule;
+const within = (seg: { start: number }, m: Mark) => seg.start >= m.start && seg.start < m.end;
 
 function drawMarks(target: HTMLElement, text: string, marks: Mark[]) {
   const frag = document.createDocumentFragment();
@@ -83,13 +87,18 @@ function drawMarks(target: HTMLElement, text: string, marks: Mark[]) {
       continue;
     }
     const m = el("mark", {}, seg.text);
-    color(m, RULE_BY_ID[seg.rules[0]!].color, seg.rules[1] && RULE_BY_ID[seg.rules[1]].color);
-    if (seg.rules.length > 1) m.classList.add("stack");
+    if (active && within(seg, active)) m.classList.add("on");
     m.dataset.start = String(seg.start);
     frag.append(m);
   }
   if (text.endsWith("\n") || !text) frag.append("\u200b");
   target.replaceChildren(frag);
+}
+
+function hover(m: Mark | null) {
+  for (const x of ui.backdrop.querySelectorAll<HTMLElement>("mark")) {
+    x.classList.toggle("hover", !!m && within({ start: Number(x.dataset.start) }, m));
+  }
 }
 
 function autosize() {
@@ -117,12 +126,13 @@ function render() {
   const text = ui.text.value;
   current = detect(text);
   const shown = focus ? current.marks.filter((m) => m.rule === focus) : current.marks;
+  if (active && !shown.some((m) => same(active, m))) active = null;
   drawMarks(ui.backdrop, text, shown);
   autosize();
 
   const empty = current.words === 0;
   ui.score.textContent = formatScore(current.score);
-  document.documentElement.style.setProperty("--score-color", empty ? "var(--ink)" : scoreColor(current.score));
+  document.documentElement.style.setProperty("--tier", empty ? "var(--faint)" : tierColor(current.score));
   ui.tier.textContent = empty ? "Paste something" : current.tier.title;
   ui.blurb.textContent = empty
     ? "People who write carefully score under 15. A stock chatbot averages about 120."
@@ -131,32 +141,56 @@ function render() {
   const tics = current.marks.length;
   ui.meta.textContent = empty
     ? ""
-    : `${current.words.toLocaleString()} words, ${tics} ${tics === 1 ? "tic" : "tics"}, ${current.points} points.` +
-      (current.words < MIN_WORDS ? " Short texts swing wildly; paste a paragraph or more for a fair score." : "");
+    : `${current.words.toLocaleString()} words · ${tics} ${tics === 1 ? "flag" : "flags"} · ${current.points} points` +
+      (current.words < MIN_WORDS ? ". Short texts swing wildly; paste a paragraph or more for a fair score." : "");
+  ui.mini.hidden = empty;
+  ui.mini.replaceChildren(
+    el("i", { className: "dot" }),
+    el("b", {}, formatScore(current.score)),
+    `${current.tier.title} · ${tics} ${tics === 1 ? "flag" : "flags"}`,
+  );
 
-  // legend
-  const chips: HTMLElement[] = current.counts.map((c) => {
-    const b = el("button", { type: "button" }, `${c.rule.label} `, el("b", {}, `×${c.count}`));
-    color(b, c.rule.color);
+  // habits
+  const rows: HTMLElement[] = current.counts.map((c) => {
+    const b = el("button", { type: "button" }, el("span", {}, c.rule.label), el("b", {}, String(c.count)));
     b.setAttribute("aria-pressed", String(focus === c.rule.id));
     b.title = c.rule.tip;
     b.addEventListener("click", () => setFocus(focus === c.rule.id ? null : c.rule.id));
-    return b;
+    return el("li", {}, b);
   });
-  if (!chips.length) chips.push(el("p", { className: "none" }, empty ? "Nothing yet." : "No tics found. Nice."));
-  ui.legend.replaceChildren(...chips);
+  if (!rows.length) rows.push(el("li", { className: "none" }, empty ? "Nothing yet." : "No tics found. Nice."));
+  const hidden = allHabits || focus ? 0 : rows.length - TOP_HABITS;
+  if (hidden > 1) {
+    rows.splice(TOP_HABITS);
+    const more = el("button", { type: "button", className: "link" }, `${hidden} more`);
+    more.addEventListener("click", () => {
+      allHabits = true;
+      render();
+    });
+    rows.push(el("li", { className: "more-habits" }, more));
+  }
+  ui.legend.replaceChildren(...rows);
   ui.legend.classList.toggle("focused", focus !== null);
   ui.showAll.hidden = focus === null;
 
-  // findings
+  // flags
+  ui.flagsTitle.textContent = shown.length ? `Flagged · ${shown.length}` : "Flagged";
   const items = shown.slice(0, MAX_FINDINGS).map((m) => {
     const rule = RULE_BY_ID[m.rule];
-    const b = el("button", { type: "button" }, excerpt(text, m), el("small", {}, el("b", {}, rule.label), ` · ${rule.tip}`));
-    color(b, rule.color);
+    const b = el(
+      "button",
+      { type: "button" },
+      el("span", { className: "f-label" }, rule.label),
+      excerpt(text, m),
+      el("span", { className: "f-tip" }, rule.tip),
+    );
+    if (same(active, m)) b.classList.add("on");
     b.addEventListener("click", () => jumpTo(m));
+    b.addEventListener("mouseenter", () => hover(m));
+    b.addEventListener("mouseleave", () => hover(null));
     return el("li", {}, b);
   });
-  if (shown.length > MAX_FINDINGS) items.push(el("li", { className: "hint" }, `…and ${shown.length - MAX_FINDINGS} more.`));
+  if (shown.length > MAX_FINDINGS) items.push(el("li", { className: "more" }, `…and ${shown.length - MAX_FINDINGS} more.`));
   ui.findings.replaceChildren(...items);
 
   drawCard(ui.card, cardData());
@@ -173,26 +207,45 @@ function cardData(): CardData {
 }
 
 function setFocus(rule: RuleId | null) {
-  if (focus !== null && rule === null && !current.counts.some((c) => c.rule.id === focus)) focus = null;
   focus = rule;
   render();
 }
 
-function jumpTo(m: Mark) {
-  const mark = [...ui.backdrop.querySelectorAll<HTMLElement>("mark")].find((x) => Number(x.dataset.start) >= m.start);
-  if (mark) {
-    mark.scrollIntoView({ block: "center", behavior: "smooth" });
-    mark.classList.remove("flash");
-    void mark.offsetWidth;
-    mark.classList.add("flash");
+function revealCard() {
+  const card = ui.findings.querySelector<HTMLElement>("button.on");
+  if (!card || !wide.matches) return;
+  const li = card.parentElement!;
+  const list = ui.findings;
+  if (li.offsetTop < list.scrollTop || li.offsetTop + li.offsetHeight > list.scrollTop + list.clientHeight) {
+    list.scrollTo({ top: li.offsetTop - 8, behavior: "smooth" });
   }
+}
+
+function jumpTo(m: Mark) {
+  active = m;
+  render();
+  const mark = [...ui.backdrop.querySelectorAll<HTMLElement>("mark")].find((x) => Number(x.dataset.start) >= m.start);
+  mark?.scrollIntoView({ block: "center", behavior: "smooth" });
   ui.text.focus({ preventScroll: true });
-  ui.text.setSelectionRange(m.start, m.end);
+  ui.text.setSelectionRange(m.end, m.end);
+  revealCard();
+}
+
+/** Grammarly-style: putting the caret inside a flag opens its card. */
+function syncCaret() {
+  const at = ui.text.selectionStart;
+  const shown = focus ? current.marks.filter((m) => m.rule === focus) : current.marks;
+  const hit = shown.filter((m) => at >= m.start && at <= m.end).sort((a, b) => a.end - a.start - (b.end - b.start))[0] ?? null;
+  if (hit === active || (hit && same(active, hit))) return;
+  active = hit;
+  render();
+  revealCard();
 }
 
 let timer = 0;
 function setText(text: string, save = true) {
   ui.text.value = text;
+  active = null;
   if (save) saveDraft();
   render();
 }
@@ -213,6 +266,10 @@ ui.text.addEventListener("input", () => {
     render();
   }, 90);
 });
+ui.text.addEventListener("click", syncCaret);
+ui.text.addEventListener("keyup", (e) => {
+  if (e.key.startsWith("Arrow") || e.key === "Home" || e.key === "End") syncCaret();
+});
 window.addEventListener("resize", autosize);
 
 for (const s of SAMPLES) {
@@ -231,11 +288,7 @@ ui.clear.addEventListener("click", () => {
 ui.showAll.addEventListener("click", () => setFocus(null));
 
 ui.rules.replaceChildren(
-  ...RULES.map((r) => {
-    const td = el("td", {}, r.label);
-    color(td, r.color);
-    return el("tr", {}, td, el("td", {}, String(r.weight)), el("td", {}, r.tip));
-  }),
+  ...RULES.map((r) => el("tr", {}, el("td", {}, r.label), el("td", {}, String(r.weight)), el("td", {}, r.tip))),
 );
 
 // ---------- Toast + sharing ----------

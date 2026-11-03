@@ -1,6 +1,6 @@
 # Deslop Detector
 
-Does this read like a chatbot wrote it? Paste some text and the AI writing habits light up: em dashes, "it's not X, it's Y", lists of three, "delve", questions answered on the spot, and a dozen more. You get a slop score per 1,000 words (careful people score under 15, a stock chatbot about 120) and a card to share.
+Does this read like a chatbot wrote it? Paste some text and the AI writing habits get underlined, Grammarly-style: em dashes, "it's not X, it's Y", lists of three, "delve", questions answered on the spot, and a dozen more. You get a slop score per 1,000 words (careful people score under 15, a stock chatbot about 120) and a card to share.
 
 Live: https://deslop-detector.netlify.app
 

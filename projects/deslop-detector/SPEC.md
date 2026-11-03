@@ -25,7 +25,8 @@ removing slop.
   markdown, emoji), each with a weight. The score is weighted tics per 1000 words, on the same scale as the post's
   detector (people under 15, stock Qwen3-4B about 120). On the post's 80 sample answers it averages 122 before and
   7 after (theirs: 121 and 13), correlation 0.95.
-- Live heatmap behind the textarea, a legend that isolates one habit, a list of findings that jumps to each one,
+- Light, Grammarly-style editor: thin underlines behind the textarea, a sidebar with the score, habit counts (tap
+  one to isolate it) and flag cards that jump to each one (or open when the caret lands in a flag),
   and three samples (chatbot blog post, LinkedIn post, plain human note).
 - Shareable 1200×630 score card (native share with the PNG, else link copy, plus download). The link carries the
   score and breakdown; optionally the text too, deflate-compressed in the URL fragment so it never hits a server.

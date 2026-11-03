@@ -23,7 +23,6 @@ export interface Rule {
   id: RuleId;
   label: string;
   weight: number;
-  color: string;
   tip: string;
   find: (text: string, ctx: Context) => Span[];
 }
@@ -161,7 +160,6 @@ export const RULES: Rule[] = [
     id: "em-dash",
     label: "Em dash",
     weight: 2,
-    color: "#ff6b6b",
     tip: "The em dash is the best-known tell. A comma, colon or full stop usually does the same job.",
     find: (t) => all(/—|(?<=\s)[–-]{1,2}(?=\s)|(?<=\p{L})--(?=\p{L})/gu, t),
   },
@@ -169,7 +167,6 @@ export const RULES: Rule[] = [
     id: "not-x-but-y",
     label: "Not X, but Y",
     weight: 3,
-    color: "#ff9f1c",
     tip: "\"It's not X, it's Y\" sets up a claim nobody made so it can knock it down. Just say Y.",
     find: (t) => [
       ...all(new RegExp(`(?:(?<![\\p{L}])not|n${APOS}t)\\s+(?:just|only|merely|simply|about|because)\\b[^.!?\\n]{0,60}?(?:[,;:—–.]\\s*|\\s+)(?:but|it${APOS}s|it is|they${APOS}re|that${APOS}s|this is|it was|rather|instead|he${APOS}s|she${APOS}s|we${APOS}re|you${APOS}re)(?![\\p{L}])`, "giu"), t),
@@ -182,7 +179,6 @@ export const RULES: Rule[] = [
     id: "list-of-three",
     label: "List of three",
     weight: 1,
-    color: "#ffd166",
     tip: "Triplets (\"fast, simple, and powerful\") give prose a sales rhythm. Keep the one item that matters.",
     find: (t) => all(new RegExp(`${W}(?:\\s+${W}){0,4},\\s+${W}(?:\\s+${W}){0,4},?\\s+(?:and|or)\\s+${W}(?:\\s+${W}){0,3}`, "gu"), t),
   },
@@ -190,7 +186,6 @@ export const RULES: Rule[] = [
     id: "buzzword",
     label: "Buzzword",
     weight: 2,
-    color: "#c77dff",
     tip: "Words like delve, tapestry, seamless and vibrant show up far more in model output than in people's writing.",
     find: (t) => all(words(BUZZWORDS), t),
   },
@@ -198,7 +193,6 @@ export const RULES: Rule[] = [
     id: "grandiose",
     label: "Grandiose",
     weight: 2,
-    color: "#e056fd",
     tip: "Revolutionizing, redefining, a new era. Inflated stakes for ordinary news.",
     find: (t) => all(words(GRANDIOSE), t),
   },
@@ -206,7 +200,6 @@ export const RULES: Rule[] = [
     id: "signpost",
     label: "Signpost",
     weight: 2,
-    color: "#4cc9f0",
     tip: "\"Here's the thing\", \"let's dive in\", \"ultimately\": announcing a point instead of making it.",
     find: (t) => all(words(SIGNPOSTS), t),
   },
@@ -214,7 +207,6 @@ export const RULES: Rule[] = [
     id: "rhetorical-question",
     label: "Asked and answered",
     weight: 2,
-    color: "#00f5d4",
     tip: "\"The best part? It's free.\" A question the writer answers right away, for drama.",
     find: (_t, { sentences }) =>
       sentences
@@ -228,7 +220,6 @@ export const RULES: Rule[] = [
     id: "chatbot-frame",
     label: "Chatbot frame",
     weight: 2,
-    color: "#90be6d",
     tip: "\"Sure!\", \"Of course,\", \"I hope this helps\": the assistant talking, not the writer.",
     find: (t) => all(words(FRAMES), t),
   },
@@ -236,7 +227,6 @@ export const RULES: Rule[] = [
     id: "serves-as",
     label: "Serves as",
     weight: 2,
-    color: "#f9844a",
     tip: "\"Serves as a\", \"stands as a\", \"plays a crucial role\": a long way to write \"is\".",
     find: (t) => all(words(SERVES_AS), t),
   },
@@ -244,7 +234,6 @@ export const RULES: Rule[] = [
     id: "ing-tail",
     label: "-ing tail",
     weight: 1,
-    color: "#f8961e",
     tip: "A sentence that ends \", making it…\" or \", ensuring…\" tacks on a vague consequence.",
     find: (t) =>
       all(/,\s(?:making|helping|ensuring|allowing|enabling|creating|fostering|providing|highlighting|underscoring|showcasing|reflecting|paving|offering|leaving|turning|giving)\b/giu, t),
@@ -253,7 +242,6 @@ export const RULES: Rule[] = [
     id: "from-x-to-y",
     label: "From X to Y",
     weight: 2,
-    color: "#43aa8b",
     tip: "\"From startups to enterprises, …\": a sweep that implies everything is covered.",
     find: (_t, { sentences }) =>
       sentences.flatMap((s) => {
@@ -265,7 +253,6 @@ export const RULES: Rule[] = [
     id: "honesty",
     label: "Performative honesty",
     weight: 2,
-    color: "#577590",
     tip: "\"Let's be honest\" promises candor that the next sentence rarely delivers.",
     find: (t) => all(words(HONESTY), t),
   },
@@ -273,7 +260,6 @@ export const RULES: Rule[] = [
     id: "listicle",
     label: "Listicle",
     weight: 1,
-    color: "#ef476f",
     tip: "First, second, third, lastly: an outline wearing a paragraph.",
     find: (_t, { sentences }) =>
       sentences.flatMap((s) => {
@@ -285,7 +271,6 @@ export const RULES: Rule[] = [
     id: "short-fragment",
     label: "Short fragment",
     weight: 1,
-    color: "#a0c4ff",
     tip: "\"And that matters.\" A tiny sentence dropped in for emphasis, usually after a long one.",
     find: (_t, { sentences }) =>
       sentences
@@ -296,7 +281,6 @@ export const RULES: Rule[] = [
     id: "markdown",
     label: "Markdown",
     weight: 2,
-    color: "#bdb2ff",
     tip: "Headings, bold labels and bullets in what should be prose.",
     find: (t) => [...all(/^[ \t]*(?:#{1,6}[ \t]|[-*•][ \t]|\d+\.[ \t])/gmu, t), ...all(/\*\*[^*\n]+\*\*/gu, t)],
   },
@@ -304,7 +288,6 @@ export const RULES: Rule[] = [
     id: "emoji",
     label: "Emoji",
     weight: 1,
-    color: "#ffc6ff",
     tip: "Rockets and sparkles: decoration a person rarely types in prose.",
     find: (t) => all(/\p{Extended_Pictographic}/gu, t),
   },
