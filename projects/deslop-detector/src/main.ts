@@ -141,17 +141,18 @@ function render() {
   const tics = current.marks.length;
   ui.meta.textContent = empty
     ? ""
-    : `${current.words.toLocaleString()} words · ${tics} ${tics === 1 ? "flag" : "flags"} · ${current.points} points` +
+    : `${current.words.toLocaleString()} words, ${tics} ${tics === 1 ? "flag" : "flags"}, ${current.points} points` +
       (current.words < MIN_WORDS ? ". Short texts swing wildly; paste a paragraph or more for a fair score." : "");
   ui.mini.hidden = empty;
   ui.mini.replaceChildren(
     el("i", { className: "dot" }),
     el("b", {}, formatScore(current.score)),
-    `${current.tier.title} · ${tics} ${tics === 1 ? "flag" : "flags"}`,
+    `${current.tier.title}, ${tics} ${tics === 1 ? "flag" : "flags"}`,
   );
 
   // habits
-  const rows: HTMLElement[] = current.counts.map((c) => {
+  const byCount = [...current.counts].sort((a, b) => b.count - a.count || b.points - a.points);
+  const rows: HTMLElement[] = byCount.map((c) => {
     const b = el("button", { type: "button" }, el("span", {}, c.rule.label), el("b", {}, String(c.count)));
     b.setAttribute("aria-pressed", String(focus === c.rule.id));
     b.title = c.rule.tip;
@@ -174,7 +175,7 @@ function render() {
   ui.showAll.hidden = focus === null;
 
   // flags
-  ui.flagsTitle.textContent = shown.length ? `Flagged · ${shown.length}` : "Flagged";
+  ui.flagsTitle.textContent = shown.length ? `${shown.length} flagged` : "Flagged";
   const items = shown.slice(0, MAX_FINDINGS).map((m) => {
     const rule = RULE_BY_ID[m.rule];
     const b = el(
