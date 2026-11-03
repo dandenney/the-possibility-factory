@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#111214" />
+    <title>Deslop Detector: score text for AI writing tics</title>
+    <meta name="description" content="Paste text and see a heatmap of AI writing tics: em dashes, “not X, but Y”, lists of three, delve. Get a shareable slop score. Runs in your browser." />
+    <meta property="og:title" content="Deslop Detector" />
+    <meta property="og:description" content="Paste text, see the AI writing tics light up, and share your slop score." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://deslop-detector.netlify.app/" />
+    <meta property="og:image" content="https://deslop-detector.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23111214'/><rect x='5' y='9' width='14' height='4' rx='1' fill='%23ff6b6b'/><rect x='5' y='15' width='22' height='4' rx='1' fill='%23ffd166'/><rect x='5' y='21' width='9' height='4' rx='1' fill='%234cc9f0'/></svg>" />
+  </head>
+  <body>
+    <main>
+      <header class="intro">
+        <p class="kicker">Deslop Detector</p>
+        <h1>Does this read like a chatbot wrote it?</h1>
+        <p class="lede">Paste some text. Em dashes, “it's not X, it's Y”, lists of three, “delve” and a dozen other AI writing habits light up, and you get a slop score. It all runs in your browser.</p>
+      </header>
+
+      <p class="banner" id="banner" hidden></p>
+
+      <section class="input">
+        <div class="toolbar">
+          <span class="hint">Try:</span>
+          <span id="samples" class="samples"></span>
+          <button type="button" class="link" id="clear">Clear</button>
+        </div>
+        <div class="editor" id="editor">
+          <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+          <textarea id="text" spellcheck="false" placeholder="Paste a blog post, an email, a LinkedIn post, a cover letter…" aria-label="Text to score"></textarea>
+        </div>
+      </section>
+
+      <section class="score" aria-live="polite">
+        <div class="score-main">
+          <div class="readout"><span id="score">0</span><small>slop per 1,000 words</small></div>
+          <div class="verdict">
+            <h2 id="tier">Paste something</h2>
+            <p id="blurb" class="dim">People who write carefully score under 15. A stock chatbot averages about 120.</p>
+          </div>
+        </div>
+        <div class="scale" aria-hidden="true">
+          <div class="scale-bar"><span id="scale-pin"></span></div>
+          <div class="scale-labels"><span>0</span><span style="left: 7.5%">people &lt;15</span><span style="left: 60%">chatbots ~120</span><span style="left: 100%">200+</span></div>
+        </div>
+        <p class="meta dim" id="meta"></p>
+      </section>
+
+      <section class="legend-wrap">
+        <div class="legend-head">
+          <h2>What it found</h2>
+          <button type="button" class="link" id="show-all" hidden>Show all</button>
+        </div>
+        <p class="hint">Tap a habit to highlight only that one.</p>
+        <div class="legend" id="legend"></div>
+        <ol class="findings" id="findings"></ol>
+      </section>
+
+      <section class="share">
+        <h2>Share your score</h2>
+        <label class="check"><input type="checkbox" id="include-text" /> Put my text in the link too <span class="hint">(it rides in the part of the URL after #, which never reaches a server)</span></label>
+        <div class="actions">
+          <button type="button" id="share" class="primary">Share slop score</button>
+          <button type="button" id="download" class="ghost">Download card</button>
+        </div>
+        <figure class="card">
+          <canvas id="card" width="1200" height="630" role="img" aria-label="Your slop score card"></canvas>
+        </figure>
+      </section>
+
+      <section class="rewrite">
+        <h2>De-slop it with a local model</h2>
+        <p>Erik Markus Kannike trained these habits out of Qwen3-4B and released it as <a href="https://huggingface.co/erikkannike/qwen3-4b-deslop-v4" target="_blank" rel="noopener">qwen3-4b-deslop</a>. If you run it with <a href="https://ollama.com" target="_blank" rel="noopener">Ollama</a>, this page can send it your flagged paragraphs to rewrite. Your text goes from this tab to your own computer and nowhere else.</p>
+        <ol class="steps">
+          <li>Get the model (2.5 GB): <div class="cmd"><code id="cmd-pull"></code><button type="button" class="ghost copy" data-copy="cmd-pull">Copy</button></div></li>
+          <li>Start Ollama so it accepts requests from this page. Quit the Ollama app first, then: <div class="cmd"><code id="cmd-serve"></code><button type="button" class="ghost copy" data-copy="cmd-serve">Copy</button></div></li>
+          <li>Connect, then rewrite. Chrome may ask to let this site reach apps on your device; allow it.</li>
+        </ol>
+        <div class="connect">
+          <input type="url" id="ollama-url" aria-label="Ollama address" spellcheck="false" />
+          <button type="button" id="connect" class="ghost">Connect</button>
+        </div>
+        <p class="status" id="ollama-status" role="status"></p>
+        <div class="model-row" id="model-row" hidden>
+          <label for="model">Model</label>
+          <select id="model"></select>
+          <button type="button" id="run-rewrite" class="primary">Rewrite flagged paragraphs</button>
+        </div>
+        <div class="rewrite-out" id="rewrite-out" hidden>
+          <div class="rewrite-head">
+            <p><b id="rewrite-progress"></b> <span class="dim" id="rewrite-score"></span></p>
+            <div class="actions">
+              <button type="button" id="stop-rewrite" class="ghost">Stop</button>
+              <button type="button" id="use-rewrite" class="primary" hidden>Use this version</button>
+            </div>
+          </div>
+          <div class="rewrite-text" id="rewrite-text"></div>
+        </div>
+      </section>
+
+      <details class="how">
+        <summary>How the score works</summary>
+        <p>Each habit is a regular expression with a weight. The score is the weighted count per 1,000 words, the same scale as <a href="https://100toolkit.com/blog/deslop-model/" target="_blank" rel="noopener">the detector behind qwen3-4b-deslop</a>, where careful human writing scores under 15 and the stock Qwen3-4B averages 121. This one is an independent take on that style guide; on the 80 sample answers in that post it averages 123 before de-slopping and 7 after (theirs: 121 and 13).</p>
+        <p>A regex can't tell good writing from bad. Writers used em dashes and lists of three long before chatbots did, so treat a high score as a reason to reread, not proof that a model wrote it.</p>
+        <table>
+          <thead><tr><th>Habit</th><th>Points</th><th>Why it's flagged</th></tr></thead>
+          <tbody id="rules"></tbody>
+        </table>
+      </details>
+
+      <footer>
+        <p>Nothing you paste leaves your browser unless you choose to share it or send it to your own Ollama. Inspired by <a href="https://100toolkit.com/blog/deslop-model/" target="_blank" rel="noopener">“Qwen3-4B with the AI writing tics trained out”</a>. Made by <a href="https://github.com/dandenney/the-possibility-factory/tree/main/projects/deslop-detector">The Possibility Factory</a>.</p>
+      </footer>
+    </main>
+
+    <div class="toast" id="toast" role="status" hidden></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

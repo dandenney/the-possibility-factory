@@ -1,0 +1,25 @@
+{
+  "name": "deslop-detector",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Paste text, get a heatmap of AI writing tics and a shareable slop score. Optional rewrite with a local de-slopped model through Ollama.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "pnpm@11.21.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "check": "pnpm typecheck && pnpm test && pnpm build"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

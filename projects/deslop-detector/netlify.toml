@@ -1,0 +1,15 @@
+# Netlify site "deslop-detector", base directory projects/deslop-detector.
+[build]
+  command = "pnpm install --frozen-lockfile && pnpm build"
+  publish = "dist"
+  # Only rebuild when this project changed.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+
+[build.environment]
+  NODE_VERSION = "22.22.0"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
