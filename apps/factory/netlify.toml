@@ -3,3 +3,5 @@
 [build]
   command = "pnpm turbo run build --filter=@factory/app"
   publish = "apps/factory/dist"
+  # Skip builds (and PR previews) for commits that only touch projects/*, which deploy as their own sites.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)projects'"

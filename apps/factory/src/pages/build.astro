@@ -1,0 +1,110 @@
+---
+import { getIdea } from "@factory/core";
+import Layout from "@/layouts/Layout.astro";
+import { buildPrompt } from "@/lib/buildPrompt";
+import { getDb } from "@/lib/db";
+
+const ideaId = Number(Astro.url.searchParams.get("idea"));
+const idea = Number.isInteger(ideaId) && ideaId > 0 ? await getIdea(await getDb(), ideaId) : undefined;
+const prompt = buildPrompt(idea);
+
+const steps = [
+  {
+    title: "Shortlist it",
+    body: "Star the idea in the inbox. Shortlisted cards get a Build prompt link.",
+  },
+  {
+    title: "Hand the prompt to an agent",
+    body: "Open the card's Build prompt, copy it, and paste it into any coding agent with a checkout of this repo. Give it NETLIFY_AUTH_TOKEN if you want it to deploy too.",
+  },
+  {
+    title: "It builds, pushes and deploys",
+    body: "The agent builds projects/<slug>/, runs pnpm check, pushes straight to main, creates the Netlify site linked to the repo, then renders og.png from the live site.",
+  },
+  {
+    title: "Check it and mark it shipped",
+    body: "Open the live URL on your phone. If it holds up, click Mark shipped on the card. dandenney.com/factory picks it up on its next daily sync.",
+  },
+];
+
+const checks = [
+  "All commits are on main, with no leftover branch or PR.",
+  "Only projects/<slug>/ changed.",
+  "The live site comes from a Git build (Netlify shows a commit, not “Manual deploy”).",
+  "README.md has a Live: line and SPEC.md starts with the idea title and “Idea #N”.",
+  "og.png is 1200×630 and looks right when the link is shared.",
+];
+---
+
+<Layout title="Build guide">
+  <div class="mx-auto max-w-3xl space-y-10">
+    <header class="space-y-2">
+      <p class="label">Build guide</p>
+      <h1 class="text-2xl font-semibold tracking-tight text-balance">
+        {idea ? `Build #${idea.id}: ${idea.title}` : "Building a shortlisted idea with any agent"}
+      </h1>
+      <p class="text-[0.9375rem] leading-relaxed text-pretty text-muted">
+        Any coding agent can take an idea from shortlist to a live toy. The prompt below holds every convention: where the project
+        goes, the files the dandenney.com sync reads, and how to deploy.
+      </p>
+      {
+        Astro.url.searchParams.has("idea") && !idea && (
+          <p class="text-sm text-signal-ink">That idea doesn't exist, so the prompt has placeholders.</p>
+        )
+      }
+    </header>
+
+    <ol class="grid gap-4 sm:grid-cols-2">
+      {
+        steps.map((s, i) => (
+          <li class="rounded-xl border border-rule bg-panel p-5">
+            <p class="font-mono text-xs text-muted">{i + 1}</p>
+            <h2 class="mt-1 font-semibold tracking-tight">{s.title}</h2>
+            <p class="mt-1 text-sm leading-relaxed text-pretty text-muted">{s.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <section class="space-y-3">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 class="font-semibold tracking-tight">The prompt</h2>
+          <p class="text-sm text-muted">
+            {idea ? "Pre-filled with this idea. Paste it as is." : "Open this from a shortlisted card to fill in the idea, or replace the <placeholders>."}
+          </p>
+        </div>
+        <button id="copy-prompt" class="btn" type="button">Copy prompt</button>
+      </div>
+      <textarea id="build-prompt" class="field h-[28rem] font-mono text-xs leading-relaxed" readonly aria-label="Build prompt">{prompt}</textarea>
+    </section>
+
+    <section class="grid gap-6 sm:grid-cols-2">
+      <div class="space-y-2">
+        <h2 class="font-semibold tracking-tight">Before you mark it shipped</h2>
+        <ul class="list-disc space-y-1 pl-5 text-sm leading-relaxed text-muted">
+          {checks.map((c) => <li>{c}</li>)}
+        </ul>
+      </div>
+      <div class="space-y-2">
+        <h2 class="font-semibold tracking-tight">If it gets stuck</h2>
+        <p class="text-sm leading-relaxed text-pretty text-muted">
+          The prompt ends with a <span class="font-mono text-xs">FACTORY HANDOFF</span> block. Paste it to Devin with “wire up
+          #N”. Devin finishes whatever is missing (Netlify site, Git build, og.png, pre-generated output) and marks the idea
+          shipped.
+        </p>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  const button = document.getElementById("copy-prompt");
+  const prompt = document.getElementById("build-prompt") as HTMLTextAreaElement | null;
+  button?.addEventListener("click", async () => {
+    if (!prompt) return;
+    await navigator.clipboard.writeText(prompt.value);
+    button.textContent = "Copied";
+    setTimeout(() => (button.textContent = "Copy prompt"), 2000);
+  });
+</script>

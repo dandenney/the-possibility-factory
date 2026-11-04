@@ -92,6 +92,9 @@ const actions: Record<IdeaStatus, { status: IdeaStatus; label: string; primary?:
         </button>
       ))
     }
-    <a href={`/ideas/${idea.id}`} class="ml-auto text-xs text-muted hover:text-ink">Edit &rarr;</a>
+    <span class="ml-auto flex items-center gap-4 text-xs">
+      {idea.status === "shortlisted" && <a href={`/build?idea=${idea.id}`} class="text-signal-ink hover:text-ink">Build prompt &rarr;</a>}
+      <a href={`/ideas/${idea.id}`} class="text-muted hover:text-ink">Edit &rarr;</a>
+    </span>
   </form>
 </article>
