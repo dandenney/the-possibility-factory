@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16150f" media="(prefers-color-scheme: dark)" />
+    <title>Sandbox Check: what can untrusted HTML reach from your preview iframe?</title>
+    <meta name="description" content="Render HTML the way chat apps preview it (sandboxed iframes, srcdoc, blob and data URLs) and run harmless probes to see whether it can read your cookies, call your APIs, send data out or move your tab." />
+    <meta property="og:title" content="Sandbox Check" />
+    <meta property="og:description" content="What can untrusted HTML reach from your preview iframe? Harmless probes, a pass/fail report and the fix for each leak." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sandbox-check.netlify.app/" />
+    <meta property="og:image" content="https://sandbox-check.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='3' y='5' width='26' height='22' rx='3' fill='none' stroke='%231c1b19' stroke-width='2.5'/><path d='M3 11h26' stroke='%231c1b19' stroke-width='2.5'/><path d='M11 19l3.5 3.5L22 15' fill='none' stroke='%23c2410c' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
+  </head>
+  <body>
+    <header class="intro wrap">
+      <p class="kicker">Sandbox Check</p>
+      <h1>What can untrusted HTML reach from your preview iframe?</h1>
+      <p class="lede">
+        Chat apps render model-written HTML in sandboxed iframes, and a single attribute decides whether that page is a stranger or your own site.
+        Set up the iframe the way your app does. A probe page inside it tries, harmlessly, to read your cookies, call your API, send data out and move your tab.
+      </p>
+    </header>
+
+    <main class="wrap layout">
+      <section class="setup" aria-labelledby="setup-title">
+        <h2 id="setup-title">Render it like your app does</h2>
+
+        <div class="presets" id="presets" role="group" aria-label="Presets"></div>
+        <p class="preset-blurb" id="preset-blurb"></p>
+
+        <fieldset>
+          <legend>How the HTML gets in</legend>
+          <div class="choices" id="embeds"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Sandbox</legend>
+          <label class="switch">
+            <input type="checkbox" id="use-sandbox" />
+            <span>Add a <code>sandbox</code> attribute</span>
+          </label>
+          <ul class="tokens" id="tokens"></ul>
+        </fieldset>
+
+        <fieldset>
+          <legend>Content Security Policy inside the frame</legend>
+          <div class="choices" id="csps">
+            <label><input type="radio" name="csp" value="none" /> <span>None</span></label>
+            <label><input type="radio" name="csp" value="no-network" /> <span>No network</span></label>
+            <label><input type="radio" name="csp" value="custom" /> <span>Custom</span></label>
+          </div>
+          <textarea id="custom-csp" rows="2" spellcheck="false" placeholder="default-src 'none'; script-src 'unsafe-inline'" hidden></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend><label for="allow">Permissions Policy (<code>allow</code>)</label></legend>
+          <input id="allow" type="text" spellcheck="false" autocomplete="off" placeholder="empty, e.g. clipboard-write; camera" />
+        </fieldset>
+
+        <div class="code-block">
+          <div class="code-head">
+            <span>Your iframe</span>
+            <button type="button" class="link" id="copy-snippet">Copy</button>
+          </div>
+          <pre><code id="snippet"></code></pre>
+        </div>
+      </section>
+
+      <section class="results" aria-labelledby="summary-title">
+        <div class="summary" id="summary" data-tone="wait" aria-live="polite">
+          <h2 id="summary-title">Probing…</h2>
+          <p id="summary-blurb"></p>
+          <p class="counts" id="counts"></p>
+        </div>
+
+        <div class="frame-shell">
+          <div class="frame-head">
+            <span>The untrusted page</span>
+            <button type="button" class="link" id="rerun">Run again</button>
+          </div>
+          <div class="frame-slot" id="frame-slot"></div>
+        </div>
+
+        <ol class="findings" id="findings"></ol>
+
+        <div class="actions">
+          <button type="button" class="btn primary" id="copy-report">Copy report as Markdown</button>
+          <button type="button" class="btn" id="copy-link">Copy link to this setup</button>
+        </div>
+      </section>
+    </main>
+
+    <section class="wrap more" aria-labelledby="own-title">
+      <div>
+        <h2 id="own-title">Test your own app</h2>
+        <p>
+          Copy the probe as a standalone HTML page and get it rendered in your preview feature: paste it into your app, or ask your model to
+          output it verbatim. It reports from inside the frame what it can reach. Nothing in it changes the host page; the only
+          requests it makes are for a tiny image on this site, to test whether data can get out.
+        </p>
+        <button type="button" class="btn" id="copy-probe">Copy probe HTML</button>
+      </div>
+      <div>
+        <h2>The short checklist</h2>
+        <ul class="checklist">
+          <li>Never combine <code>allow-scripts</code> with <code>allow-same-origin</code> on <code>srcdoc</code> or blob URLs.</li>
+          <li>Best of all, serve previews from a separate origin that has no cookies, storage or APIs worth stealing.</li>
+          <li>The sandbox doesn't stop requests going out. A CSP inside the frame does.</li>
+          <li><code>srcdoc</code> and blob frames inherit your page's CSP, so test with your real headers.</li>
+          <li>Every <code>message</code> listener checks <code>event.source</code>. <code>event.origin</code> is <code>"null"</code> for every sandboxed frame.</li>
+          <li>Leave out <code>allow-popups-to-escape-sandbox</code>, <code>allow-top-navigation</code> and an <code>allow</code> list you don't need.</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="wrap foot">
+      <p>
+        Every probe is harmless: it reads but never writes, installs nothing and only requests files from this site. Prompted by Parameter Labs' write-up on
+        <a href="https://simonwillison.net/2026/Oct/31/how-we-took-over-chatgpt-accounts/" target="_blank" rel="noopener">account takeover through ChatGPT's HTML previews</a>.
+        Made by <a href="https://github.com/dandenney/the-possibility-factory/tree/main/projects/sandbox-check">The Possibility Factory</a>.
+      </p>
+    </footer>
+
+    <p class="toast" id="toast" role="status" hidden></p>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

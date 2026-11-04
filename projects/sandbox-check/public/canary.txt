@@ -1,0 +1,1 @@
+sandbox-check canary: if a framed page can read this, it can read your API responses too.

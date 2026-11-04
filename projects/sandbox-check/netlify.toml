@@ -1,0 +1,17 @@
+# Netlify site "sandbox-check", base directory projects/sandbox-check.
+[build]
+  command = "pnpm install --frozen-lockfile && pnpm build"
+  publish = "dist"
+  # Only rebuild when this project changed.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+
+[build.environment]
+  NODE_VERSION = "22.22.0"
+
+# Deliberately no Content-Security-Policy here: srcdoc and blob frames inherit the page's policy,
+# so a CSP on the kit would change what the probes report.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
