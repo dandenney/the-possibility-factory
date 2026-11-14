@@ -46,6 +46,12 @@ describe('analyze', () => {
     expect(analyze(text).offenders).toEqual([]);
     expect(analyze(text, ['Hypothetical']).offenders[0]?.savedText).toBe('205 MB');
   });
+  test('an app named Electron-something is not Electron by name alone', () => {
+    const text = '60000 /Applications/Electron Diet.app/Contents/MacOS/Electron Diet\n90000 /usr/lib/electron/electron --type=renderer\n80000 /Applications/Electron.app/Contents/MacOS/Electron';
+    const kinds = Object.fromEntries(analyze(text).top.map(a => [a.name, a.kind]));
+    expect(kinds['Electron Diet']).toBe('native');
+    expect(kinds['Electron']).toBe('electron');
+  });
   test('nothing heavy says so', () => {
     expect(analyze('100000 /usr/libexec/trustd').headline).toStartWith('No Electron');
   });

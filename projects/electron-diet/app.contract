@@ -86,7 +86,7 @@ component ElectronDiet
 
   view
     main testId="root" navigationKey=`${top(nav).id}` width="100%" height="100%"
-      head title="Electron Diet: how much RAM is your desktop app wasting?" description="Paste your process list and see how much RAM your Electron apps take, and what they'd give back as native apps." image="https://electron-diet.netlify.app/og.png"
+      head title=(scanner.available ? "Electron Diet" : "Electron Diet: how much RAM is your desktop app wasting?") description="Paste your process list and see how much RAM your Electron apps take, and what they'd give back as native apps." image="https://electron-diet.netlify.app/og.png"
       for e in stack(nav) key=e.id
         column navigationKey=`${e.id}` navigationScroll="content" position="absolute" inset=0 display="flex" flex-direction="column"
           header display="flex" align-items="center"
@@ -101,7 +101,7 @@ component ElectronDiet
                 text "Electron apps ship a whole copy of Chromium each. Discord's lighter Windows 11 app uses about 70% less RAM. Find out what your apps would give back." color="-exact-secondary-label"
               if scanner.available
                 column gap=8 testId="scan-panel"
-                  button press=scan buttonStyle="filled" disabled=pending(scanned) testId="scan"
+                  button press=scan buttonStyle="filled" disabled=pending(scanned) align-self="flex-start" testId="scan"
                     text (pending(scanned) ? "Scanning…" : "Scan This Mac")
                   text "Reads every running process on this Mac. Nothing leaves it." font="-exact-footnote" color="-exact-secondary-label"
                   if scanError != ""
@@ -123,7 +123,7 @@ component ElectronDiet
                   if pasted != ""
                     button press=clear testId="clear"
                       text "Clear"
-                text "It all runs in your browser. Nothing is uploaded." font="-exact-footnote" color="-exact-secondary-label"
+                text (scanner.available ? "It all runs on this Mac. Nothing is uploaded." : "It all runs in your browser. Nothing is uploaded.") font="-exact-footnote" color="-exact-secondary-label"
               if shown and report.processes == 0
                 EmptyState(symbol="symbol:alert", title="No processes found", message="Paste the output of one of the commands above.")
               if shown and report.processes > 0

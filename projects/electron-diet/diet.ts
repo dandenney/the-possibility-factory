@@ -78,7 +78,9 @@ export function classify(name: string, commands: string[], electronHints: Set<st
   const key = name.toLowerCase();
   if (BROWSERS.some(([re]) => re.test(key))) return 'browser';
   if (electronHints.has(key) || ELECTRON.includes(key)) return 'electron';
-  if (commands.some(c => /Electron Framework|\/electron(\s|$)/i.test(c))) return 'electron';
+  // A bare `electron` executable; inside a bundle only its last path part counts, so "Electron Diet.app" doesn't.
+  const electronBinary = (c: string) => /[\\/]electron$/i.test(c) || (!/\.app\//i.test(c) && /[\\/]electron\s/i.test(c));
+  if (commands.some(c => /Electron Framework/i.test(c) || electronBinary(c))) return 'electron';
   if (WEBVIEW2.includes(key) || commands.some(c => /msedgewebview2/i.test(c))) return 'webview2';
   return 'native';
 }

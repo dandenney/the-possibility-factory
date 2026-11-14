@@ -1,4 +1,4 @@
-//#region ../../../../exact/host/web/navigation/network.js
+//#region ../../../exact/host/web/navigation/network.js
 const hextets = (text) => {
 	const [head, tail] = text.split("::"), h = head?.match(/[^:]+/g) ?? [], t = tail?.match(/[^:]+/g) ?? [];
 	return [
