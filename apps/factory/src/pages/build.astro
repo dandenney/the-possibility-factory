@@ -33,6 +33,7 @@ const checks = [
   "The live site comes from a Git build (Netlify shows a commit, not “Manual deploy”).",
   "README.md has a Live: line and SPEC.md starts with the idea title and “Idea #N”.",
   "og.png is 1200×630 and looks right when the link is shared.",
+  "If there's a launch video, the README poster opens media/<slug>.mp4 and it shows the real site.",
 ];
 ---
 
@@ -90,7 +91,7 @@ const checks = [
         <h2 class="font-semibold tracking-tight">If it gets stuck</h2>
         <p class="text-sm leading-relaxed text-pretty text-muted">
           The prompt ends with a <span class="font-mono text-xs">FACTORY HANDOFF</span> block. Paste it to Devin with “wire up
-          #N”. Devin finishes whatever is missing (Netlify site, Git build, og.png, pre-generated output) and marks the idea
+          #N”. Devin finishes whatever is missing (Netlify site, Git build, og.png, launch video, pre-generated output) and marks the idea
           shipped.
         </p>
       </div>

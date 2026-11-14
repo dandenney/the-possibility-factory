@@ -86,6 +86,11 @@ ${ideaBlock(idea)}
 2. If no build starts within a minute, \`POST https://api.netlify.com/api/v1/sites/<site id>/builds\`. Poll \`GET /api/v1/sites/<site id>/deploys?per_page=1\` until \`state\` is \`ready\`. Don't upload with \`netlify deploy\`; the live site must come from the Git build.
 3. Open the live URL in a real browser at desktop and 390px width and fix anything broken.
 4. Render \`public/og.png\` (exactly 1200x630) from the live site in its best-looking state; don't hand-draw it. Commit it as \`chore(<scope>): render social preview card from the live site\` and push. That rebuilds the site.
+5. Optional launch video. Skip it if the toy has no on-screen moment worth showing; say so in the handoff. Install the /brag skill (\`npx skills add https://github.com/latent-spaces/brag --skill brag -g -y\`; it needs Node and FFmpeg) and run it on \`projects/${slug}/\`:
+   - Render locally with Hyperframes only: no voiceover, no HeyGen cloud render, no letsbrag.app, no paid models.
+   - Show the real live site (screenshots of its actual states and built-in samples), not a rebuilt mockup or invented data. Keep it 15-25s and the MP4 under ~8 MB.
+   - Commit only \`media/${slug}.mp4\` and its poster \`media/${slug}.jpg\`; \`brag-output/\` is gitignored. In README.md, add \`[![<Project name> in <N> seconds](media/${slug}.jpg)](media/${slug}.mp4)\` on its own line after the \`Live:\` line, as \`projects/deslop-detector/README.md\` does.
+   - Commit as \`docs(<scope>): add launch video to README\` and push.
 
 ## Finish with this block, exactly
 \`\`\`
@@ -96,6 +101,7 @@ commits: <shas on main>
 pnpm check: <pass | fail>
 netlify: <live at https://... from a Git build | not created (why)>
 og.png: <rendered from the live site | not yet>
+video: <media/${slug}.mp4 (<N>s) | skipped (why)>
 needs pre-generation: <none | script + command>
 known gaps: <anything not done or worth a second look>
 \`\`\`
