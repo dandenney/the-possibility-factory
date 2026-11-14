@@ -90,7 +90,7 @@ ${ideaBlock(idea)}
    - Render locally with Hyperframes only: no voiceover, no HeyGen cloud render, no letsbrag.app, no paid models.
    - Show the real live site (screenshots of its actual states and built-in samples), not a rebuilt mockup or invented data. Keep it 15-25s and the MP4 under ~8 MB.
    - Commit only \`media/${slug}.mp4\` and its poster \`media/${slug}.jpg\`; \`brag-output/\` is gitignored. In README.md, add \`[![<Project name> in <N> seconds](media/${slug}.jpg)](media/${slug}.mp4)\` on its own line after the \`Live:\` line, as \`projects/deslop-detector/README.md\` does.
-   - Commit as \`docs(<scope>): add launch video to README\` and push.
+   - Commit as \`chore(<scope>): add launch video to README\` and push.
 
 ## Finish with this block, exactly
 \`\`\`
