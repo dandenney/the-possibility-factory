@@ -1,0 +1,12 @@
+{
+  "name": "electron-diet",
+  "private": true,
+  "scripts": {
+    "build": "bun exact.mjs web-build --out dist",
+    "start": "bun exact.mjs serve dist",
+    "check": "bun exact.mjs contract build app.contract --json --errors-only && bun test && bun exact.mjs test web",
+    "mac": "bun exact.mjs mac --run",
+    "build:site": "bun exact.mjs web-build --out dist && rm -rf site && cp -R dist site && (cp public/og.png site/og.png 2>/dev/null || true)"
+  },
+  "dependencies": {}
+}

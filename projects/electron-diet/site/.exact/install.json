@@ -1,0 +1,32 @@
+{
+  "exactInstall": 1,
+  "app": {
+    "name": "Electron Diet"
+  },
+  "build": {
+    "id": "3cad42cb98f2011cb2715fec4e83c8a8fa2cb9ee07382f92f67e62646e386a71",
+    "source": null,
+    "dirty": null,
+    "builtAt": null,
+    "mode": "Release build"
+  },
+  "platforms": {
+    "web": {
+      "methods": [
+        {
+          "kind": "browser",
+          "url": "/",
+          "recommended": false,
+          "label": "Open in browser"
+        }
+      ]
+    },
+    "ios": {
+      "methods": []
+    },
+    "macos": {
+      "methods": []
+    }
+  },
+  "reach": null
+}

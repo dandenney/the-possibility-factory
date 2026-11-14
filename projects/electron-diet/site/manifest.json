@@ -1,0 +1,8 @@
+{
+  "name": "Electron Diet",
+  "short_name": "Electron Diet",
+  "id": "com.dandenney.electrondiet",
+  "start_url": "/",
+  "display": "standalone",
+  "lang": "en"
+}

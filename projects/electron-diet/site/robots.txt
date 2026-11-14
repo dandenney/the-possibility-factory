@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://electron-diet.netlify.app/sitemap.xml

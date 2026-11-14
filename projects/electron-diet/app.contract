@@ -1,0 +1,169 @@
+// Electron Diet: paste a process list (or, in the Mac app, scan this Mac) and see how much RAM
+// the Electron and WebView2 apps take, what a native rewrite would give back, and a before/after chart.
+use SummaryCard, EmptyState, Badge from "exact:content"
+
+routes nav
+  home "/" render=build
+
+shape AppRow
+  id: string
+  name: string
+  kind: string
+  kindLabel: string
+  mb: number
+  afterMb: number
+  savedMb: number
+  processes: number
+  sizeText: string
+  afterText: string
+  savedText: string
+  beforePercent: number
+  afterPercent: number
+
+shape Report
+  processes: number
+  apps: number
+  format: string
+  totalText: string
+  electronText: string
+  savedText: string
+  afterText: string
+  savedPercent: number
+  headline: string
+  offenders: AppRow[]
+  top: AppRow[]
+
+shape Sample
+  text: string
+
+shape Scanner
+  available: bool
+
+shape Scan
+  text: string
+  electronApps: string
+  error: string
+
+shape Page
+  canSharePictures: bool
+
+fn processCount(n: number): string = `${n} ${n == 1 ? "process" : "processes"}`
+fn appCount(n: number): string = `${n} ${n == 1 ? "app" : "apps"}`
+
+component ElectronDiet
+  state pasted = ""
+  state mode = "paste"
+  resource sample = sample() as shape Sample else empty()
+  resource scanner = scanner() as shape Scanner else empty()
+  resource page = exactPage() as shape Page else empty()
+  mutation scanned as shape Scan
+  derive scanText = match scanned { case some(s) => s.text, case none => "" }
+  derive scanHints = match scanned { case some(s) => s.electronApps, case none => "" }
+  derive scanError = match scanned { case some(s) => s.error, case none => "" }
+  derive input = mode == "scan" ? scanText : pasted
+  resource report = analyze(input, mode == "scan" ? scanHints : "") when input.trim() != "" as shape Report else empty()
+  derive shown = input.trim() != "" and current(report)
+  derive shareLine = `${report.headline} Weigh yours: https://electron-diet.netlify.app`
+
+  action edit(v: string)
+    mode = "paste"
+    pasted = v
+  action useSample
+    mode = "paste"
+    pasted = sample.text
+  action clear
+    mode = "paste"
+    pasted = ""
+  action scan
+    mode = "scan"
+    send scanned = scanMac()
+  action shareCard
+    share(title="electron-diet", files=["#card"])
+  action shareText
+    share(text=shareLine)
+  action copyResult
+    copyText(shareLine)
+
+  view
+    main testId="root" navigationKey=`${top(nav).id}` width="100%" height="100%"
+      head title="Electron Diet: how much RAM is your desktop app wasting?" description="Paste your process list and see how much RAM your Electron apps take, and what they'd give back as native apps." image="https://electron-diet.netlify.app/og.png"
+      for e in stack(nav) key=e.id
+        column navigationKey=`${e.id}` navigationScroll="content" position="absolute" inset=0 display="flex" flex-direction="column"
+          header display="flex" align-items="center"
+            text "Electron Diet" role="heading" aria-level=1 flex=1
+            if scanner.available
+              button press=scan aria-label="Scan This Mac" testId="scan-bar"
+                image "symbol:refresh"
+          scroll id="content" flex=1 min-height=0
+            column gap=24 padding=16 max-width="46rem" margin-left="auto" margin-right="auto"
+              column gap=8
+                text "How much RAM is your desktop app wasting?" role="heading" aria-level=2
+                text "Electron apps ship a whole copy of Chromium each. Discord's lighter Windows 11 app uses about 70% less RAM. Find out what your apps would give back." color="-exact-secondary-label"
+              if scanner.available
+                column gap=8 testId="scan-panel"
+                  button press=scan buttonStyle="filled" disabled=pending(scanned) testId="scan"
+                    text (pending(scanned) ? "Scanning…" : "Scan This Mac")
+                  text "Reads every running process on this Mac. Nothing leaves it." font="-exact-footnote" color="-exact-secondary-label"
+                  if scanError != ""
+                    text scanError font="-exact-footnote" color="-exact-system-red" testId="scan-error"
+              column gap=12 testId="paste-panel"
+                text (scanner.available ? "Or paste a process list" : "Paste your process list") role="heading" aria-level=3
+                column gap=6
+                  row gap=8 flex-wrap="wrap" align-items="baseline"
+                    text "Mac or Linux:" font="-exact-footnote" min-width=88
+                    text "ps -axo rss=,comm= | pbcopy" font-family="ui-monospace, monospace" font="-exact-footnote" testId="cmd-mac"
+                  row gap=8 flex-wrap="wrap" align-items="baseline"
+                    text "Windows:" font="-exact-footnote" min-width=88
+                    text "tasklist /fo csv | clip" font-family="ui-monospace, monospace" font="-exact-footnote" testId="cmd-windows"
+                  text "Run one in a terminal, then paste here." font="-exact-footnote" color="-exact-secondary-label"
+                textarea value=pasted input=edit placeholder="Paste here" aria-label="Process list" height=140 font-family="ui-monospace, monospace" font="-exact-footnote" white-space="pre" testId="paste"
+                row gap=8
+                  button press=useSample buttonStyle="bordered" testId="sample"
+                    text "Try a Sample Mac"
+                  if pasted != ""
+                    button press=clear testId="clear"
+                      text "Clear"
+                text "It all runs in your browser. Nothing is uploaded." font="-exact-footnote" color="-exact-secondary-label"
+              if shown and report.processes == 0
+                EmptyState(symbol="symbol:alert", title="No processes found", message="Paste the output of one of the commands above.")
+              if shown and report.processes > 0
+                column gap=20 testId="results"
+                  SummaryCard(label="Electron could give back", value=report.savedText, detail=`${report.savedPercent}% of the ${report.totalText} in use, from ${report.electronText} of Electron and WebView2`, progress=some(report.savedPercent / 100), symbol=some("symbol:chart"))
+                  text `Read ${processCount(report.processes)} in ${appCount(report.apps)}.` font="-exact-footnote" color="-exact-secondary-label" testId="read"
+                  column id="card" gap=14 padding=20 border-radius=16 background-color="-exact-secondary-background" testId="card"
+                    text "Electron Diet" font="-exact-footnote" color="-exact-secondary-label"
+                    text report.headline role="heading" aria-level=3 testId="headline"
+                    for o in report.offenders key=o.id
+                      column gap=4 testId=`offender-${o.id}`
+                        row gap=8 align-items="baseline"
+                          text o.name flex=1 min-width=0 testId=`offender-name-${o.id}`
+                          text `${o.sizeText} → ${o.afterText}` font="-exact-footnote" font-variant-numeric="tabular-nums" color="-exact-secondary-label" testId=`offender-sizes-${o.id}`
+                        box height=10 border-radius=5 width=`${o.beforePercent}%` background-color="-exact-system-orange" aria-label=`${o.name} today, ${o.sizeText}`
+                        box height=10 border-radius=5 width=`${o.afterPercent}%` background-color="-exact-system-green" aria-label=`${o.name} native, about ${o.afterText}`
+                    if report.offenders.length > 0
+                      row gap=16
+                        row gap=6 align-items="center"
+                          box width=10 height=10 border-radius=5 background-color="-exact-system-orange"
+                          text "Today" font="-exact-footnote"
+                        row gap=6 align-items="center"
+                          box width=10 height=10 border-radius=5 background-color="-exact-system-green"
+                          text "As a native app" font="-exact-footnote"
+                    text "electron-diet.netlify.app" font="-exact-footnote" color="-exact-secondary-label"
+                  row gap=8 flex-wrap="wrap"
+                    if page.canSharePictures
+                      button press=shareCard buttonStyle="filled" testId="share-card"
+                        text "Share Card"
+                    button press=shareText buttonStyle=(page.canSharePictures ? "bordered" : "filled") testId="share"
+                      text "Share"
+                    button press=copyResult buttonStyle="bordered" testId="copy"
+                      text "Copy"
+                  column gap=8
+                    text "All apps" role="heading" aria-level=3
+                    column gap=6 testId="apps"
+                      for a in report.top key=a.id
+                        row gap=8 flex-wrap="wrap" align-items="center" justify-content="space-between"
+                          row gap=8 flex-wrap="wrap" align-items="center"
+                            text a.name testId=`app-${a.id}`
+                            Badge(label=a.kindLabel, tint=(a.kind == "electron" or a.kind == "webview2" ? some("-exact-system-orange") : none))
+                          text a.sizeText font-variant-numeric="tabular-nums" testId=`app-size-${a.id}`
+                  text "Memory is what each app's processes hold now (resident memory from ps or tasklist, memory footprint in the Mac app), added up per app. The native figure assumes the 70% drop Discord's lighter app showed. Browsers count as browsers, not offenders. Shared memory can count twice, so treat it as a rough guide." font="-exact-footnote" color="-exact-secondary-label"

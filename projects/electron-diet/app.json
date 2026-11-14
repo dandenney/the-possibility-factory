@@ -1,0 +1,29 @@
+{
+  "$schema": "../../exact/scripts/app.schema.json",
+  "name": "Electron Diet",
+  "short_name": "Electron Diet",
+  "id": "com.dandenney.electrondiet",
+  "start_url": "/",
+  "display": "standalone",
+  "app": {
+    "id": "com.dandenney.electrondiet",
+    "name": "Electron Diet",
+    "origin": "https://electron-diet.netlify.app"
+  },
+  "host": {
+    "web": {},
+    "macos": {
+      "minimumOS": "14.0",
+      "window": {
+        "width": 900,
+        "height": 700
+      }
+    }
+  },
+  "deploy": {
+    "store": {
+      "web": "0",
+      "macos": "0"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "routes": [
+    {
+      "name": "home",
+      "pattern": "/",
+      "render": "build",
+      "notfound": false
+    },
+    {
+      "name": "notfound",
+      "pattern": "",
+      "render": "client",
+      "notfound": true
+    }
+  ]
+}

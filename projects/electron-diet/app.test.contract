@@ -1,0 +1,27 @@
+test "the sample Mac ranks its Electron apps"
+  tap "sample"
+  clock data
+  expect tree has "results"
+  expect text "read" == "Read 42 processes in 17 apps."
+  expect text "offender-name-visual-studio-code" == "Visual Studio Code"
+  expect text "offender-sizes-slack" == "1.2 GB → 357 MB"
+  expect state report.offenders.0 .name == "Visual Studio Code"
+  expect state report.offenders.length == 6
+
+test "a Windows tasklist counts WebView2"
+  type "paste" "\"Image Name\",\"PID\",\"Session Name\",\"Session#\",\"Mem Usage\"\n\"Discord.exe\",\"4120\",\"Console\",\"1\",\"412,300 K\"\n\"msedgewebview2.exe\",\"5012\",\"Console\",\"1\",\"220,000 K\"\n\"explorer.exe\",\"880\",\"Console\",\"1\",\"150,000 K\""
+  clock data
+  expect state report.processes == 3
+  expect text "offender-name-discord" == "Discord"
+  expect text "offender-name-webview2-runtime" == "WebView2 runtime"
+  expect tree missing "offender-explorer"
+
+test "text that is not a process list says so"
+  type "paste" "hello there"
+  clock data
+  expect tree missing "results"
+  expect tree missing "card"
+
+test "the web has no scan button"
+  expect tree missing "scan"
+  expect tree has "paste"

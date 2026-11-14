@@ -1,0 +1,14 @@
+# Netlify site "electron-diet", base directory projects/electron-diet.
+# Exact has no package and needs Rust and Bun to build, so `site/` is the committed web build
+# (`bun run build:site`) and Netlify only publishes it.
+[build]
+  command = ""
+  publish = "site"
+  # Only rebuild when this project changed.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- ."
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Referrer-Policy = "no-referrer"
+    X-Content-Type-Options = "nosniff"
