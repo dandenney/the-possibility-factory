@@ -11,3 +11,6 @@ dist/
 *.db-wal
 *.db-shm
 .DS_Store
+
+# Generated launch-video workspace (/brag)
+brag-output/

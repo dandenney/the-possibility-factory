@@ -4,6 +4,8 @@ Does this read like a chatbot wrote it? Paste some text and the AI writing habit
 
 Live: https://deslop-detector.netlify.app
 
+[![Deslop Detector in 22 seconds](media/deslop-detector.jpg)](media/deslop-detector.mp4)
+
 - Everything runs in your browser. Share links carry the score; tick a box to include your text, which rides in the URL fragment and never reaches a server.
 - Tap a habit to see only that one, or tap a finding to jump to it in the text.
 - Running [Ollama](https://ollama.com)? Pull [qwen3-4b-deslop](https://huggingface.co/erikkannike/qwen3-4b-deslop-v4), start it with `OLLAMA_ORIGINS` set to the site, and the page can rewrite just the flagged paragraphs on your own machine.
