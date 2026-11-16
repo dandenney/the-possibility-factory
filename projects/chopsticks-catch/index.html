@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#eef1ef" />
+    <title>Chopsticks Catch: land a rocket booster in the tower's arms</title>
+    <meta name="description" content="A one-button browser game. Hold to burn, fight the wind, and let go at the right moment so the tower's chopstick arms catch the booster. Share a replay GIF of your catch or crash." />
+    <meta property="og:title" content="Chopsticks Catch" />
+    <meta property="og:description" content="Hold to burn, let go to catch. Bring the booster home to the tower, then share the replay." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://chopsticks-catch.netlify.app/" />
+    <meta property="og:image" content="https://chopsticks-catch.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%23eef1ef'/><rect x='12' y='5' width='8' height='20' fill='%23dde2e0' stroke='%231d1f22' stroke-width='1.5'/><path d='M3 12 L24 12' stroke='%231d1f22' stroke-width='2.5'/><path d='M13 25 Q16 31 19 25' fill='%23d9481f'/></svg>" />
+  </head>
+  <body>
+    <div class="app">
+      <main class="stage" id="stage">
+        <canvas id="sky" role="img" aria-label="A rocket booster descending toward a launch tower with two catch arms"></canvas>
+        <p class="cue" id="cue" aria-live="polite"></p>
+        <section class="result" id="result" hidden aria-live="polite">
+          <h2 id="headline"></h2>
+          <p class="numbers" id="numbers"></p>
+          <p class="quote" id="quote"></p>
+          <div class="actions">
+            <button type="button" class="primary" id="retry">Fly it again</button>
+            <button type="button" id="next">New flight</button>
+          </div>
+          <div class="actions minor">
+            <button type="button" class="link" id="share" disabled>Making replay…</button>
+            <button type="button" class="link" id="copy">Copy challenge link</button>
+          </div>
+        </section>
+        <p class="toast" id="toast" role="status" hidden></p>
+      </main>
+
+      <aside class="panel">
+        <header class="intro">
+          <h1>Chopsticks Catch</h1>
+          <p class="lede">Bring the booster home to the tower. <b>Hold</b> to burn, which also steers against the wind. <b>Let go</b> in the catch window and the arms close.</p>
+          <p class="challenge" id="challenge" hidden></p>
+        </header>
+
+        <dl class="telemetry" aria-label="Telemetry">
+          <div><dt>Over arms</dt><dd id="t-alt">–</dd></div>
+          <div><dt>Descent</dt><dd id="t-vs">–</dd></div>
+          <div><dt>Off center</dt><dd id="t-off">–</dd></div>
+          <div><dt>Wind</dt><dd id="t-wind">–</dd></div>
+          <div class="fuel"><dt>Propellant</dt><dd><span id="t-fuel">100%</span><i class="gauge"><b id="t-gauge"></b></i></dd></div>
+        </dl>
+
+        <section class="log-wrap" aria-label="Launch control">
+          <h2>Launch control</h2>
+          <ol class="log" id="log"></ol>
+        </section>
+
+        <footer class="foot">
+          <p><span id="flight-no"></span> · <span id="best"></span></p>
+          <p class="fine">A fan-made toy, not affiliated with SpaceX. Built in <a href="https://github.com/dandenney/the-possibility-factory/tree/main/projects/chopsticks-catch">the Possibility Factory</a>.</p>
+        </footer>
+      </aside>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
