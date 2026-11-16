@@ -13,11 +13,10 @@ narrates like launch control.
 SpaceX catching the Flight 15 upper stage is a huge story, with 1,494 points on HN and a lot of Bluesky chatter.
 People want to try the catch themselves.
 
-Sparked by:
+## Sparked by
 
-- https://www.spacex.com/launches/starship-flight-15
-- https://news.ycombinator.com/item?id=50500963
-- https://bsky.app/profile/did:plc:qrz3lhbyuxbeilrc6nekdqme/feed/c541771d2b50
+- [SpaceX catches the Starship to end Flight 15](https://www.spacex.com/launches/starship-flight-15) ([HN thread](https://news.ycombinator.com/item?id=50500963))
+- [SpaceX catches Starship upper stage](https://bsky.app/profile/did:plc:qrz3lhbyuxbeilrc6nekdqme/feed/c541771d2b50) (Bluesky trend)
 
 ## Scope for v0.1
 
