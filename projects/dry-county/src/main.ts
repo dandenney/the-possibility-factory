@@ -5,14 +5,68 @@ import {
   serialize, type Result, type State,
 } from "./sim.ts";
 import { sceneSVG, updateScene } from "./scene.ts";
+import { ledgerSVG, updateLedger } from "./ledger.ts";
 
 const $ = <E extends HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<E>(sel)!;
 
 let state: State = deserialize(localStorage.getItem(STORAGE_KEY)) ?? newGame();
 let speed = 1;
 const wrap = $("#scene-wrap");
-wrap.innerHTML = sceneSVG();
-const svg = wrap.querySelector("svg")!;
+
+const LOOKS = {
+  painted: { svg: sceneSVG, update: updateScene, theme: "#2a1a12" },
+  ledger: { svg: ledgerSVG, update: updateLedger, theme: "#f1e9d6" },
+} as const;
+type Look = keyof typeof LOOKS;
+const LOOK_KEY = "dry-county:look";
+const isLook = (v: string | null): v is Look => v === "painted" || v === "ledger";
+let look: Look = (() => {
+  const q = new URLSearchParams(location.search).get("look");
+  if (isLook(q)) return q;
+  try {
+    const saved = localStorage.getItem(LOOK_KEY);
+    if (isLook(saved)) return saved;
+  } catch {
+    /* no storage */
+  }
+  return "painted";
+})();
+let svg!: SVGSVGElement;
+
+function mountLook(next: Look): void {
+  look = next;
+  wrap.innerHTML = LOOKS[look].svg();
+  svg = wrap.querySelector("svg")!;
+  document.documentElement.dataset.look = look;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute("content", LOOKS[look].theme);
+  for (const b of document.querySelectorAll<HTMLButtonElement>(".looks button")) {
+    b.setAttribute("aria-checked", String(b.dataset.look === look));
+  }
+}
+
+function setLook(next: Look): void {
+  if (next === look) return;
+  mountLook(next);
+  try {
+    localStorage.setItem(LOOK_KEY, next);
+  } catch {
+    /* no storage */
+  }
+  const url = new URL(location.href);
+  url.searchParams.set("look", next);
+  history.replaceState(null, "", url);
+  render();
+}
+
+let shownTime = "";
+/** Each digit gets a fixed-width cell so the clock doesn't shift as it ticks. */
+function setTime(el: HTMLElement, text: string): void {
+  if (text === shownTime) return;
+  shownTime = text;
+  el.innerHTML = [...text].map((c) => (/\d/.test(c) ? `<span class="dg">${c}</span>` : c === " " ? "&nbsp;" : c)).join("");
+  el.setAttribute("aria-label", text);
+}
+mountLook(look);
 
 type JobId = "barrel-0" | "barrel-1" | "still" | "water";
 interface Action {
@@ -62,9 +116,9 @@ function jobStatus(id: JobId): [string, number | null] {
 
 let lastLogTop = "";
 function render(): void {
-  updateScene(svg, state);
+  LOOKS[look].update(svg, state);
   $("#day").textContent = formatDay(state.clock);
-  $("#time").textContent = formatTime(state.clock);
+  setTime($("#time"), formatTime(state.clock));
   $("#q-corn").textContent = String(state.corn);
   $("#q-sugar").textContent = String(state.sugar);
   $("#q-water").textContent = String(state.water);
@@ -161,11 +215,11 @@ function pulse(id: string): void {
   g.classList.add("pulse");
 }
 
-svg.addEventListener("click", (e) => {
+wrap.addEventListener("click", (e) => {
   const g = (e.target as Element).closest<SVGGElement>("[data-station]");
   if (g) act(g.dataset.station!);
 });
-svg.addEventListener("keydown", (e) => {
+wrap.addEventListener("keydown", (e) => {
   if (e.key !== "Enter" && e.key !== " ") return;
   const g = (e.target as Element).closest<SVGGElement>("[data-station]");
   if (!g) return;
@@ -174,6 +228,10 @@ svg.addEventListener("keydown", (e) => {
 });
 for (const li of document.querySelectorAll<HTMLLIElement>("#jobs li")) {
   $("button", li).addEventListener("click", () => act(li.dataset.job!));
+}
+
+for (const b of document.querySelectorAll<HTMLButtonElement>(".looks button")) {
+  b.addEventListener("click", () => setLook(b.dataset.look as Look));
 }
 
 function setSpeed(v: number): void {

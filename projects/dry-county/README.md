@@ -12,3 +12,7 @@ Live: https://dry-county.netlify.app
 - One game hour passes every 3 seconds. Pause with `P`, `1` for normal speed, `2` for fast.
 
 Your still house saves in this browser. Markets, buyers, deliveries and hired hands come in later scenes.
+
+## Art styles
+
+Two looks share the same simulation: **Painted** (lantern-lit isometric) and **Ledger** (ink on paper, one copper accent, side-on). Switch under the title, or link one directly with `?look=painted` / `?look=ledger`. The choice is saved in the browser.
