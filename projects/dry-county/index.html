@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#2a1a12" />
+    <title>Dry County: make moonshine in a 1928 still house</title>
+    <meta name="description" content="A small Prohibition-era browser game. Mix corn, sugar and water into mash, let it ferment, then run it through a copper still and fill the shelf with moonshine." />
+    <meta property="og:title" content="Dry County" />
+    <meta property="og:description" content="Mix the mash, let it work, fire the still. Scene one of a Prohibition-era moonshine game." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dry-county.netlify.app/" />
+    <meta property="og:image" content="https://dry-county.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%232a1a12'/><rect x='10' y='9' width='12' height='18' rx='3' fill='%23f3ecc8' stroke='%23d7a640' stroke-width='1.5'/><rect x='9' y='5' width='14' height='5' rx='1.5' fill='%23d7a640'/></svg>" />
+  </head>
+  <body>
+    <div class="app">
+      <main class="stage" id="stage">
+        <div class="scene-wrap" id="scene-wrap"></div>
+
+        <div class="clock" role="group" aria-label="Clock">
+          <div class="clock-face">
+            <span class="day" id="day"></span>
+            <span class="time" id="time"></span>
+          </div>
+          <div class="speeds" role="radiogroup" aria-label="Game speed">
+            <button type="button" role="radio" data-speed="0" aria-label="Pause" title="Pause (P)">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>
+            </button>
+            <button type="button" role="radio" data-speed="1" aria-label="Normal speed, one hour every 3 seconds" title="Normal (1)">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M6 4 L16 10 L6 16 Z"/></svg>
+            </button>
+            <button type="button" role="radio" data-speed="6" aria-label="Fast, six times normal speed" title="Fast (2)">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2.5 4 L10 10 L2.5 16 Z"/><path d="M10 4 L17.5 10 L10 16 Z"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="toast" id="toast" role="status" hidden></p>
+
+        <section class="finale" id="finale" hidden aria-live="polite">
+          <h2 id="finale-title">The shelf is full</h2>
+          <p id="finale-body"></p>
+          <p class="aside">Taking it to market, finding buyers and staying ahead of the revenue men come in later scenes. They aren't built yet.</p>
+          <button type="button" class="btn primary" id="again">Start a new run</button>
+        </section>
+      </main>
+
+      <aside class="panel">
+        <header class="title">
+          <h1>Dry County</h1>
+          <p class="subtitle">Scene one: the still house</p>
+        </header>
+
+        <p class="next" id="next" aria-live="polite"></p>
+
+        <section class="stock" aria-labelledby="stock-h">
+          <h2 id="stock-h">On hand</h2>
+          <ul>
+            <li data-item="corn"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 C3 12 7 7 10 6.5 L14 6.5 C17 7 21 12 19 19 C17 21 7 21 5 19 Z" fill="#c79b5b" stroke="#2b1a10" stroke-width="1.3"/><circle cx="10.5" cy="5" r="1.6" fill="#f2c230"/><circle cx="13.5" cy="4.4" r="1.6" fill="#f2c230"/></svg><span class="label">Corn</span><span class="qty" id="q-corn"></span><span class="unit">sacks</span></li>
+            <li data-item="sugar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 C3 12 7 7 10 6.5 L14 6.5 C17 7 21 12 19 19 C17 21 7 21 5 19 Z" fill="#f1ead8" stroke="#2b1a10" stroke-width="1.3"/><path d="M4.5 13 C9 14.5 15 14.5 19.5 13 L19.8 15.5 C15 17 9 17 4.2 15.5 Z" fill="#2f6aa8"/></svg><span class="label">Sugar</span><span class="qty" id="q-sugar"></span><span class="unit">sacks</span></li>
+            <li data-item="water"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 C15 8 18 11 18 15 A6 6 0 0 1 6 15 C6 11 9 8 12 3 Z" fill="#4aa3c7" stroke="#2b1a10" stroke-width="1.3"/></svg><span class="label">Water</span><span class="qty" id="q-water"></span><span class="unit">gal</span></li>
+            <li data-item="mash"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7 L19 7 L18 20 L6 20 Z" fill="#a8743f" stroke="#2b1a10" stroke-width="1.3"/><ellipse cx="12" cy="7" rx="7" ry="2" fill="#c9a256" stroke="#2b1a10" stroke-width="1.2"/></svg><span class="label">Mash</span><span class="qty" id="q-mash"></span><span class="unit">gal</span></li>
+            <li data-item="jars"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="7" width="11" height="14" rx="3" fill="#f3ecc8" stroke="#2b1a10" stroke-width="1.3"/><rect x="7.5" y="3.5" width="9" height="4" rx="1" fill="#9a9a94" stroke="#2b1a10" stroke-width="1.2"/></svg><span class="label">Moonshine</span><span class="qty" id="q-jars"></span><span class="unit">jars</span></li>
+          </ul>
+          <p class="mash-note" id="mash-note"></p>
+        </section>
+
+        <section class="jobs" aria-labelledby="jobs-h">
+          <h2 id="jobs-h">Work</h2>
+          <ol id="jobs">
+            <li data-job="barrel-0"><div class="job-text"><span class="job-name">Barrel 1</span><span class="job-status"></span></div><span class="meter"><span></span></span><button type="button" class="btn"></button></li>
+            <li data-job="barrel-1"><div class="job-text"><span class="job-name">Barrel 2</span><span class="job-status"></span></div><span class="meter"><span></span></span><button type="button" class="btn"></button></li>
+            <li data-job="still"><div class="job-text"><span class="job-name">The still</span><span class="job-status"></span></div><span class="meter"><span></span></span><button type="button" class="btn"></button></li>
+            <li data-job="water"><div class="job-text"><span class="job-name">The creek</span><span class="job-status"></span></div><span class="meter"><span></span></span><button type="button" class="btn"></button></li>
+          </ol>
+        </section>
+
+        <section class="log" aria-labelledby="log-h">
+          <h2 id="log-h">Word around the still</h2>
+          <ol id="log"></ol>
+        </section>
+
+        <footer class="foot">
+          <button type="button" class="link" id="reset">Start over</button>
+          <span>A Possibility Factory toy. Saves in this browser.</span>
+        </footer>
+      </aside>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
