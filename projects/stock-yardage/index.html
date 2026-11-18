@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b0e12" />
+    <meta name="color-scheme" content="dark" />
+    <title>Stock Yardage: how far you actually hit each club</title>
+    <meta name="description" content="Log your good shots by club, on and off a tee, at GOLFTEC, Topgolf, the range or the course. Keep a card of your last five good ones per club and see which venue reads long." />
+    <meta property="og:title" content="Stock Yardage" />
+    <meta property="og:description" content="Your real yardage card: the last five good shots per club, on and off a tee, and which venue reads long." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://stock-yardage.netlify.app/" />
+    <meta property="og:image" content="https://stock-yardage.netlify.app/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="#/card" aria-label="Stock Yardage, the card">
+        <svg class="brand-mark" viewBox="0 0 28 16" aria-hidden="true"><path d="M1 15 C 7 -2, 17 -2, 23 9" /><circle cx="24.5" cy="11.5" r="2.5" /></svg>
+        <span>Stock Yardage</span>
+      </a>
+      <div class="players" id="players" role="group" aria-label="Player"></div>
+    </header>
+
+    <nav class="tabs" aria-label="Sections">
+      <a href="#/card" data-tab="card">Card</a>
+      <a href="#/log" data-tab="log">Log</a>
+      <a href="#/bag" data-tab="bag">Bag</a>
+      <a href="#/data" data-tab="data">Export</a>
+    </nav>
+
+    <main id="view" tabindex="-1"></main>
+
+    <div class="toast" id="toast" role="status" hidden><span id="toast-text"></span><button type="button" id="toast-undo" hidden>Undo</button></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
