@@ -1,8 +1,7 @@
 name: Daily signals and ideas
 
+# Scheduled run paused; trigger manually from the Actions tab.
 on:
-  schedule:
-    - cron: "0 11 * * *"
   workflow_dispatch:
     inputs:
       generate:
@@ -32,7 +31,7 @@ jobs:
       - name: Collect signals
         run: pnpm --filter @factory/sources collect
       - name: Generate ideas
-        if: github.event_name == 'schedule' || inputs.generate
+        if: inputs.generate
         run: pnpm --filter @factory/ideas generate
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
